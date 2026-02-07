@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Loader2, CheckCircle2 } from 'lucide-react'
-import { invoke } from '@tauri-apps/api/tauri'
+import { invoke } from '@tauri-apps/api/core'
 import { Progress } from './ui/progress'
 import { Button } from './ui/button'
 import { Card, CardContent } from './ui/card'

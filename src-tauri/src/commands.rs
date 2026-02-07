@@ -44,7 +44,7 @@ pub fn start_processing(
     // Get OpenAI API key from environment
     let api_key = get_openai_api_key()
         .ok_or_else(|| "OpenAI API key not found. Please set OPENAI_API_KEY environment variable.".to_string())?;
-    
+
     let job_id = processor::start_processing(path, settings, api_key);
     Ok(job_id)
 }
@@ -110,21 +110,32 @@ fn get_openai_api_key() -> Option<String> {
         }
     }
     
-    // Try to read from .env file in workspace
-    let env_path = std::path::Path::new("/root/.openclaw/workspace/.env");
-    if let Ok(contents) = std::fs::read_to_string(env_path) {
-        for line in contents.lines() {
-            if line.starts_with("OPENAI_API_KEY=") {
-                let key = line.trim_start_matches("OPENAI_API_KEY=")
-                    .trim()
-                    .trim_matches('"')
-                    .to_string();
-                if !key.is_empty() {
-                    return Some(key);
+    // Try to read from .env file - check current dir, parent dir, and executable dir
+    let candidate_dirs: Vec<std::path::PathBuf> = [
+        std::env::current_dir().ok(),
+        std::env::current_dir().ok().and_then(|p| p.parent().map(|p| p.to_path_buf())),
+        std::env::current_exe().ok().and_then(|p| p.parent().map(|p| p.to_path_buf())),
+    ]
+    .into_iter()
+    .flatten()
+    .collect();
+
+    for dir in candidate_dirs {
+        let env_path = dir.join(".env");
+        if let Ok(contents) = std::fs::read_to_string(&env_path) {
+            for line in contents.lines() {
+                if line.starts_with("OPENAI_API_KEY=") {
+                    let key = line.trim_start_matches("OPENAI_API_KEY=")
+                        .trim()
+                        .trim_matches('"')
+                        .to_string();
+                    if !key.is_empty() {
+                        return Some(key);
+                    }
                 }
             }
         }
     }
-    
+
     None
 }

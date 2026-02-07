@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { invoke } from '@tauri-apps/api/tauri'
+import { invoke } from '@tauri-apps/api/core'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sparkles, AlertCircle } from 'lucide-react'
 import { VideoSelector } from './components/VideoSelector'
@@ -33,9 +33,9 @@ function App() {
     mode: 'moderate',
     remove_silences: true,
     remove_repetitions: true,
-    silence_threshold_db: -30,
-    min_silence_duration: 0.5,
-    repetition_threshold: 0.8,
+    silence_threshold_db: -35,
+    min_silence_duration: 0.75,
+    repetition_threshold: 0.85,
   })
   const [jobId, setJobId] = useState<string | null>(null)
   const [result, setResult] = useState<ProcessingResult | null>(null)

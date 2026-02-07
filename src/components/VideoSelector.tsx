@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Upload, File, X } from 'lucide-react'
-import { open } from '@tauri-apps/api/dialog'
-import { invoke } from '@tauri-apps/api/tauri'
+import { open } from '@tauri-apps/plugin-dialog'
+import { invoke } from '@tauri-apps/api/core'
+import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
 import { Button } from './ui/button'
 import { formatBytes, formatDuration } from '../lib/utils'
 
@@ -22,24 +23,21 @@ export function VideoSelector({ onVideoSelected }: VideoSelectorProps) {
   const [isDragging, setIsDragging] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(true)
-  }, [])
-
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(false)
-  }, [])
-
-  const handleDrop = useCallback(async (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(false)
-    
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      const file = e.dataTransfer.files[0]
-      await loadVideoInfo(file.path)
-    }
+  useEffect(() => {
+    const unlisten = getCurrentWebviewWindow().onDragDropEvent((event) => {
+      if (event.payload.type === 'over') {
+        setIsDragging(true)
+      } else if (event.payload.type === 'leave') {
+        setIsDragging(false)
+      } else if (event.payload.type === 'drop') {
+        setIsDragging(false)
+        const paths = event.payload.paths
+        if (paths.length > 0) {
+          loadVideoInfo(paths[0])
+        }
+      }
+    })
+    return () => { unlisten.then(fn => fn()) }
   }, [])
 
   const handleFileSelect = async () => {
@@ -117,9 +115,6 @@ export function VideoSelector({ onVideoSelected }: VideoSelectorProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
       className={`
         border-2 border-dashed rounded-xl p-12 transition-all cursor-pointer
         bg-[#141415]/50 backdrop-blur-sm

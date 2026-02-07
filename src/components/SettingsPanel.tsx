@@ -20,19 +20,19 @@ interface SettingsPanelProps {
 
 const modePresets = {
   aggressive: {
-    silence_threshold_db: -25,
-    min_silence_duration: 0.3,
-    repetition_threshold: 0.7,
+    silence_threshold_db: -30,
+    min_silence_duration: 0.4,
+    repetition_threshold: 0.75,
   },
   moderate: {
-    silence_threshold_db: -30,
-    min_silence_duration: 0.5,
-    repetition_threshold: 0.8,
+    silence_threshold_db: -35,
+    min_silence_duration: 0.75,
+    repetition_threshold: 0.85,
   },
   conservative: {
-    silence_threshold_db: -35,
-    min_silence_duration: 1.0,
-    repetition_threshold: 0.9,
+    silence_threshold_db: -40,
+    min_silence_duration: 1.5,
+    repetition_threshold: 0.92,
   },
 }
 

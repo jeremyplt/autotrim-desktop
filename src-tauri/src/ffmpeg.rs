@@ -1,5 +1,4 @@
 use std::process::Command;
-use std::path::Path;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 use anyhow::{Result, Context};
@@ -68,23 +67,24 @@ pub fn get_video_info(path: &str) -> Result<VideoMetadata> {
 }
 
 pub fn extract_audio(video_path: &str, output_path: &str) -> Result<()> {
+    // Extract as mp3 mono 64kbps to stay under OpenAI's 25MB limit
     let status = Command::new("ffmpeg")
         .args([
             "-i", video_path,
             "-vn",
-            "-acodec", "pcm_s16le",
-            "-ar", "16000",
             "-ac", "1",
+            "-ar", "16000",
+            "-b:a", "64k",
             "-y",
             output_path
         ])
         .status()
         .context("Failed to run ffmpeg for audio extraction")?;
-    
+
     if !status.success() {
         anyhow::bail!("FFmpeg audio extraction failed");
     }
-    
+
     Ok(())
 }
 
@@ -135,68 +135,94 @@ pub fn render_video(
     input_path: &str,
     segments_to_keep: &[Segment],
     output_path: &str,
-    total_duration: f64,
-) -> Result<()> {
+    _total_duration: f64,
+    temp_dir: &std::path::Path,
+    on_progress: impl Fn(f64),
+) -> Result<String> {
     if segments_to_keep.is_empty() {
         anyhow::bail!("No segments to keep");
     }
-    
-    // Create filter complex for concatenation
-    let mut filter_parts = Vec::new();
-    
+
+    let total_segments = segments_to_keep.len();
+    eprintln!("Rendering {} segments via stream copy + concat", total_segments);
+
+    on_progress(0.0);
+
+    // Phase 1: Extract each segment as a separate .mp4 file using stream copy
+    let mut segment_files = Vec::new();
     for (i, segment) in segments_to_keep.iter().enumerate() {
+        let seg_path = temp_dir.join(format!("seg_{:04}.mp4", i));
+        let seg_path_str = seg_path.to_str().unwrap().to_string();
         let duration = segment.end - segment.start;
-        filter_parts.push(format!(
-            "[0:v]trim=start={}:end={},setpts=PTS-STARTPTS[v{}];[0:a]atrim=start={}:end={},asetpts=PTS-STARTPTS[a{}]",
-            segment.start, segment.end, i,
-            segment.start, segment.end, i
-        ));
+
+        let status = Command::new("ffmpeg")
+            .args([
+                "-y",
+                "-ss", &format!("{:.3}", segment.start),
+                "-i", input_path,
+                "-t", &format!("{:.3}", duration),
+                "-c", "copy",
+                "-avoid_negative_ts", "make_zero",
+                "-map", "0:v:0",
+                "-map", "0:a:0",
+                &seg_path_str,
+            ])
+            .output()
+            .context(format!("Failed to extract segment {}", i))?;
+
+        if !status.status.success() {
+            let stderr = String::from_utf8_lossy(&status.stderr);
+            eprintln!("Warning: segment {} extraction failed: {}", i, stderr);
+            continue;
+        }
+
+        segment_files.push(seg_path_str);
+
+        let progress = (i + 1) as f64 / total_segments as f64 * 0.8;
+        on_progress(progress);
     }
-    
-    // Concatenate all segments
-    let v_concat = (0..segments_to_keep.len())
-        .map(|i| format!("[v{}]", i))
+
+    if segment_files.is_empty() {
+        anyhow::bail!("No segments were extracted successfully");
+    }
+
+    // Phase 2: Write concat list
+    let concat_path = temp_dir.join("concat.txt");
+    let concat_content: String = segment_files.iter()
+        .map(|p| format!("file '{}'", p))
         .collect::<Vec<_>>()
-        .join("");
-    
-    let a_concat = (0..segments_to_keep.len())
-        .map(|i| format!("[a{}]", i))
-        .collect::<Vec<_>>()
-        .join("");
-    
-    filter_parts.push(format!(
-        "{}concat=n={}:v=1:a=1[outv][outa]",
-        v_concat, segments_to_keep.len()
-    ));
-    filter_parts.push(format!(
-        "{}concat=n={}:v=0:a=1[outa]",
-        a_concat, segments_to_keep.len()
-    ));
-    
-    let filter_complex = filter_parts.join(";");
-    
+        .join("\n");
+    std::fs::write(&concat_path, &concat_content)
+        .context("Failed to write concat list")?;
+
+    on_progress(0.85);
+
+    // Phase 3: Concatenate all segments with stream copy
+    let output_mp4 = std::path::Path::new(output_path)
+        .with_extension("mp4")
+        .to_str()
+        .unwrap()
+        .to_string();
+
     let status = Command::new("ffmpeg")
         .args([
-            "-i", input_path,
-            "-filter_complex", &filter_complex,
-            "-map", "[outv]",
-            "-map", "[outa]",
-            "-c:v", "libx264",
-            "-preset", "medium",
-            "-crf", "23",
-            "-c:a", "aac",
-            "-b:a", "128k",
             "-y",
-            output_path
+            "-f", "concat",
+            "-safe", "0",
+            "-i", concat_path.to_str().unwrap(),
+            "-c", "copy",
+            "-movflags", "+faststart",
+            &output_mp4,
         ])
         .status()
-        .context("Failed to run ffmpeg for video rendering")?;
-    
+        .context("Failed to run ffmpeg for concat")?;
+
     if !status.success() {
-        anyhow::bail!("FFmpeg video rendering failed");
+        anyhow::bail!("FFmpeg concat failed");
     }
-    
-    Ok(())
+
+    on_progress(1.0);
+    Ok(output_mp4)
 }
 
 pub fn get_file_size(path: &str) -> Result<u64> {

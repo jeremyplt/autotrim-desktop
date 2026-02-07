@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { CheckCircle2, FolderOpen, RotateCcw, Clock, Scissors } from 'lucide-react'
-import { invoke } from '@tauri-apps/api/tauri'
+import { invoke } from '@tauri-apps/api/core'
 import { Button } from './ui/button'
 import { Card, CardContent } from './ui/card'
 import { formatDuration } from '../lib/utils'

@@ -1,13 +1,14 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use std::path::{Path, PathBuf};
+use std::fmt::Write as FmtWrite;
+use std::path::Path;
 use std::sync::{Arc, Mutex};
 use once_cell::sync::Lazy;
 use uuid::Uuid;
 use anyhow::{Result, Context};
 
 use crate::ffmpeg::{self, Segment};
-use crate::transcription::{self, Phrase};
+use crate::transcription;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProcessingSettings {
@@ -52,7 +53,7 @@ pub fn start_processing(
     api_key: String,
 ) -> String {
     let job_id = Uuid::new_v4().to_string();
-    
+
     let job = ProcessingJob {
         id: job_id.clone(),
         progress: Progress {
@@ -63,20 +64,19 @@ pub fn start_processing(
         result: None,
         canceled: false,
     };
-    
+
     JOBS.lock().unwrap().insert(job_id.clone(), job);
-    
+
     let job_id_clone = job_id.clone();
-    tokio::spawn(async move {
+    tauri::async_runtime::spawn(async move {
         if let Err(e) = process_video(&job_id_clone, &video_path, &settings, &api_key).await {
             eprintln!("Processing error: {:?}", e);
-            // Update job with error state
             if let Some(job) = JOBS.lock().unwrap().get_mut(&job_id_clone) {
                 job.progress.stage = "error".to_string();
             }
         }
     });
-    
+
     job_id
 }
 
@@ -87,105 +87,213 @@ async fn process_video(
     api_key: &str,
 ) -> Result<()> {
     let start_time = std::time::Instant::now();
-    
+    let mut report = String::new();
+
+    writeln!(report, "=== AutoTrim Report ===").ok();
+    writeln!(report, "Video: {}", video_path).ok();
+    writeln!(report, "Mode: {}", settings.mode).ok();
+    writeln!(report, "Settings: silence_min={:.2}s, repetition_threshold={:.2}", settings.min_silence_duration, settings.repetition_threshold).ok();
+    writeln!(report, "Remove silences: {}, Remove repetitions: {}", settings.remove_silences, settings.remove_repetitions).ok();
+    writeln!(report).ok();
+
     // Get video info
     let video_info = ffmpeg::get_video_info(video_path)
         .context("Failed to get video info")?;
-    
+
     let total_duration = video_info.duration;
-    
+    writeln!(report, "Video duration: {:.1}s ({:.1} min)", total_duration, total_duration / 60.0).ok();
+    writeln!(report).ok();
+
     // Create temp directory for processing
     let temp_dir = std::env::temp_dir().join(format!("autotrim_{}", job_id));
     std::fs::create_dir_all(&temp_dir)?;
-    
-    let audio_path = temp_dir.join("audio.wav");
+
+    let audio_path = temp_dir.join("audio.mp3");
     let audio_path_str = audio_path.to_str().unwrap();
-    
+
     // Stage 1: Extract audio (0-20%)
     update_progress(job_id, "extracting", 5.0, None);
     ffmpeg::extract_audio(video_path, audio_path_str)?;
     update_progress(job_id, "extracting", 20.0, None);
-    
+
+    // Stage 2: Transcribe with Whisper (20-50%)
+    update_progress(job_id, "transcribing", 25.0, None);
+    let transcription = transcription::transcribe_audio(audio_path_str, api_key)
+        .await
+        .context("Failed to transcribe audio")?;
+    update_progress(job_id, "transcribing", 50.0, None);
+
+    writeln!(report, "--- Transcription ---").ok();
+    writeln!(report, "Total words: {}", transcription.words.len()).ok();
+    if let Some(first) = transcription.words.first() {
+        writeln!(report, "First word: \"{}\" at {:.2}s", first.word, first.start).ok();
+    }
+    if let Some(last) = transcription.words.last() {
+        writeln!(report, "Last word: \"{}\" at {:.2}s", last.word, last.end).ok();
+    }
+    writeln!(report).ok();
+
     let mut segments_to_remove: Vec<Segment> = Vec::new();
-    
-    // Stage 2: Transcribe (20-40%)
-    let mut phrases: Vec<Phrase> = Vec::new();
-    if settings.remove_repetitions {
-        update_progress(job_id, "transcribing", 25.0, None);
-        let transcription = transcription::transcribe_audio(audio_path_str, api_key)
-            .await
-            .context("Failed to transcribe audio")?;
-        update_progress(job_id, "transcribing", 40.0, None);
-        
-        phrases = transcription::segment_into_phrases(&transcription);
-    } else {
-        update_progress(job_id, "transcribing", 40.0, None);
-    }
-    
-    // Stage 3: Detect silences (40-60%)
-    if settings.remove_silences {
-        update_progress(job_id, "detecting_silences", 45.0, None);
-        let silences = ffmpeg::detect_silences(
-            audio_path_str,
-            settings.silence_threshold_db,
-            settings.min_silence_duration,
-        )?;
-        segments_to_remove.extend(silences);
-        update_progress(job_id, "detecting_silences", 60.0, None);
-    } else {
-        update_progress(job_id, "detecting_silences", 60.0, None);
-    }
-    
-    // Stage 4: Detect repetitions (60-70%)
-    let mut repetitions_removed = 0u32;
-    if settings.remove_repetitions && !phrases.is_empty() {
-        update_progress(job_id, "detecting_repetitions", 65.0, None);
-        let repetition_indices = transcription::detect_repetitions(
-            &phrases,
-            settings.repetition_threshold,
-        );
-        
-        repetitions_removed = repetition_indices.len() as u32;
-        
-        for idx in repetition_indices {
-            if let Some(phrase) = phrases.get(idx) {
-                segments_to_remove.push(Segment {
-                    start: phrase.start,
-                    end: phrase.end,
-                });
+
+    // Stage 3: Detect silences from word timestamps (50-60%)
+    let mut silences_removed = 0u32;
+    if settings.remove_silences && !transcription.words.is_empty() {
+        update_progress(job_id, "detecting_silences", 55.0, None);
+
+        let words = &transcription.words;
+        let padding = 0.15;
+
+        writeln!(report, "--- Silence Detection ---").ok();
+        writeln!(report, "Min silence duration: {:.2}s, Padding: {:.2}s", settings.min_silence_duration, padding).ok();
+        writeln!(report).ok();
+
+        // Silence before first word
+        if words[0].start > settings.min_silence_duration + padding {
+            let seg = Segment {
+                start: 0.0,
+                end: (words[0].start - padding).max(0.0),
+            };
+            writeln!(report, "SILENCE #{}: {:.2}s - {:.2}s (duration: {:.2}s) [before first word]",
+                segments_to_remove.len() + 1, seg.start, seg.end, seg.end - seg.start).ok();
+            segments_to_remove.push(seg);
+        }
+
+        // Silences between words
+        for i in 0..words.len() - 1 {
+            let gap_start = words[i].end;
+            let gap_end = words[i + 1].start;
+            let gap_duration = gap_end - gap_start;
+
+            if gap_duration >= settings.min_silence_duration {
+                let seg = Segment {
+                    start: gap_start + padding,
+                    end: (gap_end - padding).max(gap_start + padding),
+                };
+                writeln!(report, "SILENCE #{}: {:.2}s - {:.2}s (duration: {:.2}s) between \"{}\" and \"{}\"",
+                    segments_to_remove.len() + 1, seg.start, seg.end, seg.end - seg.start,
+                    words[i].word, words[i + 1].word).ok();
+                segments_to_remove.push(seg);
             }
         }
+
+        // Silence after last word
+        let last_word_end = words.last().unwrap().end;
+        if total_duration - last_word_end > settings.min_silence_duration + padding {
+            let seg = Segment {
+                start: last_word_end + padding,
+                end: total_duration,
+            };
+            writeln!(report, "SILENCE #{}: {:.2}s - {:.2}s (duration: {:.2}s) [after last word]",
+                segments_to_remove.len() + 1, seg.start, seg.end, seg.end - seg.start).ok();
+            segments_to_remove.push(seg);
+        }
+
+        silences_removed = segments_to_remove.len() as u32;
+        let total_silence_duration: f64 = segments_to_remove.iter().map(|s| s.end - s.start).sum();
+        writeln!(report).ok();
+        writeln!(report, "Total silences: {}, Total silence time: {:.1}s ({:.1} min)", silences_removed, total_silence_duration, total_silence_duration / 60.0).ok();
+        writeln!(report).ok();
+
+        update_progress(job_id, "detecting_silences", 60.0, None);
+    } else {
+        writeln!(report, "--- Silence Detection: SKIPPED ---").ok();
+        writeln!(report).ok();
+        update_progress(job_id, "detecting_silences", 60.0, None);
+    }
+
+    // Stage 4: Detect repetitions (60-70%)
+    let mut repetitions_removed = 0u32;
+    if settings.remove_repetitions {
+        let phrases = transcription::segment_into_phrases(&transcription);
+        writeln!(report, "--- Repetition Detection ---").ok();
+        writeln!(report, "Phrases segmented: {}", phrases.len()).ok();
+        writeln!(report, "Similarity threshold: {:.2}", settings.repetition_threshold).ok();
+        writeln!(report).ok();
+
+        if !phrases.is_empty() {
+            update_progress(job_id, "detecting_repetitions", 65.0, None);
+            let repetition_indices = transcription::detect_repetitions(
+                &phrases,
+                settings.repetition_threshold,
+            );
+
+            repetitions_removed = repetition_indices.len() as u32;
+
+            for &idx in &repetition_indices {
+                if let Some(phrase) = phrases.get(idx) {
+                    writeln!(report, "REPETITION #{} (phrase {}): \"{}\"\n    Time: {:.2}s - {:.2}s (duration: {:.2}s)",
+                        repetitions_removed, idx, phrase.text, phrase.start, phrase.end, phrase.end - phrase.start).ok();
+                }
+            }
+
+            for idx in repetition_indices {
+                if let Some(phrase) = phrases.get(idx) {
+                    segments_to_remove.push(Segment {
+                        start: phrase.start,
+                        end: phrase.end,
+                    });
+                }
+            }
+        }
+
+        writeln!(report).ok();
+        writeln!(report, "Total repetitions removed: {}", repetitions_removed).ok();
+        writeln!(report).ok();
+
         update_progress(job_id, "detecting_repetitions", 70.0, None);
     } else {
+        writeln!(report, "--- Repetition Detection: SKIPPED ---").ok();
+        writeln!(report).ok();
         update_progress(job_id, "detecting_repetitions", 70.0, None);
     }
-    
+
     // Merge overlapping segments and create keep segments
     let segments_to_keep = calculate_keep_segments(&segments_to_remove, total_duration);
-    
+
     // Calculate final duration
     let final_duration: f64 = segments_to_keep.iter()
         .map(|s| s.end - s.start)
         .sum();
-    
-    let silences_removed = (segments_to_remove.len() as u32).saturating_sub(repetitions_removed);
-    
+
+    writeln!(report, "--- Summary ---").ok();
+    writeln!(report, "Segments to remove: {} ({} silences + {} repetitions)", segments_to_remove.len(), silences_removed, repetitions_removed).ok();
+    writeln!(report, "Segments to keep (after merge): {}", segments_to_keep.len()).ok();
+    writeln!(report, "Original duration: {:.1}s ({:.1} min)", total_duration, total_duration / 60.0).ok();
+    writeln!(report, "Final duration: {:.1}s ({:.1} min)", final_duration, final_duration / 60.0).ok();
+    writeln!(report, "Time saved: {:.1}s ({:.1} min, {:.1}%)", total_duration - final_duration, (total_duration - final_duration) / 60.0, (1.0 - final_duration / total_duration) * 100.0).ok();
+    writeln!(report).ok();
+
+    // Write report file next to the input video
+    let report_path = Path::new(video_path)
+        .with_extension("autotrim_report.txt");
+    if let Err(e) = std::fs::write(&report_path, &report) {
+        eprintln!("Failed to write report: {}", e);
+    } else {
+        eprintln!("Report written to: {}", report_path.display());
+    }
+
     // Stage 5: Render video (70-100%)
-    update_progress(job_id, "rendering", 75.0, Some(30));
-    
-    let output_path = generate_output_path(video_path);
-    ffmpeg::render_video(
+    update_progress(job_id, "rendering", 70.0, None);
+
+    let output_path_hint = generate_output_path(video_path);
+    let output_path = ffmpeg::render_video(
         video_path,
         &segments_to_keep,
-        &output_path,
+        &output_path_hint,
         total_duration,
+        &temp_dir,
+        |progress| {
+            let overall = 70.0 + progress * 29.0;
+            update_progress(job_id, "rendering", overall, None);
+        },
     )?;
-    
-    update_progress(job_id, "rendering", 100.0, Some(0));
-    
+
     // Cleanup temp files
     let _ = std::fs::remove_dir_all(&temp_dir);
-    
+
+    let elapsed = start_time.elapsed();
+    eprintln!("Processing complete in {:.1}s. Report: {}", elapsed.as_secs_f64(), report_path.display());
+
     // Store result
     let result = ProcessingResult {
         output_path,
@@ -194,12 +302,12 @@ async fn process_video(
         silences_removed,
         repetitions_removed,
     };
-    
+
     if let Some(job) = JOBS.lock().unwrap().get_mut(job_id) {
         job.result = Some(result);
         job.progress.progress = 100.0;
     }
-    
+
     Ok(())
 }
 
