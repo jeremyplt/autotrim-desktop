@@ -14,6 +14,7 @@ pub struct VideoMetadata {
     pub duration: f64,
     pub width: u32,
     pub height: u32,
+    pub frame_rate: f64,
 }
 
 pub fn check_ffmpeg_installed() -> bool {
@@ -28,7 +29,7 @@ pub fn get_video_info(path: &str) -> Result<VideoMetadata> {
         .args([
             "-v", "error",
             "-select_streams", "v:0",
-            "-show_entries", "stream=width,height,duration",
+            "-show_entries", "stream=width,height,duration,r_frame_rate",
             "-of", "json",
             path
         ])
@@ -36,33 +37,48 @@ pub fn get_video_info(path: &str) -> Result<VideoMetadata> {
         .context("Failed to run ffprobe")?;
 
     let stdout = String::from_utf8_lossy(&output.stdout);
-    
-    // Parse JSON output
+
     let json: serde_json::Value = serde_json::from_str(&stdout)
         .context("Failed to parse ffprobe output")?;
-    
+
     let stream = json["streams"][0].as_object()
         .context("No video stream found")?;
-    
+
     let duration_str = stream.get("duration")
         .and_then(|v| v.as_str())
         .context("No duration found")?;
-    
+
     let duration = duration_str.parse::<f64>()
         .context("Failed to parse duration")?;
-    
+
     let width = stream.get("width")
         .and_then(|v| v.as_u64())
         .context("No width found")? as u32;
-    
+
     let height = stream.get("height")
         .and_then(|v| v.as_u64())
         .context("No height found")? as u32;
-    
+
+    // Parse frame rate (format: "60000/1001" or "30/1")
+    let frame_rate = stream.get("r_frame_rate")
+        .and_then(|v| v.as_str())
+        .and_then(|s| {
+            let parts: Vec<&str> = s.split('/').collect();
+            if parts.len() == 2 {
+                let num = parts[0].parse::<f64>().ok()?;
+                let den = parts[1].parse::<f64>().ok()?;
+                if den > 0.0 { Some(num / den) } else { None }
+            } else {
+                s.parse::<f64>().ok()
+            }
+        })
+        .unwrap_or(30.0);
+
     Ok(VideoMetadata {
         duration,
         width,
         height,
+        frame_rate,
     })
 }
 
@@ -138,87 +154,75 @@ pub fn render_video(
     _total_duration: f64,
     temp_dir: &std::path::Path,
     on_progress: impl Fn(f64),
+    frame_rate: f64,
 ) -> Result<String> {
     if segments_to_keep.is_empty() {
         anyhow::bail!("No segments to keep");
     }
 
-    let total_segments = segments_to_keep.len();
-    eprintln!("Rendering {} segments via stream copy + concat", total_segments);
+    eprintln!("Rendering {} segments via select/aselect single-pass (fps: {:.2})", segments_to_keep.len(), frame_rate);
 
     on_progress(0.0);
 
-    // Phase 1: Extract each segment as a separate .mp4 file using stream copy
-    let mut segment_files = Vec::new();
-    for (i, segment) in segments_to_keep.iter().enumerate() {
-        let seg_path = temp_dir.join(format!("seg_{:04}.mp4", i));
-        let seg_path_str = seg_path.to_str().unwrap().to_string();
-        let duration = segment.end - segment.start;
-
-        let status = Command::new("ffmpeg")
-            .args([
-                "-y",
-                "-ss", &format!("{:.3}", segment.start),
-                "-i", input_path,
-                "-t", &format!("{:.3}", duration),
-                "-c", "copy",
-                "-avoid_negative_ts", "make_zero",
-                "-map", "0:v:0",
-                "-map", "0:a:0",
-                &seg_path_str,
-            ])
-            .output()
-            .context(format!("Failed to extract segment {}", i))?;
-
-        if !status.status.success() {
-            let stderr = String::from_utf8_lossy(&status.stderr);
-            eprintln!("Warning: segment {} extraction failed: {}", i, stderr);
-            continue;
-        }
-
-        segment_files.push(seg_path_str);
-
-        let progress = (i + 1) as f64 / total_segments as f64 * 0.8;
-        on_progress(progress);
-    }
-
-    if segment_files.is_empty() {
-        anyhow::bail!("No segments were extracted successfully");
-    }
-
-    // Phase 2: Write concat list
-    let concat_path = temp_dir.join("concat.txt");
-    let concat_content: String = segment_files.iter()
-        .map(|p| format!("file '{}'", p))
+    // Build select expression: between(t,S0,E0)+between(t,S1,E1)+...
+    let select_expr: String = segments_to_keep.iter()
+        .map(|s| format!("between(t\\,{:.3}\\,{:.3})", s.start, s.end))
         .collect::<Vec<_>>()
-        .join("\n");
-    std::fs::write(&concat_path, &concat_content)
-        .context("Failed to write concat list")?;
+        .join("+");
 
-    on_progress(0.85);
+    let vf = format!(
+        "select='{}',setpts=N/{:.6}/TB",
+        select_expr, frame_rate
+    );
+    let af = format!(
+        "aselect='{}',asetpts=N/SR/TB",
+        select_expr
+    );
 
-    // Phase 3: Concatenate all segments with stream copy
+    // Write filters to file to avoid command line length limits
+    let vf_path = temp_dir.join("vf.txt");
+    let af_path = temp_dir.join("af.txt");
+    std::fs::write(&vf_path, &vf).context("Failed to write video filter")?;
+    std::fs::write(&af_path, &af).context("Failed to write audio filter")?;
+
+    on_progress(0.05);
+
     let output_mp4 = std::path::Path::new(output_path)
         .with_extension("mp4")
         .to_str()
         .unwrap()
         .to_string();
 
+    // Single-pass render with hardware encoding
+    // select/aselect picks only the frames/samples in our keep ranges
+    // setpts/asetpts re-timestamps them sequentially → perfect sync
+    let filter_complex = format!(
+        "[0:v]{}[outv];[0:a]{}[outa]",
+        vf, af
+    );
+    let filter_path = temp_dir.join("filter.txt");
+    std::fs::write(&filter_path, &filter_complex)
+        .context("Failed to write filter script")?;
+
     let status = Command::new("ffmpeg")
         .args([
-            "-y",
-            "-f", "concat",
-            "-safe", "0",
-            "-i", concat_path.to_str().unwrap(),
-            "-c", "copy",
+            "-i", input_path,
+            "-filter_complex_script", filter_path.to_str().unwrap(),
+            "-map", "[outv]",
+            "-map", "[outa]",
+            "-c:v", "h264_videotoolbox",
+            "-b:v", "20M",
+            "-c:a", "aac",
+            "-b:a", "192k",
             "-movflags", "+faststart",
+            "-y",
             &output_mp4,
         ])
         .status()
-        .context("Failed to run ffmpeg for concat")?;
+        .context("Failed to run ffmpeg for rendering")?;
 
     if !status.success() {
-        anyhow::bail!("FFmpeg concat failed");
+        anyhow::bail!("FFmpeg rendering failed");
     }
 
     on_progress(1.0);

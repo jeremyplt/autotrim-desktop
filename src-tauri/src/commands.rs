@@ -41,11 +41,15 @@ pub fn start_processing(
     path: String,
     settings: processor::ProcessingSettings,
 ) -> Result<String, String> {
-    // Get OpenAI API key from environment
-    let api_key = get_openai_api_key()
+    // Get OpenAI API key for Whisper transcription
+    let openai_api_key = get_api_key("OPENAI_API_KEY")
         .ok_or_else(|| "OpenAI API key not found. Please set OPENAI_API_KEY environment variable.".to_string())?;
 
-    let job_id = processor::start_processing(path, settings, api_key);
+    // Get Anthropic API key for retake detection (Claude Sonnet)
+    let anthropic_api_key = get_api_key("ANTHROPIC_API_KEY")
+        .ok_or_else(|| "Anthropic API key not found. Please set ANTHROPIC_API_KEY environment variable.".to_string())?;
+
+    let job_id = processor::start_processing(path, settings, openai_api_key, anthropic_api_key);
     Ok(job_id)
 }
 
@@ -100,16 +104,15 @@ pub fn open_output_folder(path: String) -> Result<(), String> {
     Ok(())
 }
 
-fn get_openai_api_key() -> Option<String> {
+fn get_api_key(key_name: &str) -> Option<String> {
     // Try to get from environment variable
-    if let Ok(key) = std::env::var("OPENAI_API_KEY") {
-        // Remove quotes if present
+    if let Ok(key) = std::env::var(key_name) {
         let key = key.trim().trim_matches('"').to_string();
         if !key.is_empty() {
             return Some(key);
         }
     }
-    
+
     // Try to read from .env file - check current dir, parent dir, and executable dir
     let candidate_dirs: Vec<std::path::PathBuf> = [
         std::env::current_dir().ok(),
@@ -120,12 +123,13 @@ fn get_openai_api_key() -> Option<String> {
     .flatten()
     .collect();
 
+    let prefix = format!("{}=", key_name);
     for dir in candidate_dirs {
         let env_path = dir.join(".env");
         if let Ok(contents) = std::fs::read_to_string(&env_path) {
             for line in contents.lines() {
-                if line.starts_with("OPENAI_API_KEY=") {
-                    let key = line.trim_start_matches("OPENAI_API_KEY=")
+                if line.starts_with(&prefix) {
+                    let key = line[prefix.len()..]
                         .trim()
                         .trim_matches('"')
                         .to_string();
