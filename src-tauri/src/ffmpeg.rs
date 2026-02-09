@@ -193,6 +193,11 @@ pub fn render_video(
         .unwrap()
         .to_string();
 
+    // Render to temp dir first, then move to final location.
+    // This avoids macOS file system interference (Spotlight, Quick Look, Finder)
+    // during FFmpeg's faststart second pass which needs to re-open the output file.
+    let temp_output = temp_dir.join("render_output.mp4");
+
     // Single-pass render with hardware encoding
     // select/aselect picks only the frames/samples in our keep ranges
     // setpts/asetpts re-timestamps them sequentially → perfect sync
@@ -216,7 +221,7 @@ pub fn render_video(
             "-b:a", "192k",
             "-movflags", "+faststart",
             "-y",
-            &output_mp4,
+            temp_output.to_str().unwrap(),
         ])
         .status()
         .context("Failed to run ffmpeg for rendering")?;
@@ -224,6 +229,15 @@ pub fn render_video(
     if !status.success() {
         anyhow::bail!("FFmpeg rendering failed");
     }
+
+    // Move from temp to final location (avoids partial files in user-visible folders)
+    std::fs::rename(&temp_output, &output_mp4)
+        .or_else(|_| {
+            // rename() fails across filesystems, fall back to copy + delete
+            std::fs::copy(&temp_output, &output_mp4)
+                .and_then(|_| std::fs::remove_file(&temp_output))
+        })
+        .context("Failed to move rendered video to output location")?;
 
     on_progress(1.0);
     Ok(output_mp4)

@@ -41,15 +41,17 @@ pub fn start_processing(
     path: String,
     settings: processor::ProcessingSettings,
 ) -> Result<String, String> {
-    // Get OpenAI API key for Whisper transcription
-    let openai_api_key = get_api_key("OPENAI_API_KEY")
-        .ok_or_else(|| "OpenAI API key not found. Please set OPENAI_API_KEY environment variable.".to_string())?;
+    // Resolve transcription API key based on selected provider
+    let provider = crate::transcription::TranscriptionProvider::from_str(&settings.transcription_provider);
+    let key_name = provider.api_key_name();
+    let transcription_api_key = get_api_key(key_name)
+        .ok_or_else(|| format!("{} not found. Please set {} environment variable.", key_name, key_name))?;
 
     // Get Anthropic API key for retake detection (Claude Sonnet)
     let anthropic_api_key = get_api_key("ANTHROPIC_API_KEY")
         .ok_or_else(|| "Anthropic API key not found. Please set ANTHROPIC_API_KEY environment variable.".to_string())?;
 
-    let job_id = processor::start_processing(path, settings, openai_api_key, anthropic_api_key);
+    let job_id = processor::start_processing(path, settings, transcription_api_key, anthropic_api_key);
     Ok(job_id)
 }
 

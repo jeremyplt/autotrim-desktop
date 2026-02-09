@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Check } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
@@ -10,6 +9,7 @@ export interface ProcessingSettings {
   silence_threshold_db: number
   min_silence_duration: number
   repetition_threshold: number
+  transcription_provider: 'whisper' | 'assemblyai'
 }
 
 interface SettingsPanelProps {
@@ -105,6 +105,51 @@ export function SettingsPanel({ settings, onSettingsChange, disabled }: Settings
                 )}
                 <div className="font-semibold mb-1">{mode.name}</div>
                 <div className="text-xs text-[#A1A1A6]">{mode.description}</div>
+              </button>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Transcription</CardTitle>
+          <CardDescription>Choose the speech-to-text engine</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 gap-3">
+            {([
+              {
+                id: 'whisper' as const,
+                name: 'Whisper (OpenAI)',
+                description: 'Standard, may miss rapid retakes',
+              },
+              {
+                id: 'assemblyai' as const,
+                name: 'AssemblyAI',
+                description: 'Better retake detection (recommended)',
+              },
+            ]).map((provider) => (
+              <button
+                key={provider.id}
+                onClick={() => onSettingsChange({ ...settings, transcription_provider: provider.id })}
+                disabled={disabled}
+                className={`
+                  relative p-4 rounded-lg border-2 transition-all text-left
+                  disabled:opacity-50 disabled:cursor-not-allowed
+                  ${settings.transcription_provider === provider.id
+                    ? 'border-accent bg-accent/5'
+                    : 'border-[#2A2A2D] bg-[#1C1C1E] hover:border-accent/50'
+                  }
+                `}
+              >
+                {settings.transcription_provider === provider.id && (
+                  <div className="absolute top-3 right-3 w-5 h-5 bg-accent rounded-full flex items-center justify-center">
+                    <Check className="w-3 h-3 text-white" />
+                  </div>
+                )}
+                <div className="font-semibold mb-1">{provider.name}</div>
+                <div className="text-xs text-[#A1A1A6]">{provider.description}</div>
               </button>
             ))}
           </div>

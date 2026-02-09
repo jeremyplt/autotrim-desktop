@@ -36,6 +36,7 @@ function App() {
     silence_threshold_db: -35,
     min_silence_duration: 0.75,
     repetition_threshold: 0.85,
+    transcription_provider: 'whisper',
   })
   const [jobId, setJobId] = useState<string | null>(null)
   const [result, setResult] = useState<ProcessingResult | null>(null)

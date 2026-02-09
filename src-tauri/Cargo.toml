@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "AutoTrim - Automatically remove silences and repetitions from videos"
 authors = ["AutoTrim Team"]
 edition = "2021"
+default-run = "autotrim-desktop"
 
 [lib]
 name = "autotrim_desktop_lib"

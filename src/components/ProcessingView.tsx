@@ -30,9 +30,7 @@ interface ProcessingResult {
 const stages = [
   { id: 'extracting', label: 'Extracting audio' },
   { id: 'transcribing', label: 'Transcribing with Whisper' },
-  { id: 'detecting_silences', label: 'Detecting silences & dead zones' },
-  { id: 'analyzing_retakes', label: 'Analyzing retakes (AI)' },
-  { id: 'verifying_cuts', label: 'Verifying cuts (AI)' },
+  { id: 'analyzing', label: 'Analyzing transcript (AI)' },
   { id: 'rendering', label: 'Rendering final video' },
 ]
 
