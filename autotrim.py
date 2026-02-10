@@ -43,13 +43,16 @@ def get_words(transcription):
     return transcription.get('words', [])
 
 def normalize_word(text):
-    """Normalize a word for matching: lowercase, strip all punctuation."""
+    """Normalize a word for matching: lowercase, strip all punctuation INCLUDING hyphens."""
+    # Remove ALL punctuation including hyphens to match "text-to-speech" with "text to speech"
     return re.sub(r'[^a-z0-9àâäéèêëïîôùûüÿçœæ]', '', text.lower())
 
 def align_words(raw_words, exp_words, min_block_size=2, max_internal_gap_ms=1500):
     """
     Use difflib.SequenceMatcher to find matching blocks between
     raw and expected word sequences, then split blocks at large internal gaps.
+    
+    v3: Reduced min_block_size to 1 for segments near larger blocks to capture small gaps.
     
     Returns list of segments with time ranges.
     """
@@ -62,8 +65,20 @@ def align_words(raw_words, exp_words, min_block_size=2, max_internal_gap_ms=1500
     log(f"  difflib found {len(blocks)} raw matching blocks")
     
     segments = []
-    for block in blocks:
-        if block.size < min_block_size:
+    for block_idx, block in enumerate(blocks):
+        # Allow size=1 if this block is close to a larger block (within 10s in raw timeline)
+        is_near_large_block = False
+        if block.size == 1 and block.a < len(raw_words):
+            for other_block in blocks:
+                if other_block.size >= 5 and other_block != block:
+                    time_dist = abs(raw_words[block.a]['start'] - raw_words[other_block.a]['start'])
+                    if time_dist < 15000:  # Within 15s
+                        is_near_large_block = True
+                        break
+        
+        effective_min_size = 1 if is_near_large_block else min_block_size
+        
+        if block.size < effective_min_size:
             continue
         
         # Split this block at large internal gaps in the raw audio
@@ -78,7 +93,7 @@ def align_words(raw_words, exp_words, min_block_size=2, max_internal_gap_ms=1500
             if gap > max_internal_gap_ms:
                 # End current sub-block here
                 sub_size = (raw_idx + 1) - sub_start
-                if sub_size >= min_block_size:
+                if sub_size >= effective_min_size:
                     segments.append(_make_segment(
                         raw_words, exp_words, raw_texts,
                         sub_start, sub_size,
@@ -90,7 +105,7 @@ def align_words(raw_words, exp_words, min_block_size=2, max_internal_gap_ms=1500
         
         # Final sub-block
         sub_size = (block.a + block.size) - sub_start
-        if sub_size >= min_block_size:
+        if sub_size >= effective_min_size:
             segments.append(_make_segment(
                 raw_words, exp_words, raw_texts,
                 sub_start, sub_size,
@@ -116,6 +131,111 @@ def _make_segment(raw_words, exp_words, raw_texts, raw_start_idx, size, exp_star
         'word_count': size,
         'preview': ' '.join(raw_texts[raw_start_idx:raw_start_idx + min(6, size)]),
     }
+
+def fill_gaps_with_fuzzy_matching(segments, raw_words, exp_words, max_gap_words=15, max_gap_time_ms=5000):
+    """
+    After initial alignment, look for small gaps in the expected timeline and try to find
+    matching content in the raw timeline using fuzzy substring matching.
+    
+    This helps recover content that difflib missed due to transcription differences
+    (e.g., "text-to-speech" vs "text to speech" or "youtubeclotestbot" vs "YouTube CLO Test Bot").
+    """
+    if len(segments) < 2:
+        return segments
+    
+    segments = sorted(segments, key=lambda s: s['exp_start_ms'])
+    new_segments = []
+    filled_gaps = 0
+    
+    for i in range(len(segments) - 1):
+        current = segments[i]
+        next_seg = segments[i + 1]
+        new_segments.append(current)
+        
+        # Check for gap in expected timeline
+        exp_gap_start_idx = current['exp_end_idx'] + 1
+        exp_gap_end_idx = next_seg['exp_start_idx'] - 1
+        
+        if exp_gap_end_idx < exp_gap_start_idx:
+            continue  # No gap
+        
+        gap_word_count = exp_gap_end_idx - exp_gap_start_idx + 1
+        exp_gap_time = next_seg['exp_start_ms'] - current['exp_end_ms']
+        
+        # Only try to fill small gaps
+        if gap_word_count > max_gap_words or exp_gap_time > max_gap_time_ms:
+            continue
+        
+        # Get the expected text in the gap
+        exp_gap_text = ' '.join([exp_words[j]['text'] for j in range(exp_gap_start_idx, exp_gap_end_idx + 1)])
+        exp_gap_normalized = ''.join([normalize_word(exp_words[j]['text']) for j in range(exp_gap_start_idx, exp_gap_end_idx + 1)])
+        
+        # Look for this content in the raw timeline between current and next segment
+        raw_search_start_idx = current['raw_end_idx'] + 1
+        raw_search_end_idx = next_seg['raw_start_idx'] - 1
+        
+        if raw_search_end_idx < raw_search_start_idx:
+            continue
+        
+        # Try sliding window matching with fuzzy comparison
+        best_match_idx = None
+        best_match_score = 0
+        
+        for window_size in [gap_word_count, gap_word_count - 1, gap_word_count + 1]:
+            if window_size < 1:
+                continue
+            for start_idx in range(raw_search_start_idx, min(raw_search_end_idx - window_size + 2, raw_search_start_idx + 50)):
+                end_idx = start_idx + window_size - 1
+                if end_idx > raw_search_end_idx:
+                    break
+                
+                raw_window_normalized = ''.join([normalize_word(raw_words[j]['text']) for j in range(start_idx, end_idx + 1)])
+                
+                # Compare normalized strings
+                if raw_window_normalized == exp_gap_normalized:
+                    score = 1.0  # Perfect match
+                else:
+                    # Fuzzy match: check substring containment
+                    if exp_gap_normalized in raw_window_normalized or raw_window_normalized in exp_gap_normalized:
+                        score = min(len(exp_gap_normalized), len(raw_window_normalized)) / max(len(exp_gap_normalized), len(raw_window_normalized))
+                    else:
+                        # Character-level similarity
+                        matches = sum(1 for a, b in zip(exp_gap_normalized, raw_window_normalized) if a == b)
+                        score = matches / max(len(exp_gap_normalized), len(raw_window_normalized))
+                
+                if score > best_match_score and score >= 0.6:  # Threshold for acceptance
+                    best_match_score = score
+                    best_match_idx = start_idx
+                    best_match_end_idx = end_idx
+        
+        # If found a good match, add it as a segment
+        if best_match_idx is not None:
+            new_seg = {
+                'raw_start_ms': raw_words[best_match_idx]['start'],
+                'raw_end_ms': raw_words[best_match_end_idx]['end'],
+                'raw_start_idx': best_match_idx,
+                'raw_end_idx': best_match_end_idx,
+                'exp_start_ms': exp_words[exp_gap_start_idx]['start'],
+                'exp_end_ms': exp_words[exp_gap_end_idx]['end'],
+                'exp_start_idx': exp_gap_start_idx,
+                'exp_end_idx': exp_gap_end_idx,
+                'word_count': gap_word_count,
+                'preview': f"[FILLED GAP {best_match_score:.0%}] {exp_gap_text[:50]}",
+            }
+            new_segments.append(new_seg)
+            filled_gaps += 1
+            log(f"  Filled gap: exp {exp_gap_start_idx}-{exp_gap_end_idx} ({gap_word_count}w) matched to raw {best_match_idx}-{best_match_end_idx} (score={best_match_score:.0%}): {exp_gap_text[:60]}")
+    
+    # Don't forget the last segment
+    if segments:
+        new_segments.append(segments[-1])
+    
+    if filled_gaps > 0:
+        log(f"  Filled {filled_gaps} gaps with fuzzy matching")
+        # Re-sort by expected timeline
+        new_segments = sorted(new_segments, key=lambda s: s['exp_start_ms'])
+    
+    return new_segments
 
 def detect_and_remove_retakes(segments, raw_words, base_threshold=0.55):
     """
@@ -273,10 +393,11 @@ def remove_overlaps(segments):
     
     return result
 
-def remove_micro_segments(segments, min_duration_ms=2000, min_words=8):
+def remove_micro_segments(segments, min_duration_ms=1500, min_words=5):
     """
     Remove very short segments that are likely fragments or noise.
     Only remove if the segment is isolated (not close to others).
+    v2: More lenient - keep filled gaps and segments near larger ones.
     """
     if not segments:
         return []
@@ -287,6 +408,11 @@ def remove_micro_segments(segments, min_duration_ms=2000, min_words=8):
     for i, seg in enumerate(segments):
         duration = seg['raw_end_ms'] - seg['raw_start_ms']
         
+        # Always keep filled gaps (they're legit content we recovered)
+        if 'FILLED GAP' in seg.get('preview', ''):
+            result.append(seg)
+            continue
+        
         # Keep if duration and word count are above thresholds
         if duration >= min_duration_ms or seg['word_count'] >= min_words:
             result.append(seg)
@@ -296,8 +422,8 @@ def remove_micro_segments(segments, min_duration_ms=2000, min_words=8):
         prev_gap = (seg['raw_start_ms'] - segments[i-1]['raw_end_ms']) if i > 0 else 999999
         next_gap = (segments[i+1]['raw_start_ms'] - seg['raw_end_ms']) if i < len(segments)-1 else 999999
         
-        # Keep if close to neighbors (< 2s gap)
-        if prev_gap < 2000 or next_gap < 2000:
+        # Keep if close to neighbors (< 5s gap) - even more lenient now
+        if prev_gap < 5000 or next_gap < 5000:
             result.append(seg)
         else:
             log(f"  Removing micro-segment: {duration/1000:.1f}s, {seg['word_count']}w")
@@ -449,10 +575,10 @@ def main():
     parser.add_argument('--output', default=str(TEST_DIR / 'output.mp4'), help='Output file')
     parser.add_argument('--raw-transcription', default=str(TEST_DIR / 'raw_transcription.json'))
     parser.add_argument('--expected-transcription', default=str(TEST_DIR / 'expected_transcription.json'))
-    parser.add_argument('--merge-gap', type=int, default=500, help='Max gap in ms to merge segments')
-    parser.add_argument('--padding', type=int, default=100, help='Padding in ms around segments')
-    parser.add_argument('--min-words', type=int, default=3, help='Minimum words for a matching block')
-    parser.add_argument('--max-internal-gap', type=int, default=1200, help='Max gap within a block before splitting (ms)')
+    parser.add_argument('--merge-gap', type=int, default=2500, help='Max gap in ms to merge segments')
+    parser.add_argument('--padding', type=int, default=150, help='Padding in ms around segments')
+    parser.add_argument('--min-words', type=int, default=2, help='Minimum words for a matching block')
+    parser.add_argument('--max-internal-gap', type=int, default=1500, help='Max gap within a block before splitting (ms)')
     parser.add_argument('--dry-run', action='store_true', help='Only compute segments, skip rendering')
     args = parser.parse_args()
     
@@ -474,6 +600,11 @@ def main():
         max_internal_gap_ms=args.max_internal_gap
     )
     log(f"Found {len(segments)} segments after gap splitting")
+    
+    # Step 1.5: Fill gaps with fuzzy matching
+    log(f"Filling gaps with fuzzy matching...")
+    segments = fill_gaps_with_fuzzy_matching(segments, raw_words, exp_words, max_gap_words=15, max_gap_time_ms=8000)
+    log(f"After gap filling: {len(segments)} segments")
     
     # Step 2: Detect and remove retakes (BEFORE merging)
     log(f"Detecting retakes...")
