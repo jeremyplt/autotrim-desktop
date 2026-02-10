@@ -1,0 +1,162 @@
+{
+  "summary": {
+    "expected_words": 6568,
+    "output_words": 6478,
+    "matching_words": 6274,
+    "match_pct_expected": 95.5237515225335,
+    "match_pct_output": 96.85087990120408,
+    "missing_word_count": 128,
+    "extra_word_count": 36,
+    "asr_noise_count": 97,
+    "content_diff_count": 31,
+    "content_error_pct": 3.1973203410475026
+  },
+  "significant_missing": [
+    {
+      "text": "YouTube CLO Test Bot.",
+      "word_count": 4,
+      "exp_start": 811799,
+      "exp_end": 814549,
+      "exp_idx": [
+        2914,
+        2918
+      ]
+    },
+    {
+      "text": "Et une fois que",
+      "word_count": 4,
+      "exp_start": 1053378,
+      "exp_end": 1053998,
+      "exp_idx": [
+        3744,
+        3748
+      ]
+    },
+    {
+      "text": "qui sont très intéressantes,",
+      "word_count": 4,
+      "exp_start": 1127455,
+      "exp_end": 1128295,
+      "exp_idx": [
+        4001,
+        4005
+      ]
+    },
+    {
+      "text": "donc text to speech,",
+      "word_count": 4,
+      "exp_start": 1286195,
+      "exp_end": 1286855,
+      "exp_idx": [
+        4598,
+        4602
+      ]
+    },
+    {
+      "text": "Ça, c'est le speech to text.",
+      "word_count": 6,
+      "exp_start": 1293293,
+      "exp_end": 1294373,
+      "exp_idx": [
+        4620,
+        4626
+      ]
+    },
+    {
+      "text": "le text to speech,",
+      "word_count": 4,
+      "exp_start": 1297353,
+      "exp_end": 1298213,
+      "exp_idx": [
+        4639,
+        4643
+      ]
+    },
+    {
+      "text": "donc une story card.",
+      "word_count": 4,
+      "exp_start": 1462412,
+      "exp_end": 1463332,
+      "exp_idx": [
+        5217,
+        5221
+      ]
+    },
+    {
+      "text": "qui est le titre",
+      "word_count": 4,
+      "exp_start": 1586672,
+      "exp_end": 1586672,
+      "exp_idx": [
+        5684,
+        5688
+      ]
+    },
+    {
+      "text": "sur la, le bouton",
+      "word_count": 4,
+      "exp_start": 1747442,
+      "exp_end": 1747442,
+      "exp_idx": [
+        6332,
+        6336
+      ]
+    },
+    {
+      "text": "d'excuses. Il y a pas",
+      "word_count": 5,
+      "exp_start": 1783807,
+      "exp_end": 1784587,
+      "exp_idx": [
+        6479,
+        6484
+      ]
+    }
+  ],
+  "significant_extra": [
+    {
+      "text": "Donc là quand je",
+      "word_count": 4,
+      "out_start": 1643962,
+      "out_end": 1644562,
+      "out_idx": [
+        5753,
+        5757
+      ]
+    }
+  ],
+  "significant_replacements": [
+    {
+      "exp_text": "dis c'est",
+      "out_text": "me suis dit que ce n'est",
+      "exp_start": 208440,
+      "exp_end": 208700,
+      "out_start": 208755,
+      "out_end": 209035
+    },
+    {
+      "exp_text": "OpenClo.",
+      "out_text": "OpenCode. Ici tu vas devoir mettre ton propre...",
+      "exp_start": 819449,
+      "exp_end": 819889,
+      "out_start": 829315,
+      "out_end": 832055
+    },
+    {
+      "exp_text": "les cron jobs, c'est-à-dire les",
+      "out_text": "l'écrire,",
+      "exp_start": 1128935,
+      "exp_end": 1130575,
+      "out_start": 1150640,
+      "out_end": 1150940
+    },
+    {
+      "exp_text": "ChatGPT ou sur Cloud.",
+      "out_text": "chat.gpt.",
+      "exp_start": 1187413,
+      "exp_end": 1189013,
+      "out_start": 1208775,
+      "out_end": 1209415
+    }
+  ]
+}
