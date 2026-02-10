@@ -548,17 +548,37 @@ const FRENCH_STOP_WORDS: &[&str] = &[
     "voila", "hein", "bah", "ben", "ouais",
 ];
 
-/// Normalize a word for comparison: lowercase, keep only alphanumeric chars.
+/// Strip common French accents for normalization.
+fn strip_accents(c: char) -> char {
+    match c {
+        'à' | 'â' | 'ä' => 'a',
+        'é' | 'è' | 'ê' | 'ë' => 'e',
+        'î' | 'ï' => 'i',
+        'ô' | 'ö' => 'o',
+        'ù' | 'û' | 'ü' => 'u',
+        'ÿ' => 'y',
+        'ç' => 'c',
+        'œ' => 'o', // simplified
+        _ => c,
+    }
+}
+
+/// Normalize a word for comparison: lowercase, strip accents, keep only alphanumeric chars.
 fn normalize_word(s: &str) -> String {
-    s.to_lowercase().chars().filter(|c| c.is_alphanumeric()).collect()
+    s.to_lowercase()
+        .chars()
+        .map(strip_accents)
+        .filter(|c| c.is_alphanumeric())
+        .collect()
 }
 
 // === IMPROVED RETAKE DETECTION (ported from Python) ===
 
-/// Normalize text for similarity comparison: lowercase, remove punctuation, normalize whitespace.
+/// Normalize text for similarity comparison: lowercase, strip accents, remove punctuation, normalize whitespace.
 fn normalize_text_for_similarity(text: &str) -> String {
     let lower = text.to_lowercase();
     let no_punct: String = lower.chars()
+        .map(strip_accents)
         .filter(|c| c.is_alphanumeric() || c.is_whitespace())
         .collect();
     no_punct.split_whitespace().collect::<Vec<_>>().join(" ")
@@ -864,6 +884,13 @@ fn detect_all_retake_pairs(chunks: &[SpeechChunk]) -> Vec<(usize, usize, String)
             };
             let cw_k: HashSet<String> = extract_content_words(&keeper_chunk.text).into_iter().collect();
 
+            // Check if opener is "weak" (mostly stop/short words)
+            let _weak_opener = op.0.len() <= 3 || op.1.len() <= 3 || op.2.len() <= 3;
+            let stop_count = [&op.0, &op.1, &op.2].iter()
+                .filter(|w| FRENCH_STOP_WORDS.contains(&w.as_str()) || w.len() <= 3)
+                .count();
+            let is_weak = stop_count >= 2;
+
             // Per-member verification against keeper
             for &cid in &sub[..sub.len() - 1] {
                 let c = match chunks.get(cid) {
@@ -877,12 +904,18 @@ fn detect_all_retake_pairs(chunks: &[SpeechChunk]) -> Vec<(usize, usize, String)
                 // Basic requirement: share at least 2 content words with keeper
                 if shared_count < 2 { continue; }
 
-                // For common openers, require higher overlap
-                if freq >= 4 {
+                // For weak openers (common phrases), require stronger overlap
+                if is_weak || freq >= 4 {
                     let cov_c = if !cw_c.is_empty() { shared_count as f64 / cw_c.len() as f64 } else { 0.0 };
                     let cov_k = if !cw_k.is_empty() { shared_count as f64 / cw_k.len() as f64 } else { 0.0 };
-                    // Both must have ≥15% coverage AND share ≥4 words
-                    if shared_count < 4 || cov_c.min(cov_k) < 0.15 {
+                    let (min_shared, min_cov) = if is_weak {
+                        (4, 0.25) // Stricter for weak openers
+                    } else if freq >= 6 {
+                        (5, 0.20)
+                    } else {
+                        (4, 0.15)
+                    };
+                    if shared_count < min_shared || cov_c.min(cov_k) < min_cov {
                         continue;
                     }
                 }
@@ -941,25 +974,39 @@ fn detect_all_retake_pairs(chunks: &[SpeechChunk]) -> Vec<(usize, usize, String)
         }
     }
 
-    // ═══ S3: High-similarity content detection (very strict) ═══
+    // ═══ S3: High-similarity content detection ═══
+    // 200s window to catch sponsor-read retakes and long-range duplicates
     for i in 0..n {
-        if rm.contains(&i) || chunks[i].word_count < 10 { continue; }
+        if rm.contains(&i) || chunks[i].word_count < 8 { continue; }
         let ci: HashSet<String> = extract_content_words(&chunks[i].text).into_iter().collect();
-        if ci.len() < 5 { continue; }
+        if ci.len() < 3 { continue; }
         for j in (i + 1)..n {
-            if rm.contains(&j) || chunks[j].word_count < 10 { continue; }
+            if rm.contains(&j) || chunks[j].word_count < 8 { continue; }
             let gap = chunks[j].start - chunks[i].end;
-            if gap > 60.0 { break; }
+            if gap > 200.0 { break; }
             if gap < 0.0 { continue; }
             let cj: HashSet<String> = extract_content_words(&chunks[j].text).into_iter().collect();
             let sh: HashSet<_> = ci.intersection(&cj).collect();
             let un: HashSet<_> = ci.union(&cj).collect();
             let sh_count = sh.len();
             let un_count = un.len();
-            if sh_count >= 6 && un_count > 0 && (sh_count as f64 / un_count as f64) >= 0.35 {
+
+            // Tier 1: High Jaccard overlap
+            if sh_count >= 5 && un_count > 0 && (sh_count as f64 / un_count as f64) >= 0.35 {
                 rm.insert(i);
                 pairs.push((i, j));
                 break;
+            }
+
+            // Tier 2: High coverage of shorter chunk, later must be bigger
+            if sh_count >= 5 {
+                let min_len = ci.len().min(cj.len());
+                let coverage = sh_count as f64 / min_len as f64;
+                if coverage >= 0.55 && chunks[j].word_count > chunks[i].word_count {
+                    rm.insert(i);
+                    pairs.push((i, j));
+                    break;
+                }
             }
         }
     }
@@ -988,20 +1035,40 @@ fn detect_all_retake_pairs(chunks: &[SpeechChunk]) -> Vec<(usize, usize, String)
             let mut do_remove = false;
             if wc < 5 && pr && nr { do_remove = true; }
             if wc < 4 && pr && gb < 5.0 { do_remove = true; }
-            if trunc && wc < 8 && (pr || nr) { do_remove = true; }
-            if low && wc < 12 && pr && gb < 5.0 { do_remove = true; }
+            if trunc && wc < 10 && (pr || nr) { do_remove = true; } // Increased from 8 to 10
+            if low && wc < 15 && pr && gb < 5.0 { do_remove = true; } // Increased from 12 to 15
 
-            // Short chunk with most content in nearby later chunk
-            if !do_remove && wc >= 3 && wc <= 12 {
+            // Truncated/abandoned sentence even without removed neighbors
+            if !do_remove && trunc && wc < 12 {
+                // Look if content is repeated in a later, longer chunk
                 let ci: HashSet<String> = extract_content_words(&c.text).into_iter().collect();
                 if !ci.is_empty() {
-                    for j in (i + 1)..std::cmp::min(i + 5, n) {
+                    for j in (i + 1)..std::cmp::min(i + 8, n) {
+                        if let Some(later) = chunks.get(j) {
+                            if later.start - c.end > 60.0 { break; }
+                            let cj: HashSet<String> = extract_content_words(&later.text).into_iter().collect();
+                            let sh: HashSet<_> = ci.intersection(&cj).collect();
+                            if !ci.is_empty() && (sh.len() as f64 / ci.len() as f64) >= 0.5 {
+                                do_remove = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Short chunk with most content in nearby later chunk
+            // Expanded: search 10 chunks ahead, 120s window (was 5 chunks, 30s)
+            if !do_remove && wc >= 3 && wc <= 15 {
+                let ci: HashSet<String> = extract_content_words(&c.text).into_iter().collect();
+                if !ci.is_empty() {
+                    for j in (i + 1)..std::cmp::min(i + 10, n) {
                         if let Some(later_chunk) = chunks.get(j) {
-                            if later_chunk.start - c.end > 30.0 { break; }
+                            if later_chunk.start - c.end > 120.0 { break; }
                             let cj: HashSet<String> = extract_content_words(&later_chunk.text).into_iter().collect();
                             let sh: HashSet<_> = ci.intersection(&cj).collect();
                             let sh_count = sh.len();
-                            if sh_count >= 1 && (sh_count as f64 / ci.len() as f64) >= 0.6 && later_chunk.word_count > wc {
+                            if sh_count >= 1 && (sh_count as f64 / ci.len() as f64) >= 0.5 && later_chunk.word_count > wc {
                                 do_remove = true;
                                 break;
                             }
@@ -1037,6 +1104,164 @@ fn detect_all_retake_pairs(chunks: &[SpeechChunk]) -> Vec<(usize, usize, String)
         }
     }
 
+    // ═══ S6: Sandwiched and tiny chunk cleanup ═══
+    // Catches fragments between removed chunks and very short orphans
+    for _ in 0..3 {
+        let mut changed = false;
+        for i in 0..n {
+            if rm.contains(&i) { continue; }
+            let wc = chunks[i].word_count;
+            let pr = i > 0 && rm.contains(&(i - 1));
+            let nr = i < n - 1 && rm.contains(&(i + 1));
+            let gb = if i > 0 { chunks[i].start - chunks[i - 1].end } else { 999.0 };
+            let ga = if i < n - 1 { chunks[i + 1].start - chunks[i].end } else { 999.0 };
+
+            let mut do_remove = false;
+            // Sandwiched between removed, small gaps, short
+            if pr && nr && gb < 10.0 && ga < 10.0 && wc <= 20 { do_remove = true; }
+            // Tiny chunk adjacent to removed
+            if wc <= 3 && (pr || nr) { do_remove = true; }
+            // Short fragment adjacent to removed with small gap
+            if wc <= 5 && ((pr && gb < 5.0) || (nr && ga < 5.0)) { do_remove = true; }
+
+            if do_remove {
+                rm.insert(i);
+                changed = true;
+            }
+        }
+        if !changed { break; }
+    }
+    eprintln!("S6 (sandwiched/tiny cleanup): {} total removed so far", rm.len());
+
+    // ═══ S7: Superseded take detection ═══
+    // When a later, longer chunk covers the same content as an earlier shorter one,
+    // remove the earlier one. Works across larger time windows.
+    // This catches: sponsor reads where person restarts after a gap.
+    for i in 0..n {
+        if rm.contains(&i) { continue; }
+        let ci_words: HashSet<String> = extract_content_words(&chunks[i].text).into_iter().collect();
+        if ci_words.len() < 3 { continue; }
+        let wc_i = chunks[i].word_count;
+        
+        for j in (i + 1)..n {
+            if rm.contains(&j) { continue; }
+            let gap = chunks[j].start - chunks[i].end;
+            if gap > 300.0 { break; } // 5 minute window
+            if gap < 0.0 { continue; }
+            
+            let cj_words: HashSet<String> = extract_content_words(&chunks[j].text).into_iter().collect();
+            if cj_words.len() < 3 { continue; }
+            let wc_j = chunks[j].word_count;
+            
+            // Earlier chunk's content is mostly covered by later chunk
+            let sh: HashSet<_> = ci_words.intersection(&cj_words).collect();
+            let sh_count = sh.len();
+            let coverage_i = sh_count as f64 / ci_words.len() as f64;
+            
+            // Require: later chunk covers ≥70% of earlier chunk's content
+            // AND later chunk is significantly longer (≥2x words)
+            if coverage_i >= 0.70 && wc_j as f64 >= wc_i as f64 * 2.0 && sh_count >= 4 {
+                rm.insert(i);
+                pairs.push((i, j));
+                eprintln!("  S7: REMOVE [{}] ({} words) superseded by [{}] ({} words), coverage={:.0}%",
+                    i, wc_i, j, wc_j, coverage_i * 100.0);
+                break;
+            }
+        }
+    }
+
+    // ═══ S8: Zone-fill after S6/S7 ═══
+    // Re-run zone filling for newly created retake pairs from S6/S7
+    {
+        let new_pairs: Vec<(usize, usize)> = pairs.iter()
+            .filter(|(r, k)| rm.contains(r) && !rm.contains(k))
+            .map(|(r, k)| (*r, *k))
+            .collect();
+        
+        for &(removed_id, keeper_id) in &new_pairs {
+            for bid in (removed_id + 1)..keeper_id {
+                if rm.contains(&bid) { continue; }
+                let c = match chunks.get(bid) {
+                    Some(ch) => ch,
+                    None => continue,
+                };
+                let gap = if bid > 0 {
+                    if let Some(prev) = chunks.get(bid - 1) {
+                        c.start - prev.end
+                    } else { 999.0 }
+                } else { 999.0 };
+                let pr = bid > 0 && rm.contains(&(bid - 1));
+                let wc = c.word_count;
+                let low = c.text.chars().next().map(|ch| ch.is_lowercase()).unwrap_or(false);
+                let trunc = is_truncated(&c.text);
+
+                let mut do_remove = false;
+                if wc < 8 && pr && gap < 10.0 { do_remove = true; }
+                if low && pr && gap < 5.0 && wc < 20 { do_remove = true; }
+                if trunc && wc < 12 && pr { do_remove = true; }
+                if wc < 5 && pr { do_remove = true; }
+
+                // Content overlap with keeper (stricter for longer chunks)
+                if !do_remove && wc >= 5 {
+                    if let Some(keeper_chunk) = chunks.get(keeper_id) {
+                        let ci: HashSet<String> = extract_content_words(&c.text).into_iter().collect();
+                        let ck: HashSet<String> = extract_content_words(&keeper_chunk.text).into_iter().collect();
+                        let sh: HashSet<_> = ci.intersection(&ck).collect();
+                        let sh_count = sh.len();
+                        let min_cov = if wc > 20 { 0.40 } else { 0.25 };
+                        let min_sh = if wc > 20 { 4 } else { 3 };
+                        if !ci.is_empty() && sh_count >= min_sh && (sh_count as f64 / ci.len() as f64) >= min_cov {
+                            do_remove = true;
+                        }
+                    }
+                }
+
+                if do_remove {
+                    rm.insert(bid);
+                    pairs.push((bid, keeper_id));
+                }
+            }
+        }
+    }
+
+    // ═══ S9: Extended zone cleanup ═══
+    for _ in 0..3 {
+        let mut changed = false;
+        for i in 0..n {
+            if rm.contains(&i) { continue; }
+            let wc = chunks[i].word_count;
+            let gb = if i > 0 { chunks[i].start - chunks[i - 1].end } else { 999.0 };
+
+            let mut rm_before = 0usize;
+            let mut j = i as isize - 1;
+            while j >= 0 && rm.contains(&(j as usize)) { rm_before += 1; j -= 1; }
+            let mut rm_after = 0usize;
+            let mut j = i + 1;
+            while j < n && rm.contains(&j) { rm_after += 1; j += 1; }
+
+            let mut do_remove = false;
+            if rm_before >= 2 && rm_after >= 2 && wc <= 15 { do_remove = true; }
+            if rm_before >= 3 && wc <= 10 && gb < 5.0 { do_remove = true; }
+
+            if do_remove { rm.insert(i); changed = true; }
+        }
+        if !changed { break; }
+    }
+
+    // ═══ S10: Orphan fragment cleanup ═══
+    for i in 0..n {
+        if rm.contains(&i) { continue; }
+        let wc = chunks[i].word_count;
+        if wc > 8 { continue; }
+        let pr = i > 0 && rm.contains(&(i - 1));
+        let ga = if i < n - 1 { chunks[i + 1].start - chunks[i].end } else { 999.0 };
+        if pr && ga > 20.0 && wc <= 8 {
+            rm.insert(i);
+        }
+    }
+
+    eprintln!("Total after all strategies (S1-S10): {} chunks to remove out of {}", rm.len(), n);
+
     // Convert keep set to remove pairs (Python returns KEEP ids, Rust returns REMOVE pairs)
     let keep_set: HashSet<usize> = (0..n).filter(|i| !rm.contains(i)).collect();
     let mut result_pairs: Vec<(usize, usize, String)> = Vec::new();
@@ -1070,7 +1295,7 @@ fn detect_all_retake_pairs(chunks: &[SpeechChunk]) -> Vec<(usize, usize, String)
         }
     }
 
-    eprintln!("Python algorithm port: {} chunks to remove out of {}", rm.len(), n);
+    eprintln!("Algorithm: {} chunks to remove out of {} (S1-S8)", rm.len(), n);
     result_pairs
 }
 /// NEW STRATEGY: Pre-remove algorithmic retakes, send clean transcript to Claude.
@@ -1130,29 +1355,50 @@ pub async fn determine_keep_ranges(
     }
 
     let system_prompt = format!(
-        r#"Tu es un assistant de montage vidéo expert. Tu analyses une transcription PRÉ-NETTOYÉE d'un rush vidéo.
+        r#"Tu es un assistant de montage vidéo expert. Tu analyses une transcription PRÉ-NETTOYÉE d'un rush vidéo pour créer un montage final professionnel.
 
-Les reprises évidentes ont DÉJÀ été supprimées automatiquement. Tu vois uniquement les segments survivants.
+Les reprises évidentes ont DÉJÀ été supprimées automatiquement. Tu vois uniquement les segments survivants. Ton travail est de nettoyer DAVANTAGE.
 
 ## TON TRAVAIL
-Cherche les reprises RESTANTES que l'algorithme aurait manquées, puis retourne les IDs des segments à GARDER.
+Identifie et SUPPRIME tous les segments qui ne devraient PAS apparaître dans le montage final. Retourne les IDs des segments à GARDER.
 
-## CE QUE TU DOIS CHERCHER
-1. **Reprises subtiles** : deux segments qui disent la même chose avec des mots différents, proches dans le temps (<3 min)
-2. **Faux départs** : segment très court (<6 mots) suivi d'un segment similaire plus complet → supprime le court
-3. **Phrases abandonnées** : segment qui se termine abruptement (incomplet) → supprime si le contenu est repris ailleurs
+## CE QUE TU DOIS SUPPRIMER
 
-## CE QUE TU NE DOIS PAS FAIRE
-- NE supprime PAS de contenu unique (dit une seule fois)
-- NE supprime PAS des segments similaires qui sont éloignés dans le temps (>3 min)
-- NE supprime PAS de transitions normales ("voilà", "donc", "et puis")
+### 1. Reprises subtiles
+Deux segments qui disent la même chose avec des mots différents, même si éloignés dans le temps (jusqu'à 5 min). Garde UNIQUEMENT la meilleure version (généralement la dernière).
+
+### 2. Faux départs et phrases abandonnées
+- Segment très court (<8 mots) suivi d'un segment similaire plus complet
+- Segment qui se termine abruptement ou de manière incomplète
+- Segment qui recommence une idée déjà mieux exprimée ailleurs
+
+### 3. Dictée de prompts/instructions à une IA
+Sections où le locuteur dicte des instructions détaillées à un agent IA ou un système (ex: "fais en sorte que...", "mets un bouton...", "crée une nouvelle branche..."). Ces sections techniques de dictation doivent être SUPPRIMÉES car elles ne sont pas intéressantes pour le spectateur. SAUF si le locuteur explique le concept au spectateur.
+
+### 4. Sections de débogage/attente
+- Moments où le locuteur attend un résultat ("on va attendre...", "pas encore...")
+- Sections de troubleshooting en temps réel
+- Conversations de debugging avec une IA ("casse ça", "corrige ça", "envoie-moi le lien")
+
+### 5. Contenu hors-sujet
+Tout contenu qui n'est clairement pas lié au sujet principal de la vidéo (digressions, conversations en arrière-plan, contenu sans rapport)
+
+### 6. Versions multiples de la conclusion
+Si plusieurs tentatives de conclusion/outro existent, ne garde que la DERNIÈRE version complète.
+
+## CE QUE TU DOIS GARDER
+- Contenu explicatif unique destiné au spectateur
+- Démonstrations visuelles commentées (le locuteur montre quelque chose à l'écran)
+- Résultats et réactions aux résultats ("ça marche!", "voilà le résultat")
+- L'introduction et la conclusion finale
 
 ## SEGMENTS ⟵ SUITE
 = continuation du segment précédent. Garder ou supprimer ensemble, jamais séparément.
 
 ## RETOURNE
 La liste des IDs des segments à GARDER (dans l'ordre chronologique).
-En cas de doute → GARDE le segment.
+En cas de doute sur du contenu technique/dictation → SUPPRIME.
+En cas de doute sur du contenu explicatif unique → GARDE.
 
 ## {}"#,
         get_mode_instruction(mode)
