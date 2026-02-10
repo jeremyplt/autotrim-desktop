@@ -909,7 +909,7 @@ fn detect_all_retake_pairs(chunks: &[SpeechChunk]) -> Vec<(usize, usize, String)
                     let cov_c = if !cw_c.is_empty() { shared_count as f64 / cw_c.len() as f64 } else { 0.0 };
                     let cov_k = if !cw_k.is_empty() { shared_count as f64 / cw_k.len() as f64 } else { 0.0 };
                     let (min_shared, min_cov) = if is_weak {
-                        (4, 0.25) // Stricter for weak openers
+                        (4usize, 0.25) // Stricter for weak openers
                     } else if freq >= 6 {
                         (5, 0.20)
                     } else {
