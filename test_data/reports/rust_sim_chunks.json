@@ -1,0 +1,1724 @@
+[
+  {
+    "id": 0,
+    "text": "Alors là, je sais pas si on voit bien la caméra, mais il y a des nouvelles fonctionnalités qui sont en train de se faire en direct sur mon téléphone sans que j'ai rien à faire. J'utilise pas Claude Code, j'ai pas utilisé mon ordinateur, j'ai juste utilisé mon téléphone et Telegram sur lequel il y a OpenClo. Et dans cette vidéo, on va voir comment est-ce qu'on peut setup tout ça. Et surtout, le plus fou, c'est comment est-ce qu'on peut avoir un retour directement sur le téléphone, être n'importe où, à la salle, dans une salle d'attente, et pouvoir continuer de travailler sur notre projet. Et tout ça pour pas cher, sans avoir à acheter un nouvel ordinateur comme on voit certaines personnes le faire sur Twitter. Bon, déjà, c'est quoi le problème? Pourquoi est-ce qu'on pourrait pas utiliser Cloud Code comme tout le monde utilise Cloud Code? J'utilise aussi Cloud Code, j'adore Cloud Code, mais le problème c'est qu'avec Cloud Code, bah déjà il faut être sur son ordinateur, on peut pas le faire directement à partir du téléphone, ou alors il faut avoir une application qui nous permet de se mettre en SSH sur un VPS, c'est un peu compliqué. Et puis surtout, Cloud Code, il a une durée maximale, on va dire, sur des tâches qui est de 30-45 minutes maximum. J'ai réussi déjà à faire 1 heure, mais le problème c'est qu'au bout d'un moment bah",
+    "start": 0.318,
+    "end": 63.14,
+    "word_count": 242
+  },
+  {
+    "id": 1,
+    "text": "Claude va s'arrêter, va nous dire bah voilà je viens de finir la première étape du projet, est-ce que je dois passer à la suite, est-ce que tu veux tester, etc. Et nous on veut pas ça, on veut un agent qui tourne 24 heures sur 24 et qui envoie des nouvelles fonctionnalités, qui crée des nouvelles applications, qui nous envoie des reports et qui constamment vient vers nous pour nous demander si on a besoin de quelque chose, etc. Et ça Claude Code malheureusement il ne le fait pas.",
+    "start": 63.72,
+    "end": 85.6,
+    "word_count": 90
+  },
+  {
+    "id": 2,
+    "text": "Alors pour régler ce problème, on a eu— alors bien évidemment je crache pas sur Cloud Code et d'ailleurs on va l'utiliser un petit peu en background.",
+    "start": 90.38,
+    "end": 100.92,
+    "word_count": 27
+  },
+  {
+    "id": 3,
+    "text": "Alors bien évidemment Cloud Code ça",
+    "start": 103.04,
+    "end": 104.54,
+    "word_count": 6
+  },
+  {
+    "id": 4,
+    "text": "reste un outil incroyable surtout quand on est sur son ordinateur. Personnellement j'utilise toujours Cloud Code quand je suis chez moi, mais quand je suis pas chez moi, c'est pas vraiment faisable.",
+    "start": 106.8,
+    "end": 114.74,
+    "word_count": 32
+  },
+  {
+    "id": 5,
+    "text": "Et Cloud Code, c'est quand même ce qui m'a permis de monter mon application Shinobi Japanese à 130 $30 000 de revenus annuels. Ici on voit que Cloudcode est sorti en février. Alors j'ai été un petit peu long à la détente au début, je l'ai pas tout de suite utilisé,",
+    "start": 115.304,
+    "end": 128.224,
+    "word_count": 51
+  },
+  {
+    "id": 6,
+    "text": "je pensais que je codais encore mieux que l'IA et surtout que j'avais pas besoin d'IA pour coder rapidement.",
+    "start": 128.787,
+    "end": 134.607,
+    "word_count": 19
+  },
+  {
+    "id": 7,
+    "text": "Et puis au final en avril-mai j'ai commencé à l'utiliser et là on peut voir qu'il y a une petite explosion quand même du chiffre d'affaires. Alors évidemment",
+    "start": 135.187,
+    "end": 141.407,
+    "word_count": 28
+  },
+  {
+    "id": 8,
+    "text": "il y a eu aussi des opérations marketing etc., on a fait beaucoup de travail au niveau marketing, mais en tout cas voilà, tout ça pour dire que Cloudcode ça reste l'outil ultime pour développer, pour coder sur ordinateur.",
+    "start": 142.027,
+    "end": 153.207,
+    "word_count": 39
+  },
+  {
+    "id": 9,
+    "text": "Alors pour régler ce problème des 30-45 minutes maximum, on a eu un outil qui est sorti il y a quelques semaines qui s'appelle Ralfloop.",
+    "start": 159.095,
+    "end": 166.055,
+    "word_count": 25
+  },
+  {
+    "id": 10,
+    "text": "Et justement c'était censé, et c'est toujours censé, pallier à ce problème. C'est-à-dire qu'au lieu de s'arrêter au bout de 30-45 minutes, eh bien on va faire des boucles de 30-45 minutes. Donc en boucle on va relancer Claude Code.",
+    "start": 166.635,
+    "end": 177.995,
+    "word_count": 40
+  },
+  {
+    "id": 11,
+    "text": "Le problème c'est que c'est pas agentique, c'est-à-dire qu'on va lui donner un fichier avec une to-do list ou avec un projet ou une fonctionnalité à implémenter, mais une fois que cette fonctionnalité est finie, Cloud Code ne va pas continuer. Et on va aussi mettre un nombre d'itérations maximale,",
+    "start": 178.515,
+    "end": 193.773,
+    "word_count": 50
+  },
+  {
+    "id": 12,
+    "text": "et quand ce nombre d'itérations a atteint du coup cette limite, eh ben ça se finit, ça s'arrête, et Cloud Code ne nous renvoie pas des messages pour savoir s'il doit continuer sur quelque chose, etc. On n'a pas directement accès à Ralphloop non plus. En fait, on le lance et puis après on part, mais ensuite on n'a aucun moyen d'interagir avec, si ce n'est de devoir se connecter avec un VPS en SSH, comme je l'ai dit, avec des applications qu'on a sur mobile. Mais franchement, c'est vraiment pas pratique.",
+    "start": 194.393,
+    "end": 222.452,
+    "word_count": 92
+  },
+  {
+    "id": 13,
+    "text": "Et puis surtout, le Ralfloop, c'est rien de bien compliqué. Si on regarde ici, ça c'est vraiment le code de Ralfloop, il y a rien de plus. C'est un script Bash où on a une loop. Donc là ici, on a une boucle qui tourne",
+    "start": 223.612,
+    "end": 234.832,
+    "word_count": 45
+  },
+  {
+    "id": 14,
+    "text": "Et puis surtout, Ralfloop, c'est rien de bien sorcier. En fait, le code de Ralfloop, c'est uniquement ça, il n'y a rien d'autre. En fait, c'est juste un script Bash avec ici une boucle, et dans cette boucle, on a un—",
+    "start": 239.251,
+    "end": 250.751,
+    "word_count": 41
+  },
+  {
+    "id": 15,
+    "text": "et puis surtout, Ralfloop, c'est rien de bien compliqué. Au final, c'est Puis surtout ralfloop c'est... puis en fait ralfloop c'est pas quelque chose de vraiment... et puis surtout ralfloop en fait ça n'a pas vraiment de valeur.",
+    "start": 253.051,
+    "end": 280.172,
+    "word_count": 38
+  },
+  {
+    "id": 16,
+    "text": "Et puis surtout ralfloop en fait il n'y a pas vraiment de valeur ajoutée. Si on regarde ici le code de ralfloop c'est vraiment uniquement ça. C'est juste une boucle comme son nom l'indique c'est une loop. On a une boucle qui tourne le nombre de fois qu'on a sur le premier paramètre, c'est-à-dire l'itération maximale. Et en fait, en boucle, on va lui renvoyer ce même prompt-là, ce prompt.md, c'est un fichier dans lequel, comme je l'ai dit, on va mettre la to-do list. Et tant que la to-do list n'est pas complétée, on va juste renvoyer la to-do list en boucle jusqu'à ce que Claude Cotte finisse la to-do list, à l'issue de quoi on va arrêter le script.",
+    "start": 281.012,
+    "end": 312.407,
+    "word_count": 121
+  },
+  {
+    "id": 17,
+    "text": "Ou alors quand—",
+    "start": 313.027,
+    "end": 314.007,
+    "word_count": 3
+  },
+  {
+    "id": 18,
+    "text": "et puis surtout, Ralph Loup, en fait,",
+    "start": 315.067,
+    "end": 318.147,
+    "word_count": 7
+  },
+  {
+    "id": 19,
+    "text": "Et puis surtout ralfloop en fait c'est rien du tout, c'est juste ce code-là, c'est comme son nom l'indique juste une loop, c'est-à-dire une—",
+    "start": 319.171,
+    "end": 324.831,
+    "word_count": 24
+  },
+  {
+    "id": 20,
+    "text": "et puis surtout ralfloop en fait il n'y a vraiment aucune valeur ajoutée, le code de ralfloop c'est uniquement ça. Et d'ailleurs j'avais pensé à en faire une vidéo sur ralfloop mais quand j'ai vu le code et ce que ça faisait exactement, je me suis dit c'est pas vraiment très intéressant.",
+    "start": 330.663,
+    "end": 343.583,
+    "word_count": 52
+  },
+  {
+    "id": 21,
+    "text": "Là comme on peut le voir c'est juste une boucle avec ici le nombre d'itérations maximales qui est le premier argument qu'on peut passer pendant la commande. Et puis ensuite, ça va juste renvoyer en boucle le prompt.md, c'est-à-dire le fichier dans lequel, comme je l'ai dit, on a notre todo list, ou alors toutes les fonctionnalités qu'on a besoin dans notre application, etc. Et une fois que c'est fini, bah en fait, ça s'arrête. On sort ici avec le code 0, ou alors on atteint le nombre d'itérations maximale et on sort avec le code 1.",
+    "start": 344.123,
+    "end": 369.641,
+    "word_count": 97
+  },
+  {
+    "id": 22,
+    "text": "Donc voilà, pas super intéressant. Donc voilà, pas super intéressant. Moi ce que je veux, c'est un vrai—",
+    "start": 384.983,
+    "end": 390.583,
+    "word_count": 18
+  },
+  {
+    "id": 23,
+    "text": "donc voilà, pas très intéressant. Moi ce que je veux, c'est un vrai agent, c'est quelque chose qui va tourner toute la nuit, qui va me sortir 4-5 applications que je peux regarder le matin et dire ok, cette application-là elle est bien, on va continuer sur celle-ci,",
+    "start": 391.123,
+    "end": 402.303,
+    "word_count": 48
+  },
+  {
+    "id": 24,
+    "text": "qui me sort 5 ou 6 nouvelles fonctionnalités sur mon application Shinobi Japanese et que ben voilà, je peux revoir et",
+    "start": 402.823,
+    "end": 408.043,
+    "word_count": 21
+  },
+  {
+    "id": 25,
+    "text": "donc voilà, c'est pas super intéressant. Moi, ce que je veux, c'est vraiment un agent, c'est quelque chose qui va tourner constamment. Quand je dors, je veux que quand je me lève le matin, j'ai 5 ou 6 applications à review et que je puisse dire: « Ah ouais, cette application, elle est trop bien, on va continuer sur celle-ci.",
+    "start": 410.988,
+    "end": 424.348,
+    "word_count": 60
+  },
+  {
+    "id": 26,
+    "text": "» Et que donc voilà, franchement, donc franchement, c'est pas franchement pas très intéressant.",
+    "start": 425.588,
+    "end": 436.148,
+    "word_count": 14
+  },
+  {
+    "id": 27,
+    "text": "Donc franchement, c'est pas très intéressant. Moi, ce que je veux, c'est un agent qui tourne non-stop, un agent qui m'envoie des messages. Quand je me réveille le matin, je vais avoir 4-5 applications qui ont été créées par mon agent, avec toute une liste de trucs à review. Et justement, je vais regarder ces applications et dire: cette application-là, elle est incroyable, on va continuer avec cette application.",
+    "start": 436.891,
+    "end": 454.431,
+    "word_count": 69
+  },
+  {
+    "id": 28,
+    "text": "Je veux aussi avoir 4-5-6, même 10 nouvelles fonctionnalités sur mon application Shinobi, et que je puisse juste regarder les fonctionnalités en cliquant sur un lien, en ouvrant un build sur mon téléphone",
+    "start": 454.951,
+    "end": 466.131,
+    "word_count": 33
+  },
+  {
+    "id": 29,
+    "text": "et me dire ah ouais cette fonctionnalité elle est super, allez on l'ajoute à Shinobi Japanese et en fait quand je me réveille j'ai déjà 3 nouvelles fonctionnalités sur mon application et une nouvelle app, un nouveau MVP.",
+    "start": 466.658,
+    "end": 476.118,
+    "word_count": 38
+  },
+  {
+    "id": 30,
+    "text": "Donc pour ça on ne peut pas utiliser Ralfloop, par contre on peut utiliser ici OpenClo. Alors OpenClo c'est ce qui s'appelait avant MoldBot, qui s'appelait encore avant ClaudeBot, alors je sais pas pourquoi ils ont changé le nom plein de fois, je pense que c'est marketing. ClaudeBot je sais aussi qu'il y a eu des problèmes avec ClaudeCode, donc avec Anthropy qui disait que c'est un nom qui se rapproche trop de leur propre produit. Enfin bref, dans tous les cas maintenant ça s'appelle OpenClo et c'est ce qu'on va utiliser dans cette vidéo.",
+    "start": 476.718,
+    "end": 501.855,
+    "word_count": 95
+  },
+  {
+    "id": 31,
+    "text": "En gros l'idée c'est très simple, on a accès à OpenClo directement sur Telegram et on a un set d'outils qu'on peut utiliser pour pouvoir le configurer, pour pouvoir interagir avec avec lui, on peut lui faire des messages vocaux, etc. Et lui, il a directement accès à une instance de Cloud Code par exemple, et à des LLM, et aussi éventuellement à des outils, des MCP, avec lesquels il va pouvoir justement interagir avec le web et aussi avec nos projets pour pouvoir continuer de développer, de coder, etc., mettre à jour par exemple des tâches sur Trello. Donc en fait, c'est vraiment un agent qui non-stop va pouvoir regarder notre calendrier, réserver des choses, etc. Nous, on va s'occuper plutôt de l'aspect développement d'applications mobiles, puisque c'est ce dont on parle sur cette chaîne. Et on va regarder comment est-ce qu'on peut installer des outils qui vont nous permettre, juste avec notre téléphone et juste avec Telegram, de pouvoir créer des nouvelles fonctionnalités quand on est dans une salle d'attente ou autre et qu'on n'a pas notre ordi avec nous. Bon, évidemment, ce n'est pas tout rose, il y a des gros problèmes de sécurité.",
+    "start": 520.338,
+    "end": 583.719,
+    "word_count": 197
+  },
+  {
+    "id": 32,
+    "text": "Alors, comment est-ce que OpenClo fonctionne? Eh bien, normalement, il a accès total.",
+    "start": 584.999,
+    "end": 588.779,
+    "word_count": 13
+  },
+  {
+    "id": 33,
+    "text": "Alors, comment est-ce que OpenClo fonctionne? Eh bien, il a accès total au système sur lequel il est. C'est-à-dire que si on l'installe sur notre ordinateur, eh bien, il a accès à tout notre ordinateur. Et ça veut dire les dossiers, les fichiers, mais ça veut aussi dire les mots de passe, les informations bancaires, les cookies, le navigateur, etc. Donc, il peut publier des choses à notre place, il peut retirer de l'argent sur notre compte. Bref, c'est un enfer de sécurité. D'ailleurs,",
+    "start": 589.492,
+    "end": 611.733,
+    "word_count": 84
+  },
+  {
+    "id": 34,
+    "text": "Low Level, donc c'est une chaîne que j'aime bien suivre pour tout ce qui est sécurité, cybersécurité et tout ça, eh bah franchement je crois qu'il a fait une vidéo qui explique très bien le problème, donc allez voir sa vidéo si ça vous intéresse. Dans tous les cas,",
+    "start": 612.473,
+    "end": 624.073,
+    "word_count": 49
+  },
+  {
+    "id": 35,
+    "text": "c'est absolument à éviter de mettre OpenClaw sur son ordinateur, faut jamais le faire. Alors",
+    "start": 624.953,
+    "end": 631.542,
+    "word_count": 15
+  },
+  {
+    "id": 36,
+    "text": "on a des tweetos, on a des gens sur Twitter qui ont du coup trouvé une autre solution, c'est d'acheter tout d'acheter complètement un nouvel ordinateur et notamment d'acheter un Mac mini. Alors un Mac mini, si je dis pas de bêtises, ça coûte 700 €, donc ça fait un petit peu cher juste pour héberger un agent d'après moi, surtout un agent qui est sorti il y a assez longtemps mais qui est populaire que depuis une semaine. Et donc voilà, en fait il existe ce qu'on appelle des VPS. Nous, c'est ce qu'on va utiliser dans cette vidéo, on va utiliser Hostinger qui ont déjà, on va le voir dans un instant,",
+    "start": 632.082,
+    "end": 662.278,
+    "word_count": 114
+  },
+  {
+    "id": 37,
+    "text": "créé des VPS où il y a déjà OpenCloak qui est hébergé. Enfin, ils sont incroyables, ils sont super vifs, super réactifs. Mais voilà, globalement, il n'y a absolument pas besoin pas besoin d'acheter un nouvel ordinateur comme on voit ces gens le faire. D'ailleurs, OpenClo eux-mêmes ont dit: pourquoi est-ce que vous achetez tous des Mac mini? En fait, il existe des VPS à 5 par mois, donc il y a absolument pas besoin de donner de l'argent à Apple. On peut juste utiliser un VPS comme on a toujours utilisé des VPS pour héberger des choses avec des dockers dessus, etc. C'est beaucoup plus safe, c'est beaucoup moins cher. Donc voilà, on va partir avec un VPS.",
+    "start": 662.938,
+    "end": 694.431,
+    "word_count": 119
+  },
+  {
+    "id": 38,
+    "text": "Voilà ce dont je parlais, OpenClo est déjà disponible directement sur Hostinger, c'est-à-dire qu'on peut directement déployer un VPS qui a déjà OpenClo qui est installé avec tout ce dont on a besoin, et ça coûte seulement 7 € par mois si on utilise KVM 2. Donc je tiens à préciser, Hostinger, ils ont bien voulu sponsoriser cette vidéo et je suis super content parce que c'est vraiment un Voilà ce dont je parlais,",
+    "start": 702.79,
+    "end": 728.71,
+    "word_count": 74
+  },
+  {
+    "id": 39,
+    "text": "voilà ce dont je parlais. On a déjà un VPS qui est tout prêt chez Hostinger avec OpenCloud qui est déjà installé dessus et tout ce dont on a besoin sur ce VPS. Ici, ça coûte seulement 7 € par mois si on prend le KVM2, mais je vais y revenir juste après. Je tiens à préciser que Hostinger a bien voulu sponsoriser cette vidéo et je suis super super content puisque c'est vraiment un service que j'adore, que j'utilise moi personnellement. Et encore une fois, ils ont toujours toujours le bon dont VPS Lab.",
+    "start": 729.571,
+    "end": 756.451,
+    "word_count": 95
+  },
+  {
+    "id": 40,
+    "text": "Voilà ce dont je parlais, OpenClo est déjà disponible sur Hostinger dans un VPS qui est déjà tout prêt, c'est-à-dire qu'on peut déployer un VPS qui a déjà OpenClo et là ça coûte que 7 € par mois, ça coûte pas 700 €.",
+    "start": 760.317,
+    "end": 770.957,
+    "word_count": 43
+  },
+  {
+    "id": 41,
+    "text": "Et en tout cas si on utilise KVM2, mais je vais revenir juste après, je tiens à préciser que Hostinger a bien voulu sponsoriser cette vidéo et je suis super super content parce que c'est vraiment un service que j'adore. Ils sont toujours toujours à la page, ils vont super vite. OpenClo, ça a été vraiment populaire il y a quelques jours et ils ont déjà mis en place tout ce qu'il faut pour qu'on puisse en un clic l'utiliser sur un de leurs VPS. Donc vraiment Hostinger, incroyable.",
+    "start": 771.457,
+    "end": 794.65,
+    "word_count": 89
+  },
+  {
+    "id": 42,
+    "text": "Ici, comme je l'ai dit, on a plusieurs",
+    "start": 795.17,
+    "end": 807.51,
+    "word_count": 8
+  },
+  {
+    "id": 43,
+    "text": "Voilà ce dont je parlais, OpenClo est déjà disponible sur des VPS sur Hostinger, c'est-à-dire qu'on peut déployer un VPS qui a déjà OpenClo qui est installé dessus. Dessus et on a tous les outils dont on a besoin et ça coûte seulement 7 € par mois, en tout cas si on utilise le pack KVM 2, mais je vais y revenir dans un instant. Je tiens à préciser que Hostinger a bien voulu sponsoriser cette vidéo et je suis super content parce que c'est vraiment, en fait Hostinger ils sont toujours à jour.",
+    "start": 838.111,
+    "end": 861.071,
+    "word_count": 94
+  },
+  {
+    "id": 44,
+    "text": "Dès qu'il y a une nouvelle fonctionnalité,",
+    "start": 861.631,
+    "end": 863.331,
+    "word_count": 7
+  },
+  {
+    "id": 45,
+    "text": "voilà ce dont je parlais, on a OpenCloud qui est déjà disponible sur des VPS Hostinger qui sont déjà tout prêts à l'emploi, c'est-à-dire qu'on a juste à cliquer sur déployer ici et on aura un VPS avec OpenCloud qui est déjà installé dessus et tous les autres outils dont on a besoin. Et là, ça coûte seulement 7 € par mois et pas 700 €, en tout cas si on utilise KVM 2, mais je vais y revenir dans un instant. Je tiens à préciser que Hostinger a bien voulu sponsoriser cette vidéo et je suis super content parce que Hostinger, c'est vraiment un service que j'adore. C'est un service qui est toujours, toujours à jour, toujours à la page avec les dernières fonctionnalités, les dernières nouveautés IA. On l'a vu aussi avec tout ce qui est automatisation avec N8N, etc.",
+    "start": 865.6,
+    "end": 902.057,
+    "word_count": 142
+  },
+  {
+    "id": 46,
+    "text": "Et là, OpenClo est devenu populaire il y a seulement quelques jours et directement ils ont mis en place un VPS avec OpenClo.",
+    "start": 902.577,
+    "end": 908.797,
+    "word_count": 23
+  },
+  {
+    "id": 47,
+    "text": "Lo— Alors pour ceux qui connaissent pas Hostinger, c'est un service d'hébergement. On peut héberger plein de choses, pas seulement des VPS. Évidemment c'est ce qui nous intéresse dans cette vidéo, mais on a aussi l'hébergement web, on a l'hébergement de sites WordPress, l'hébergement de sites internet, on a aussi l'achat de noms de domaine, etc. Donc vraiment on peut faire un tas de choses. Évidemment nous ce qui nous intéresse, et je mettrai le lien dans la description, c'est d'avoir un VPS avec OpenCloud. Et ici je recommande d'utiliser le KVM 2. On pourrait utiliser KVM 1, mais je trouve qu'en fait le problème, il y aura certainement pas assez de ressources, et on a quand même quand même besoin de faire tourner un agent qui va utiliser plusieurs outils, qui va faire plusieurs choses en même temps. Donc je pense qu'avoir 2 cœurs et 8 Go de RAM, c'est le minimum. Et puis il nous faut aussi pas mal de bande passante. Donc là, ici, 7 € par mois, c'est rien du tout. Surtout que si on clique sur Déployer ici, on va pouvoir avoir la possibilité de mettre ici juste à droite un code promo.",
+    "start": 935.328,
+    "end": 988.597,
+    "word_count": 198
+  },
+  {
+    "id": 48,
+    "text": "Et ici, je peux mettre JEREMY10 pour avoir une petite promotion qui va s'appliquer. Donc ça sera encore moins cher. Alors ici, une petite, petite petite précision, on a la sauvegarde automatique quotidienne. Je pense pas que ce soit nécessaire pour un agent IA. Cela dit, ça peut toujours être une sécurité si jamais il y a un problème avec le VPS. Tu vas perdre toute ta configuration au niveau de ton agent et puis surtout toute la mémoire de l'agent. On va voir dans un instant qu'on peut faire en sorte que le, que l'IA ait une mémoire, que l'agent ait une mémoire. Ensuite, pour le choix de l'emplacement du serveur, c'est important de prendre le serveur qui est le plus proche de toi pour éviter d'avoir une latence. Donc moi ici, je vais choisir France, comme ça j'ai la meilleure latence possible.",
+    "start": 989.8,
+    "end": 1030.276,
+    "word_count": 144
+  },
+  {
+    "id": 49,
+    "text": "Tu vas ensuite arriver sur cet écran où tu as toutes les informations par rapport au VPS. Et la prochaine étape, c'est de se connecter au VPS. Tu as deux solutions:",
+    "start": 1063.679,
+    "end": 1071.419,
+    "word_count": 31
+  },
+  {
+    "id": 50,
+    "text": "soit tu cliques ici sur Terminal et tu arriveras directement sur le terminal sur le VPS,",
+    "start": 1071.939,
+    "end": 1075.819,
+    "word_count": 16
+  },
+  {
+    "id": 51,
+    "text": "soit ici tu peux avoir un accès root avec une commande SSH et ensuite ouvrir ton propre terminal. Nous, c'est ce qu'on va faire. Ici, je vais aller sur mon terminal et je vais coller cette commande. Ensuite, je vais devoir mettre mon mot de passe. Alors le mot de passe, toi normalement tu l'as déjà configuré pendant le setup de ton VPS. Si jamais tu as oublié ton mot de passe, c'est pas grave, tu cliques juste ici sur modifier et tu choisis un autre mot de passe.",
+    "start": 1076.319,
+    "end": 1099.823,
+    "word_count": 89
+  },
+  {
+    "id": 52,
+    "text": "Voilà, donc je viens de rentrer mon mot de passe, je suis connecté.",
+    "start": 1107.003,
+    "end": 1113.683,
+    "word_count": 13
+  },
+  {
+    "id": 53,
+    "text": "C'est Et là, on arrive directement sur le setup de OpenClose. Donc là, il faut juste suivre les instructions, on va le faire ensemble. Première question: est-ce qu'on est conscient des risques, etc. Oui, on est conscient des risques. Alors là, je ne sais pas pourquoi je ne peux pas aller à gauche ni à droite, je vais devoir quitter.",
+    "start": 1171.122,
+    "end": 1185.002,
+    "word_count": 60
+  },
+  {
+    "id": 54,
+    "text": "Et là, on arrive directement sur le setup de OpenClose. C'est là où je dis qu'avec Hostinger, c'est super super simple.",
+    "start": 1224.025,
+    "end": 1229.025,
+    "word_count": 21
+  },
+  {
+    "id": 55,
+    "text": "Donc là, maintenant, on a juste à suivre les instructions. Première question: est-ce qu'on est conscient des risques? Oui.",
+    "start": 1229.765,
+    "end": 1234.085,
+    "word_count": 19
+  },
+  {
+    "id": 56,
+    "text": "Est-ce qu'on veut aller avec le Quick Start? Oui. Ensuite, on va utiliser donc la config, on va reset puisque du coup, j'ai pas— hop, Up.",
+    "start": 1234.725,
+    "end": 1244.345,
+    "word_count": 26
+  },
+  {
+    "id": 57,
+    "text": "Et là, on arrive directement sur le setup d'open/close.",
+    "start": 1357.895,
+    "end": 1359.755,
+    "word_count": 9
+  },
+  {
+    "id": 58,
+    "text": "C'est là où je dis qu'Hostinger,",
+    "start": 1360.255,
+    "end": 1361.255,
+    "word_count": 6
+  },
+  {
+    "id": 59,
+    "text": "c'est vraiment super simple.",
+    "start": 1361.795,
+    "end": 1362.955,
+    "word_count": 4
+  },
+  {
+    "id": 60,
+    "text": "Donc on doit juste—",
+    "start": 1363.475,
+    "end": 1364.595,
+    "word_count": 4
+  },
+  {
+    "id": 61,
+    "text": "et on arrive directement sur le setup d'open/close. C'est pour ça qu'Hostinger, c'est vraiment super simple, super pratique.",
+    "start": 1369.454,
+    "end": 1374.234,
+    "word_count": 18
+  },
+  {
+    "id": 62,
+    "text": "Donc ici, on a quelques questions à répondre. Répondre. Donc première, est-ce qu'on est conscient des risques? Oui.",
+    "start": 1374.794,
+    "end": 1379.814,
+    "word_count": 18
+  },
+  {
+    "id": 63,
+    "text": "Est-ce qu'on veut passer par le Quick Start? Oui. Ensuite ici, alors moi j'ai déjà une configuration, mais je vais reset ici. Normalement toi tu auras rien à faire et je vais tout reset comme ça on fait tout ensemble. Ensuite je vais devoir choisir un provider. Ce provider, ça va être le LLM qui va être utilisé pour tout en fait par OpenClo. Donc ici moi je vais choisir Anthropic, mais je vais juste te présenter quelques autres. Donc OpenAI, évidemment tu peux l'utiliser si tu as déjà un abonnement sur OpenAI, donc avec ChatGPT, et surtout si tu utilises Codex, parce que du coup tu vas pouvoir réutiliser ton authentification de Codex et utiliser les crédits que tu as sur ton abonnement Codex. Ça va être exactement la même chose avec Anthropic. Si tu utilises la clé API, tu vas devoir payer en plus de ton abonnement, tu vas payer en fonction de la consommation. Par contre, si tu utilises le setup token, c'est ce que je vais utiliser puisque j'ai déjà un plan Anthropic, eh bien tu vas juste réutiliser ton plan Anthropic avec l'usage que tu as, que tu as dans ce ce plan.",
+    "start": 1380.414,
+    "end": 1438.5,
+    "word_count": 198
+  },
+  {
+    "id": 64,
+    "text": "Ensuite, Minimax, c'est le, c'est le modèle qui est recommandé par le créateur de OpenClo parce que c'est un modèle qui est très peu cher mais qui est pas très très bon en code d'après moi. Et puis ensuite tu as OpenRouter qui est vraiment pas mal puisque tu vas pouvoir utiliser n'importe quel modèle juste en mettant une seule clé API puisque OpenRouter permet d'utiliser n'importe quel modèle.",
+    "start": 1439.063,
+    "end": 1460.983,
+    "word_count": 69
+  },
+  {
+    "id": 65,
+    "text": "Donc comme je l'ai dit, moi je vais partir avec Anthropic et je vais partir avec le Anthropic token. Ici je vais devoir prendre cette Ici je vais devoir prendre, ici je vais copier-coller la commande, donc je vais ouvrir une nouvelle fenêtre. Alors je vais juste mettre en un petit peu plus gros,",
+    "start": 1462.233,
+    "end": 1481.913,
+    "word_count": 54
+  },
+  {
+    "id": 66,
+    "text": "je vais copier la commande et ensuite je vais la mettre juste ici pour récupérer mon token.",
+    "start": 1488.727,
+    "end": 1493.167,
+    "word_count": 17
+  },
+  {
+    "id": 67,
+    "text": "J'autorise.",
+    "start": 1494.047,
+    "end": 1497.107,
+    "word_count": 1
+  },
+  {
+    "id": 68,
+    "text": "Et maintenant je peux retourner sur le terminal et j'ai mon token qui s'affiche juste ici.",
+    "start": 1500.827,
+    "end": 1507.347,
+    "word_count": 16
+  },
+  {
+    "id": 69,
+    "text": "J'ai plus qu'à le copier et à le coller ici dans le terminal, dans le setup.",
+    "start": 1507.887,
+    "end": 1511.767,
+    "word_count": 16
+  },
+  {
+    "id": 70,
+    "text": "Ici je laisse le nom par défaut. Info. Et ensuite, je peux choisir le modèle. Donc ici, je vais choisir le modèle Cloud Opus 4.5 parce que c'est vraiment le meilleur. Par contre, c'est le plus cher. Donc si tu utilises la clé API et que c'est en fonction de la consommation que tu vas payer, je te recommande de prendre plutôt soit Sonae 4.5, soit IQ peut-être. Mais IQ, franchement, c'est pas très bon pour le code. Donc j'aurais plutôt tendance à dire prends un abonnement et utilise Cloud Opus 4.5.",
+    "start": 1519.186,
+    "end": 1546.146,
+    "word_count": 92
+  },
+  {
+    "id": 71,
+    "text": "Ensuite, on va pouvoir setup le channel, c'est-à-dire la façon dont on veut communiquer avec OpenClo. Donc moi, je vais choisir Telegram parce que j'ai l'habitude d'utiliser Telegram et je trouve qu'il y a tout un set d'outils avec tout ce qui est les bots, etc., qui est assez simple. Mais tu peux aussi utiliser WhatsApp, Discord et plein d'autres systèmes de messagerie.",
+    "start": 1546.692,
+    "end": 1564.292,
+    "word_count": 63
+  },
+  {
+    "id": 72,
+    "text": "Donc ici, je sélectionne Telegram.",
+    "start": 1565.472,
+    "end": 1567.212,
+    "word_count": 5
+  },
+  {
+    "id": 73,
+    "text": "Et on va devoir chercher l'utilisateur Botfather. En fait, c'est un compte qui permet de créer des bots. Ici, il est juste là. J'ai juste à faire Start et ensuite je peux cliquer pour créer un nouveau bot. Je dois lui donner un nom, je vais l'appeler YouTube clotest.",
+    "start": 1585.117,
+    "end": 1599.677,
+    "word_count": 49
+  },
+  {
+    "id": 74,
+    "text": "Et ensuite, je dois lui donner un nom qui finit par bot. Donc là, je vais dire youtubeclotestbot.",
+    "start": 1600.237,
+    "end": 1609.817,
+    "word_count": 18
+  },
+  {
+    "id": 75,
+    "text": "Ici, je peux récupérer maintenant le token et je peux le coller ici dans",
+    "start": 1612.083,
+    "end": 1615.957,
+    "word_count": 14
+  },
+  {
+    "id": 76,
+    "text": "OpenClo. Ici, tu vas devoir mettre ton identifiant.",
+    "start": 1616.523,
+    "end": 1616.963,
+    "word_count": 8
+  },
+  {
+    "id": 77,
+    "text": "Ici tu vas devoir mettre ton propre,",
+    "start": 1659.957,
+    "end": 1662.217,
+    "word_count": 7
+  },
+  {
+    "id": 78,
+    "text": "ici tu dois mettre ton propre identifiant Telegram, c'est pour éviter que n'importe qui puisse envoyer des messages à ton bot. Donc là moi je vais mettre mon propre identifiant.",
+    "start": 1708.793,
+    "end": 1719.973,
+    "word_count": 30
+  },
+  {
+    "id": 79,
+    "text": "Maintenant je peux configurer des skills. Ici je vais dire oui, par contre je vais pas pouvoir configurer tous les skills puisqu'ici je dois mettre non, je n'ai pas Homebrew parce que je suis sur un serveur Linux,",
+    "start": 1852.062,
+    "end": 1862.762,
+    "word_count": 38
+  },
+  {
+    "id": 80,
+    "text": "donc on n'est pas sur un ordinateur Apple, donc on n'a pas Homebrew installé directement. Et comme on est sur le user root, eh bien on ne peut pas utiliser Homebrew directement, il faudrait créer un nouvel utilisateur, etc. C'est un petit peu plus compliqué, mais on va voir dans un instant comment est-ce qu'on peut faire. Ici",
+    "start": 1863.282,
+    "end": 1879.203,
+    "word_count": 58
+  },
+  {
+    "id": 81,
+    "text": "on va choisir le Node Manager npm,",
+    "start": 1879.763,
+    "end": 1882.243,
+    "word_count": 7
+  },
+  {
+    "id": 82,
+    "text": "et ici",
+    "start": 1885.383,
+    "end": 1885.743,
+    "word_count": 2
+  },
+  {
+    "id": 83,
+    "text": "Et maintenant on a une liste de skills, c'est-à-dire d'outils qu'on va pouvoir installer directement. Alors l'outil qui nous intéresse le plus c'est GitHub, mais il est pas disponible quand on n'a pas Homebrew, mais on verra ça dans un instant. En attendant, ici on peut regarder tous les outils qu'on a. Moi j'en vois aucun qui est très intéressant pour cette vidéo.",
+    "start": 1888.303,
+    "end": 1906.877,
+    "word_count": 63
+  },
+  {
+    "id": 84,
+    "text": "Le seul qui pourrait être bien, ça pourrait être pour par exemple OpenAI",
+    "start": 1907.377,
+    "end": 1910.357,
+    "word_count": 13
+  },
+  {
+    "id": 85,
+    "text": "Whisper pour avoir le speech-to-text, c'est-à-dire que quand on va faire des audios, eh bien l'IA va pouvoir l'interpréter interpréter en texte et nous répondre, donc pouvoir tout simplement écouter les audios. Nanobanana Pro, ça peut être intéressant pour créer des assets pour nos applications mobiles. Et ensuite,",
+    "start": 1911.897,
+    "end": 1927.642,
+    "word_count": 48
+  },
+  {
+    "id": 86,
+    "text": "pourquoi pas Gemini pour faire des recherches, ça peut être pas mal. Et je crois qu'il y en a un aussi pour le PDF, voilà, Nanopdf,",
+    "start": 1928.442,
+    "end": 1935.442,
+    "word_count": 26
+  },
+  {
+    "id": 87,
+    "text": "ça peut être pas mal aussi quand on demande à l'IA de nous faire des résumés de choses qu'elle a fait et de créer des petits PDF, ça peut être pas mal.",
+    "start": 1936.142,
+    "end": 1942.782,
+    "word_count": 32
+  },
+  {
+    "id": 88,
+    "text": "Moi ici pour le moment je vais aller, je vais juste en mettre un juste pour dire, je vais mettre OpenAI Whisper.",
+    "start": 1944.802,
+    "end": 1950.402,
+    "word_count": 22
+  },
+  {
+    "id": 89,
+    "text": "Ici je vais mettre non à tout puisque j'ai pas besoin de clé API puisque j'ai pas activé GoPlace, LocalPlace,",
+    "start": 1952.772,
+    "end": 1957.532,
+    "word_count": 20
+  },
+  {
+    "id": 90,
+    "text": "etc. Donc je mets non, non, non. Ici OpenAI API key, j'aurais pu le mettre puisqu'on utilise Whisper, mais pour le moment je vais passer",
+    "start": 1958.172,
+    "end": 1965.212,
+    "word_count": 25
+  },
+  {
+    "id": 91,
+    "text": "et je vais mettre non ici aussi.",
+    "start": 1965.752,
+    "end": 1966.892,
+    "word_count": 7
+  },
+  {
+    "id": 92,
+    "text": "Maintenant on va pouvoir configurer des hooks et là en l'occurrence il faut absolument mettre session memory, ça va nous permettre d'avoir une meilleure mémoire au niveau de notre OpenClose.",
+    "start": 1967.512,
+    "end": 1977.352,
+    "word_count": 30
+  },
+  {
+    "id": 93,
+    "text": "Ici je vais, maintenant je peux activer l'autocomplétion.",
+    "start": 1995.584,
+    "end": 1999.424,
+    "word_count": 8
+  },
+  {
+    "id": 94,
+    "text": "Ici je vais mettre yes pour avoir l'autocomplétion. Question.",
+    "start": 2000.264,
+    "end": 2002.224,
+    "word_count": 9
+  },
+  {
+    "id": 95,
+    "text": "Et on est tout bon. On va juste refaire encore une commande pour rendre tout ça un petit peu plus safe. On va taper open-clo-doctor, ce qui va nous permettre de donner un petit peu plus de restrictions à OpenClo pour qu'il fasse pas n'importe quoi.",
+    "start": 2031.241,
+    "end": 2043.361,
+    "word_count": 46
+  },
+  {
+    "id": 96,
+    "text": "C'est tout bon, le setup est fini, on va maintenant pouvoir faire— c'est tout bon, le setup est fini, on va maintenant pouvoir— c'est tout bon, le setup est fini, on va maintenant pouvoir parler avec lui pour voir si tout marche bien. On va taper open/close et ensuite suite TUI pour l'interface dans le terminal.",
+    "start": 2085.798,
+    "end": 2111.358,
+    "word_count": 56
+  },
+  {
+    "id": 97,
+    "text": "Et voilà, c'est tout bon, on a",
+    "start": 2134.617,
+    "end": 2139.877,
+    "word_count": 7
+  },
+  {
+    "id": 98,
+    "text": "C'est tout bon, on peut maintenant lui parler. Je vais lui demander quelle est la température C'est tout bon, on peut maintenant lui parler. Je vais lui demander quelle est la température à Paris. On va voir s'il nous répond. S'il répond, c'est que tout marche correctement.",
+    "start": 2181.31,
+    "end": 2194.43,
+    "word_count": 47
+  },
+  {
+    "id": 99,
+    "text": "C'est tout bon, on a la température à Paris, c'est que tout marche correctement. Alors ici on a une URL, donc c'est un serveur qui est lancé en localhost ici sur le port 18789,",
+    "start": 2245.03,
+    "end": 2256.05,
+    "word_count": 34
+  },
+  {
+    "id": 100,
+    "text": "mais comme on est sur un VPS on ne peut pas y avoir accès. Si ici je tape cette URL dans, sur mon ordinateur dans le navigateur, ben je vais accéder au localhost de mon ordinateur mais pas au localhost de la machine du VPS. Alors pour y avoir accès et pour avoir accès à l'interface utilisateur, l'interface visuelle de ClawBot, eh bien on va devoir créer un tunnel. Alors pour ça, je vais encore une fois retourner ici, je vais ouvrir une nouvelle fenêtre dans mon terminal et ici je vais mettre cette commande qui est juste ici.",
+    "start": 2256.59,
+    "end": 2286.372,
+    "word_count": 99
+  },
+  {
+    "id": 101,
+    "text": "C'est tout bon, il vient de nous répondre. La température ici à Paris, alors là il y a un petit bug d'affichage, c'est affiché en double, peu importe. Dans tous les cas, ici on peut voir qu'on a une URL et cette URL c'est l'URL d'un serveur. On peut voir que c'est sur le localhost et que c'est sur le port 18789.",
+    "start": 2303.553,
+    "end": 2316.933,
+    "word_count": 62
+  },
+  {
+    "id": 102,
+    "text": "Le problème c'est qu'on ne peut pas y avoir accès directement puisque ça c'est le localhost du serveur, donc du VPS. Et comme ici moi je suis sur mon ordinateur, si je tape tape cette URL, je vais aller sur le localhost de mon ordinateur et pas de la machine du VPS. Donc pour y avoir accès, on va devoir créer un tunnel. Pour ça, je vais ouvrir une nouvelle fenêtre dans mon terminal et je vais bien ouvrir une fenêtre sur mon ordinateur dans mon terminal. Là, on est plus sur le VPS et je vais taper ici une commande. Alors c'est pas celle-ci, il faut juste que je la copie-colle parce qu'elle est assez longue. C'est celle-ci, donc Ici on a SSH, donc ça va nous permettre de pouvoir créer un tunnel en SSH qui va être encrypté. Et ici on peut voir que c'est, on va,",
+    "start": 2317.441,
+    "end": 2363.787,
+    "word_count": 149
+  },
+  {
+    "id": 103,
+    "text": "et ici on peut voir qu'on, et ici on va écouter le port 18789 de notre machine. Et ici on va écouter le port 18789 et on va le mapper ici avec notre port à nous, donc avec notre ordinateur, notre localhost 127.0.1. Et ici",
+    "start": 2365.72,
+    "end": 2384.96,
+    "word_count": 45
+  },
+  {
+    "id": 104,
+    "text": "on va écouter le port 18789 de la machine qui est juste ici, on va le voir dans un instant.",
+    "start": 2387.135,
+    "end": 2392.235,
+    "word_count": 20
+  },
+  {
+    "id": 105,
+    "text": "Et on va mapper ça au port 18789, donc le même port mais sur notre localhost ici, sur notre machine. Et on va s'identifier en tant que root, c'est-à-dire l'utilisateur principal sur ici notre VPS. Donc là je tiens à préciser que ça",
+    "start": 2392.735,
+    "end": 2406.715,
+    "word_count": 43
+  },
+  {
+    "id": 106,
+    "text": "c'est l'URL du VPS ici. Si tu es pas sûr, tu retournes sur le VPS, il est juste ici. Ça c'est l'URL que tu dois utiliser. Utilisé. Donc il faut bien remplacer parce que sinon tu vas pas pouvoir te connecter. Ici je dois remettre, ici je dois remettre le mot de passe, ici je dois remettre le mot de passe puisque c'est une nouvelle connexion SSH.",
+    "start": 2407.215,
+    "end": 2438.358,
+    "word_count": 67
+  },
+  {
+    "id": 107,
+    "text": "Et une fois que c'est fait, alors tu dois surtout pas fermer ça. Moi ici, tu peux voir que,",
+    "start": 2548.493,
+    "end": 2555.633,
+    "word_count": 19
+  },
+  {
+    "id": 108,
+    "text": "et une fois que tu Et une fois que tu es connecté, tu peux tout simplement reprendre ici cette URL, aller sur ton navigateur et ensuite mettre l'URL. Et là maintenant tu as accès à l'interface.",
+    "start": 2574.481,
+    "end": 2583.401,
+    "word_count": 36
+  },
+  {
+    "id": 109,
+    "text": "Ici tu peux voir que j'ai accès au même chat que j'ai accès ici sur mon terminal dans le VPS. Donc là ici j'ai bien exactement la même conversation sur les deux plateformes, à la seule différence qu'ici je peux voir un petit peu plus d'informations, c'est un petit peu plus visuel. Et puis surtout j'ai plein d'autres choses ici qu'on va voir dans un instant. Je vais pas trop m'éterniser sur l'interface dans cette vidéo, mais il y a quand même quelques trucs à voir. La première chose,",
+    "start": 2588.403,
+    "end": 2614.663,
+    "word_count": 89
+  },
+  {
+    "id": 110,
+    "text": "la première chose ici c'est l'Overview. Ici il se peut que tu n'aies pas le Gateway Token et que du coup tu aies des erreurs comme quoi la connexion connexion n'est pas bonne. Je crois que c'est une erreur qui est 8000, erreur",
+    "start": 2620.921,
+    "end": 2631.061,
+    "word_count": 43
+  },
+  {
+    "id": 111,
+    "text": "8000 ou quelque chose comme ça, gateway,",
+    "start": 2632.096,
+    "end": 2634.441,
+    "word_count": 7
+  },
+  {
+    "id": 112,
+    "text": "je sais plus exactement. Mais dans tous les cas, si tu n'as pas le gateway token, c'est tout simple, tu vas sur le terminal avec lequel tu as une conversation avec OpenClo et tu lui demandes tout simplement quel est le gateway token. Et il va te donner le gateway token, et ensuite tu as juste à le mettre ici, cliquer sur connect, et normalement tout sera écrit connecté ici et tout marchera correctement.",
+    "start": 2635.041,
+    "end": 2657.259,
+    "word_count": 74
+  },
+  {
+    "id": 113,
+    "text": "Ensuite, tu as les channels, donc là c'est Telegram, et puis il y a plein d'autres choses. Ce qui est très intéressant,",
+    "start": 2664.02,
+    "end": 2668.72,
+    "word_count": 22
+  },
+  {
+    "id": 114,
+    "text": "c'est les cronjobs, c'est-à-dire les tâches qui sont récurrentes, qui vont se faire tous les jours, par exemple à 11h. Je vais te montrer comment faire ça dans un instant avec les prompts que je vais te donner. D'ailleurs,",
+    "start": 2669.3,
+    "end": 2679.18,
+    "word_count": 39
+  },
+  {
+    "id": 115,
+    "text": "toutes les commandes et tous les prompts dont on va parler dans cette vidéo,",
+    "start": 2679.68,
+    "end": 2683.36,
+    "word_count": 14
+  },
+  {
+    "id": 116,
+    "text": "eh bien,",
+    "start": 2683.9,
+    "end": 2683.48,
+    "word_count": 2
+  },
+  {
+    "id": 117,
+    "text": "je te les mets dans la description. Il y aura un lien pour que tu puisses récupérer un fichier avec tout le tutoriel tous les prompts, etc., sera beaucoup plus simple pour toi de les copier-coller plutôt que de les réécrire à la main. Et donc ici,",
+    "start": 2684.03,
+    "end": 2694.706,
+    "word_count": 47
+  },
+  {
+    "id": 118,
+    "text": "tous les soirs à 23h, eh bien, j'ai OpenClo qui lance plein de tâches jusqu'à 6h du matin et qui non-stop va créer de nouvelles fonctionnalités et de nouvelles applications pour moi. Donc pendant 7 heures, littéralement, le truc va tourner en boucle pour me créer des nouvelles choses.",
+    "start": 2695.566,
+    "end": 2710.126,
+    "word_count": 49
+  },
+  {
+    "id": 119,
+    "text": "Ici, on a les skills dont on a parlé, on va y revenir un petit peu plus tard sur comment est-ce qu'on peut installer GitHub. Et puis ensuite, on a d'autres choses, notamment ici Ici, tout ce qui va être les debug, les logs, c'est super intéressant. Quand tu as un problème, bah, tu as juste à copier-coller les logs pour régler le problème. Notamment, tu peux l'envoyer sur ChatGPT ou sur Claude. It's very, it's very cold. I'm",
+    "start": 2712.13,
+    "end": 2731.75,
+    "word_count": 79
+  },
+  {
+    "id": 120,
+    "text": "going to get to the",
+    "start": 2749.964,
+    "end": 2751.324,
+    "word_count": 5
+  },
+  {
+    "id": 121,
+    "text": "Donc pour installer de nouveaux skills que tu n'as pas pu installer avant parce que tu n'avais pas Homebrew, ce qu'on va faire c'est qu'on va taper npx clohub. Ça va te permettre d'installer un package qui va te permettre justement d'installer des skills. Alors moi tu vois qu'ici il est déjà installé, pour toi normalement ça va marquer qu'il vient d'être installé, donc là c'est tout bon. Et maintenant on a accès à plein de commandes différentes différentes.",
+    "start": 2802.057,
+    "end": 2823.497,
+    "word_count": 79
+  },
+  {
+    "id": 122,
+    "text": "Ici tu pourrais utiliser par exemple explore pour trouver de nouveaux skills. Nous on va aller droit au but, ici on va utiliser install et on va mettre le skill dont on a besoin, c'est-à-dire GitHub. Donc je vais taper npx clohub install github.",
+    "start": 2824.366,
+    "end": 2839.986,
+    "word_count": 44
+  },
+  {
+    "id": 123,
+    "text": "Voilà, c'est tout bon. Moi, tu vois qu'il est déjà installé parce que j'avais déjà fait la manip juste avant, mais normalement tu peux utiliser maintenant GitHub, ce qui va permettre en fait à la agent de, par exemple, juste lui dire est-ce que tu peux récupérer le repo qu'il y a sur mon GitHub et voir quelle est la dernière pull request, et il va avoir accès à tout ça.",
+    "start": 2892.625,
+    "end": 2908.765,
+    "word_count": 71
+  },
+  {
+    "id": 124,
+    "text": "On va maintenant utiliser notre bot sur Telegram. Alors pour ça, il faut, on va maintenant utiliser notre bot sur Telegram puisque c'est le but.",
+    "start": 3111.427,
+    "end": 3119.647,
+    "word_count": 25
+  },
+  {
+    "id": 125,
+    "text": "Alors on va maintenant utiliser notre bot sur Telegram puisque c'est le but. Ici on a juste à cliquer dessus et le bot va s'ouvrir. Pour ma part, je vais reprendre un bot que j'utilise déjà et que j'ai déjà configuré, comme ça on va gagner un petit peu de temps dans cette vidéo, mais je vais t'expliquer encore une fois comment est-ce que tu peux configurer tout ça. Et surtout, n'hésite pas à aller dans la description, il y a un lien avec toute ma configuration, tous les prompts que tu dois faire pour le configurer au mieux.",
+    "start": 3122.108,
+    "end": 3144.168,
+    "word_count": 99
+  },
+  {
+    "id": 126,
+    "text": "Là, ici, bon, là je lui ai dit de dire bonjour, il m'a un petit peu saucé, donc voilà, c'était drôle.",
+    "start": 3144.708,
+    "end": 3149.748,
+    "word_count": 21
+  },
+  {
+    "id": 127,
+    "text": "On va maintenant utiliser notre bot sur Telegram puisque c'est quand même le but, c'est pas de parler directement dans un chat. Donc pour accéder directement au bot, tu peux cliquer ici. Pour ma part, je vais utiliser un bot que j'ai déjà configuré pour gagner du temps dans cette vidéo. Je vais juste te montrer quelques trucs sur ordinateur et après évidemment on passera à mon téléphone puisque c'est le but de la vidéo, c'est de le faire à partir du téléphone et de voir comment ça marche.",
+    "start": 3159.537,
+    "end": 3180.137,
+    "word_count": 89
+  },
+  {
+    "id": 128,
+    "text": "On va maintenant passer sur Telegram puisque c'est quand même le but de la manipulation.",
+    "start": 3198.687,
+    "end": 3205.387,
+    "word_count": 15
+  },
+  {
+    "id": 129,
+    "text": "On va maintenant passer sur Telegram puisque c'est quand même le but. Ici, tu peux accéder à ton bot directement en cliquant sur l'identifiant qui a été envoyé par le Botfather. Ici, je vais réutiliser un bot que j'ai déjà configuré pour gagner du temps dans cette vidéo, mais surtout n'oublie pas d'aller dans la description, il y a un un lien avec un fichier qui répertorie tous les prompts que tu dois utiliser pour configurer ton bot au mieux.",
+    "start": 3208.154,
+    "end": 3228.694,
+    "word_count": 80
+  },
+  {
+    "id": 130,
+    "text": "Donc encore une fois, n'hésite pas à cliquer et tu recevras aussi les commandes qu'on a utilisées précédemment pour le VPS.",
+    "start": 3229.234,
+    "end": 3234.894,
+    "word_count": 21
+  },
+  {
+    "id": 131,
+    "text": "Je vais te montrer quelques trucs sur mon ordinateur et après évidemment on passera sur le téléphone puisque c'est quand même le but, c'est de voir comment est-ce qu'on peut utiliser tout ça sur le téléphone et la puissance de cet outil.",
+    "start": 3237.719,
+    "end": 3247.559,
+    "word_count": 42
+  },
+  {
+    "id": 132,
+    "text": "Donc là ici ici, si tu cliques ici, tu as accès à",
+    "start": 3248.659,
+    "end": 3251.505,
+    "word_count": 12
+  },
+  {
+    "id": 133,
+    "text": "plein— si tu cliques ici, tu as accès à",
+    "start": 3255.623,
+    "end": 3251.719,
+    "word_count": 9
+  },
+  {
+    "id": 134,
+    "text": "plein de commandes. Par exemple, le text-to-speech, pour pouvoir configurer le text-to-speech et pouvoir envoyer des messages vocaux et recevoir des messages vocaux. Pour le moment, moi je l'utilise pas. J'utilise un autre outil qui s'appelle Whisper Flow pour envoyer mes messages en texte, parce que je trouve que c'est mieux que OpenAI Whisper pour justement envoyer des messages vocaux. Je trouve qu'ils sont mieux interprétés par Whisper Flow, donc pour le moment j'utilise ça.",
+    "start": 3255.893,
+    "end": 3278.483,
+    "word_count": 75
+  },
+  {
+    "id": 135,
+    "text": "La chose la plus importante quand tu vas commencer, et encore une fois tout ça c'est dans le fichier que je t'ai envoyé, c'est de parler. On va cliquer ici et là tu peux voir qu'il y a plein de commandes que tu peux faire pour interagir avec ton bot. On a par exemple le TTS, donc text-to-speech, pour contrôler et setup le text-to-speech, pour recevoir des messages vocaux mais aussi pour en envoyer. Ça c'est le speech-to-texte. Alors pour ma part je l'utilise pas pour le moment parce que déjà le text-to-speech bah ça coûte de l'argent quand tu veux recevoir un message audio. Et le truc, c'est que je vois pas vraiment le bénéfice, je préfère lire directement.",
+    "start": 3279.029,
+    "end": 3317.963,
+    "word_count": 120
+  },
+  {
+    "id": 136,
+    "text": "Et puis surtout, si tu utilises une version qui est gratuite, bah la voix elle est pas super, donc je vois pas vraiment l'intérêt d'avoir, de recevoir des messages vocaux. Par contre, en envoyer, c'est très très cool.",
+    "start": 3318.463,
+    "end": 3327.703,
+    "word_count": 38
+  },
+  {
+    "id": 137,
+    "text": "Le problème, c'est que je trouve que les API qu'on peut utiliser, par exemple OpenAI Whisper, ne sont pas très bonnes. Je préfère largement utiliser Whisper Flow qui a un meilleur contexte, je trouve, et donc ça me traduit directement le messages en texte quand je parle dans mon téléphone. On verra ça un petit peu plus tard quand je passerai sur mon téléphone.",
+    "start": 3328.243,
+    "end": 3347.605,
+    "word_count": 64
+  },
+  {
+    "id": 138,
+    "text": "Donc la chose la plus importante quand tu vas commencer à configurer ton bot, et encore une fois tout est dans le fichier qui est dans la description,",
+    "start": 3348.824,
+    "end": 3355.084,
+    "word_count": 28
+  },
+  {
+    "id": 139,
+    "text": "c'est de parler de toi au maximum, de tes projets, de lui donner un contexte. Donc n'hésite pas à vraiment passer du temps à discuter avec lui pour qu'il te pose aussi des questions. Encore une fois, il y a un prompt dans le fichier qui va permettre de faire du reverse prompting, c'est-à-dire que ce soit l'IA qui te pose des questions pour quelles sont les informations dont dont elle a besoin pour t'assister au mieux.",
+    "start": 3355.644,
+    "end": 3376.424,
+    "word_count": 77
+  },
+  {
+    "id": 140,
+    "text": "Tu vas aussi avoir des prompts pour pouvoir, tu vas aussi avoir",
+    "start": 3406.098,
+    "end": 3408.886,
+    "word_count": 12
+  },
+  {
+    "id": 141,
+    "text": "des prompts pour avoir le meilleur workflow possible. Tu vas aussi avoir des prompts pour avoir le meilleur workflow possible, pour qu'il travaille avec des worktree, avec des branches, etc., sur GitHub, pour éviter que ça impacte ton code à toi. Évidemment que ça impacte le code en production, ça c'est super important. Et puis il y a aussi des prompts pour tout ce qui va être les cron jobs, c'est-à-dire toutes les tâches récurrentes, pour que tu aies des des choses qui se passent pendant que tu dormes,",
+    "start": 3410.398,
+    "end": 3434.02,
+    "word_count": 89
+  },
+  {
+    "id": 142,
+    "text": "pour que tu aies des reports le matin de tout ce qui a été fait, avec aussi des nouveautés sur l'IA par exemple, sur toutes les nouvelles fonctionnalités, toutes les nouvelles, tous les nouveaux outils qu'on a de disponibles pour créer des applications mobiles, etc. Donc tout ça, encore une fois, c'est dans le fichier. Et maintenant, on va passer sur mon téléphone et on va commencer à coder une nouvelle fonctionnalité pour mon application Shinobi Japanese.",
+    "start": 3434.52,
+    "end": 3456.863,
+    "word_count": 77
+  },
+  {
+    "id": 143,
+    "text": "On est sur mon téléphone et je vais utiliser WhisperFlow pour parler directement avec mon agent. Et on va commencer par lui demander s'il a bien accès à mon repository.",
+    "start": 3484.938,
+    "end": 3493.838,
+    "word_count": 30
+  },
+  {
+    "id": 144,
+    "text": "Est-ce que tu as bien accès au repository Shinobi app de mon application Shinobi Japanese? OK,",
+    "start": 3495.038,
+    "end": 3500.958,
+    "word_count": 16
+  },
+  {
+    "id": 145,
+    "text": "super. Donc il vient de nous répondre, il a bien accès au repository, il est sur la branche version 1.2.8, donc c'est celle sur laquelle je veux qu'on travaille, donc c'est parfait. Donc là, je vais lui demander de créer une nouvelle branche à partir de cette branche version 1.2.8, et on va travailler sur un nouvel écran. Je vais d'abord commencer par créer la branche et lui expliquer ça, et ensuite on va demander de lancer un serveur, un tunnel pour qu'on puisse regarder tout ça sur le téléphone. Et ensuite je lui demanderai, je lui donnerai surtout toutes les instructions.",
+    "start": 3524.257,
+    "end": 3552.857,
+    "word_count": 102
+  },
+  {
+    "id": 146,
+    "text": "Ok, super. Est-ce que tu peux créer une nouvelle branche à partir de version 1.2.8? On va travailler sur un nouvel écran qui viendra juste après quand on clique sur une carte histoire, donc une storycard.",
+    "start": 3556.235,
+    "end": 3568.755,
+    "word_count": 36
+  },
+  {
+    "id": 147,
+    "text": "Et ça devrait ouvrir un nouvel écran. On va mettre les détails de l'histoire, notamment l'image, le titre, etc. Donc tu peux appeler cette branche quelque chose comme StoryDetailsScreen,",
+    "start": 3569.775,
+    "end": 3579.855,
+    "word_count": 29
+  },
+  {
+    "id": 148,
+    "text": "quelque chose comme ça. Fais juste en sorte que ce soit bien",
+    "start": 3581.795,
+    "end": 3585.035,
+    "word_count": 12
+  },
+  {
+    "id": 149,
+    "text": "explicite, bien clair, et que ça ne rentre pas en conflit avec d'autres branches qu'on a déjà.",
+    "start": 3585.985,
+    "end": 3590.425,
+    "word_count": 17
+  },
+  {
+    "id": 150,
+    "text": "Et ensuite, une fois que c'est fait, lance un server, mais avant ça, fais bien en sorte, fais bien attention d'avoir installé les dépendances,",
+    "start": 3592.077,
+    "end": 3600.757,
+    "word_count": 24
+  },
+  {
+    "id": 151,
+    "text": "que les variables d'environnement sont bien installées, etc., que tout marche correctement. Et ensuite, envoie-moi un lien, lance un serveur et envoie-moi un lien avec un tunnel pour que je puisse le mettre sur mon appareil mobile et regarder sur mon development build que j'ai sur mon téléphone.",
+    "start": 3601.397,
+    "end": 3616.077,
+    "word_count": 48
+  },
+  {
+    "id": 152,
+    "text": "OK, donc là, je viens de lui faire le prompt, je lui demande, donc je lui explique ce qu'on va faire, je lui demande de créer une nouvelle branche avec un nom bien spécifique. Ensuite, je lui demande de bien installer les dépendances et de bien set les variables d'environnement. Et ensuite, je lui dis de lancer un serveur et de m'envoyer le lien du tunnel pour que je puisse le regarder sur mon téléphone. C'est parti.",
+    "start": 3619.195,
+    "end": 3641.875,
+    "word_count": 77
+  },
+  {
+    "id": 153,
+    "text": "Voilà, c'est tout bon,",
+    "start": 3748.66,
+    "end": 3749.4,
+    "word_count": 4
+  },
+  {
+    "id": 154,
+    "text": "c'est tout bon. Il vient de setup tout ça, il vient de m'envoyer un lien. Donc là, je vais copier le lien et on va directement aller sur mon application Shinobi. Ici, je suis sur Expo, donc je suis sur à development build. Je vais pas rentrer trop dans les détails dans cette vidéo, mais en gros tout ça c'est une fonctionnalité d'Expo de pouvoir créer des tunnels et de pouvoir les mettre juste ici. Donc là je peux mettre une URL,",
+    "start": 3750.78,
+    "end": 3770.94,
+    "word_count": 82
+  },
+  {
+    "id": 155,
+    "text": "je mets l'URL, je me connecte, et ensuite ça va lancer l'application.",
+    "start": 3771.46,
+    "end": 3774.5,
+    "word_count": 12
+  },
+  {
+    "id": 156,
+    "text": "Là c'est en train de créer l'application, là c'est en train de télécharger tous les fichiers de l'application, et on va bientôt pouvoir voir tout ça sur le téléphone.",
+    "start": 3778.867,
+    "end": 3786.267,
+    "word_count": 29
+  },
+  {
+    "id": 157,
+    "text": "Voilà, donc super, l'application vient de se lancer. Ici on voit qu'on a une histoire et donc si je clique sur cette histoire, je suis directement redirigé vers l'histoire où je peux cliquer sur les mots, etc. Et le problème c'est que, comme on peut le voir sur la carte de l'histoire, il y a beaucoup trop d'informations. Ici je suis en train de travailler sur une nouvelle fonctionnalité qui est de télécharger les images, les histoires en offline. Donc en bas à droite de la carte, il y a un petit bouton pour télécharger l'histoire. Mais si je vais sur Beginner où il y a toutes les histoires qui sont débloquées, on peut voir que le bouton il est sur toutes les cartes. Donc ça fait pas très joli, surtout qu'il est pas bien positionné. En fait, je comptais le mettre à la base sur l'image, mais je me suis rendu compte que sur les petits appareils mobiles, c'était vraiment un enfer. Donc là, ce qu'on va faire, c'est qu'on va créer un nouveau screen où on va mettre toutes les informations de l'histoire. Comme ça, on pourra décharger un petit peu cette carte.",
+    "start": 3793.936,
+    "end": 3842.34,
+    "word_count": 195
+  },
+  {
+    "id": 158,
+    "text": "Donc je vais retourner ici et je vais lui faire mon petit prompt.",
+    "start": 3849.607,
+    "end": 3852.647,
+    "word_count": 13
+  },
+  {
+    "id": 159,
+    "text": "OK, super, maintenant on va pouvoir travailler sur ce nouvel écran. Alors fais bien en sorte, je sais pas si tu te rappelles dans la discussion qu'on a eue précédemment, mais il faut absolument que tu OK, super. Maintenant on va créer un nouvel écran, on va mettre tous les détails de l'histoire",
+    "start": 3855.787,
+    "end": 3874.007,
+    "word_count": 53
+  },
+  {
+    "id": 160,
+    "text": "ici. Dans cet écran, on va avoir tout en haut le header avec un bouton pour revenir en arrière. Au milieu, il doit y avoir un titre qui dit que c'est story details.",
+    "start": 3874.582,
+    "end": 3884.382,
+    "word_count": 33
+  },
+  {
+    "id": 161,
+    "text": "Et ensuite, en dessous, on doit avoir l'image de l'histoire qui est en format carte avec des bords arrondis,",
+    "start": 3885.122,
+    "end": 3891.662,
+    "word_count": 19
+  },
+  {
+    "id": 162,
+    "text": "avec le titre qui est— le titre",
+    "start": 3892.182,
+    "end": 3892.982,
+    "word_count": 7
+  },
+  {
+    "id": 163,
+    "text": "de l'histoire qui est en bas de l'image. Image",
+    "start": 3893.728,
+    "end": 3896.982,
+    "word_count": 9
+  },
+  {
+    "id": 164,
+    "text": "avec un gradient vers le haut, un gradient",
+    "start": 3897.97,
+    "end": 3898.83,
+    "word_count": 8
+  },
+  {
+    "id": 165,
+    "text": "noir vers le haut.",
+    "start": 3899.998,
+    "end": 3900.95,
+    "word_count": 4
+  },
+  {
+    "id": 166,
+    "text": "Ensuite, en dessous de cette image, on doit avoir les tags de l'histoire, puis une description de l'histoire qu'on n'a pas encore, donc il faut mettre un placeholder.",
+    "start": 3901.63,
+    "end": 3908.35,
+    "word_count": 28
+  },
+  {
+    "id": 167,
+    "text": "Ensuite, en dessous, tu peux mettre les statistiques de l'histoire, notamment l'expérience, le nombre de pages à lire, donc le nombre de pages dans l'histoire et le temps qu'il faut pour lire l'histoire.",
+    "start": 3908.91,
+    "end": 3917.11,
+    "word_count": 33
+  },
+  {
+    "id": 168,
+    "text": "Ensuite, tu peux ajouter une nouvelle section pour",
+    "start": 3917.61,
+    "end": 3919.77,
+    "word_count": 8
+  },
+  {
+    "id": 169,
+    "text": "mettre les crédits, c'est-à-dire les, les artistes qui ont participé à créer cette histoire. Histoire,",
+    "start": 3921.038,
+    "end": 3928.098,
+    "word_count": 15
+  },
+  {
+    "id": 170,
+    "text": "donc l'auteur, celui qui a fait les images, etc.",
+    "start": 3928.618,
+    "end": 3930.658,
+    "word_count": 9
+  },
+  {
+    "id": 171,
+    "text": "Et ensuite, tu peux mettre un bouton tout en bas, un call to action qui est sticky, donc qui reste toujours en bas. Fais bien attention de respecter les safe areas. Et derrière ce bouton, il doit y avoir un gradient qui va vers le haut, comme on a déjà sur plein d'autres pages. Il faut aussi qu'il y ait le bouton de téléchargement de l'histoire qui doit être aligné en space-between avec les tags juste en bas de l'image.",
+    "start": 3931.318,
+    "end": 3954.247,
+    "word_count": 80
+  },
+  {
+    "id": 172,
+    "text": "Voilà, donc là je lui ai fait mon, voilà, là je lui ai fait mon prompt. Donc c'est un prompt qui est très détaillé, je lui explique exactement ce que je veux, où je veux mettre l'image, où est-ce que je veux mettre le titre, où est-ce que je veux mettre tout ça, les boutons dont j'ai besoin. Donc je vais lui envoyer ça.",
+    "start": 3958.667,
+    "end": 3973.967,
+    "word_count": 64
+  },
+  {
+    "id": 173,
+    "text": "Donc ça y est, il est en train de commencer à travailler. Il me demande si je suis prêt pour les prochaines étapes. Allez, c'est parti!",
+    "start": 4204.741,
+    "end": 4210.341,
+    "word_count": 26
+  },
+  {
+    "id": 174,
+    "text": "Et Et là,",
+    "start": 4211.001,
+    "end": 4211.381,
+    "word_count": 3
+  },
+  {
+    "id": 175,
+    "text": "on va directement aller sur mon application et là, on va pouvoir voir directement en direct tous les changements qu'il est en train de faire et on va pouvoir ajuster en faisant des screenshots, en lui envoyant des feedbacks, en lui disant est-ce que tu peux mettre l'image un petit peu plus bas, un petit peu plus haut, etc.",
+    "start": 4211.901,
+    "end": 4227.441,
+    "word_count": 59
+  },
+  {
+    "id": 176,
+    "text": "Donc, on va voir tout ça ensemble.",
+    "start": 4227.981,
+    "end": 4229.101,
+    "word_count": 7
+  },
+  {
+    "id": 177,
+    "text": "Voilà, donc là il a commencé à travailler.",
+    "start": 4238.693,
+    "end": 4240.353,
+    "word_count": 8
+  },
+  {
+    "id": 178,
+    "text": "Voilà, donc là il a commencé à travailler. Si on va sur l'application, on peut voir que l'application est en train d'être rafraîchie au fur et à mesure. Donc en direct, on est en train de voir les changements qu'il est en train de faire. Donc là, pour le moment, c'est des gros rafraîchissements certainement parce qu'il est en train de modifier la navigation,",
+    "start": 4240.853,
+    "end": 4254.173,
+    "word_count": 64
+  },
+  {
+    "id": 179,
+    "text": "mais dès que la navigation sera bonne, on pourra aller sur l'écran et voir en direct tous les changements qu'il est en train de faire.",
+    "start": 4254.733,
+    "end": 4259.693,
+    "word_count": 25
+  },
+  {
+    "id": 180,
+    "text": "Là, je vais cliquer sur l'histoire pour voir si on peut déjà arriver sur le screen. Pas encore, donc il n'a pas encore mis en place la navigation. On va attendre un petit peu plus. Là, je vois que c'est encore en train de se rafraîchir. On va recliquer dessus.",
+    "start": 4262.15,
+    "end": 4273.45,
+    "word_count": 50
+  },
+  {
+    "id": 181,
+    "text": "Non, toujours pas. Donc il faut attendre un petit peu le temps qu'ils mettent en place la navigation. J'espère qu'il va mettre en place la navigation au début, comme ça on peut directement aller sur l'écran pour voir les changements.",
+    "start": 4274.25,
+    "end": 4282.91,
+    "word_count": 40
+  },
+  {
+    "id": 182,
+    "text": "Donc là, quand je— OK, donc là il a fini de travailler. Malheureusement, j'ai pas eu accès directement au screen. Par contre, il y a une erreur, donc là je vais lui faire un screenshot de l'erreur, je vais l'enregistrer dans les photos et je vais directement lui envoyer en lui expliquant quels sont les problèmes.",
+    "start": 4467.265,
+    "end": 4481.085,
+    "word_count": 56
+  },
+  {
+    "id": 183,
+    "text": "OK, donc maintenant quand je clique sur une story, j'arrive bien sur StoryDetailScreen. Pour",
+    "start": 4591.246,
+    "end": 4595.766,
+    "word_count": 14
+  },
+  {
+    "id": 184,
+    "text": "le problème, c'est que là pour le moment il y a rien, donc il va certainement continuer de travailler. On va regarder ça. OK, bon,",
+    "start": 4596.766,
+    "end": 4600.879,
+    "word_count": 25
+  },
+  {
+    "id": 185,
+    "text": "tu sais",
+    "start": 4939.715,
+    "end": 4600.903,
+    "word_count": 2
+  },
+  {
+    "id": 186,
+    "text": "quoi, ce",
+    "start": 4939.715,
+    "end": 4600.928,
+    "word_count": 2
+  },
+  {
+    "id": 187,
+    "text": "qu'on va faire, c'est",
+    "start": 4939.715,
+    "end": 4601.001,
+    "word_count": 4
+  },
+  {
+    "id": 188,
+    "text": "que tu vas",
+    "start": 4939.715,
+    "end": 4601.026,
+    "word_count": 3
+  },
+  {
+    "id": 189,
+    "text": "directement aller sur la branche où tout marche correctement. Donc tu vas check out sur la branche, ensuite tu vas lancer un serveur, ok, tu vas m'envoyer l'URL. Et ce que tu vas faire, c'est qu'on va volontairement casser quelques trucs sur l'écran StoryScreen, d'accord? Volontairement, on va casser quelques trucs. Par exemple, tu peux casser safarierview",
+    "start": 4939.715,
+    "end": 4962.575,
+    "word_count": 57
+  },
+  {
+    "id": 190,
+    "text": "pour qu'il y ait plus de faire preview, mais il faut quand même que ça compile, hein, faut que sur, mais juste",
+    "start": 4963.275,
+    "end": 4967.095,
+    "word_count": 22
+  },
+  {
+    "id": 191,
+    "text": "au niveau du layout, faut que ça marche pas trop bien.",
+    "start": 4968.757,
+    "end": 4971.397,
+    "word_count": 11
+  },
+  {
+    "id": 192,
+    "text": "Change le ratio, l'aspect ratio de l'image,",
+    "start": 4972.557,
+    "end": 4976.017,
+    "word_count": 7
+  },
+  {
+    "id": 193,
+    "text": "et peut-être on peut faire quoi d'autre?",
+    "start": 4976.777,
+    "end": 4980.497,
+    "word_count": 7
+  },
+  {
+    "id": 194,
+    "text": "Et tu peux casser quelque chose d'autre et je te dirai de corriger, OK? Et",
+    "start": 4984.077,
+    "end": 4989.857,
+    "word_count": 15
+  },
+  {
+    "id": 195,
+    "text": "garde garde bien en tête tout ce que tu as cassé parce que du coup je vais te demander de corriger. Faudra que tu le corriges d'un coup, d'accord? Enfin, d'un coup, il faudra que tu le corriges progressivement. D'abord tu corrigeras un truc, puis un autre truc, puis un autre truc, mais en une seule tâche. C'est juste comme ça je peux voir directement sur mon écran en direct que tu es en train de travailler et que tu es en train de corriger des trucs un par un, d'accord?",
+    "start": 4991.285,
+    "end": 5010.565,
+    "word_count": 91
+  },
+  {
+    "id": 196,
+    "text": "Commence pas à coder tout de suite. D'abord tu m'envoies le— d'abord",
+    "start": 5017.238,
+    "end": 5019.238,
+    "word_count": 12
+  },
+  {
+    "id": 197,
+    "text": "tu checkes sur le branch, tu m'envoies le lien du funnel et du tunnel, pardon. Et ensuite quand je suis dessus, je te dirai vas-y commence à casser les trucs.",
+    "start": 5020.148,
+    "end": 5030.178,
+    "word_count": 30
+  },
+  {
+    "id": 198,
+    "text": "Non, tu peux directement casser tout, casse ce qu'il faut casser et tu m'envoies le lien. Et mais tu répares pas tout de",
+    "start": 5030.738,
+    "end": 5037.178,
+    "word_count": 23
+  },
+  {
+    "id": 199,
+    "text": "suite, je te dirai quand réparer, d'accord? Entre parmi les 3 millions de pages du dossier Epstein, il y a quelques jours, le ministère de la Justice américain a refusé que 3 millions de pages aient à la fermeture d'Epstein, le régisseur financier qui avait aidé Andrew Mellon, mais alors qu'il souhaitait le tuer, mais Epstein a échoué. Tu as des moments où tu te dis pourquoi, ouais. Et après, il y a des moments où je suis aussi avec moi, genre je",
+    "start": 5470.855,
+    "end": 5475.435,
+    "word_count": 83
+  },
+  {
+    "id": 200,
+    "text": "me dis mais je suis pas obligé d'être moi tout le temps. Genre des émissions où on est mal, je suis là, je peux être formidablement sincère, je suis pas là, je suis plus moi là. Je vois l'argent que je perds, je suis plus moi, je suis plus moi là. Ça veut dire que je suis dans un jeu, cette peau-là. Quand je vais bien, je suis dans la peau de la joie, de la paix, de la Yeah, I'm just waiting for it to work because it's not working. It was working when when it was not recording, and now that I'm recording, it's not working anymore. Okay.",
+    "start": 5476.235,
+    "end": 5480.535,
+    "word_count": 110
+  },
+  {
+    "id": 201,
+    "text": "OK, super, maintenant j'ai accès à l'écran.",
+    "start": 5521.278,
+    "end": 5523.458,
+    "word_count": 7
+  },
+  {
+    "id": 202,
+    "text": "I need to start the video recorder.",
+    "start": 5524.558,
+    "end": 5523.718,
+    "word_count": 7
+  },
+  {
+    "id": 203,
+    "text": "OK, super, maintenant c'est bon, j'ai accès à l'écran. Alors il est un petit peu cassé, il y a des trucs qui vont pas trop. Donc là il y a la Safe Area qui est pas bien respectée, il y a la tab bar qui est pas bien respectée aussi pour le sticky bouton.",
+    "start": 5527.18,
+    "end": 5542.918,
+    "word_count": 54
+  },
+  {
+    "id": 204,
+    "text": "Ça y est, c'est bon, j'ai accès à l'écran.",
+    "start": 5544.618,
+    "end": 5547.198,
+    "word_count": 9
+  },
+  {
+    "id": 205,
+    "text": "Alors ça y est, c'est bon, j'ai accès à l'écran. Alors il est un petit peu cassé, donc ça va nous permettre de voir en direct quand l'agent va Modifier le code. Ça y est, c'est bon, j'ai accès à l'écran. Alors il est un petit peu cassé, mais c'est cool, ça va nous permettre maintenant de voir l'agent travailler en direct. Donc là ici on a un problème de safe area view, donc c'est-à-dire sur React Native",
+    "start": 5548.413,
+    "end": 5572.673,
+    "word_count": 78
+  },
+  {
+    "id": 206,
+    "text": "on a le contenu qui va derrière le contenu du téléphone tout en haut, donc derrière l'heure, etc. On a aussi la tab bar qui n'est pas bien prise en compte pour le stick bouton et on a l'image qui a pas les bonnes dimensions,",
+    "start": 5573.202,
+    "end": 5586.762,
+    "word_count": 45
+  },
+  {
+    "id": 207,
+    "text": "elle est un petit peu trop en landscape donc on la voit pas complètement.",
+    "start": 5587.302,
+    "end": 5590.122,
+    "word_count": 14
+  },
+  {
+    "id": 208,
+    "text": "Donc je vais faire un prompt et on va corriger tout ça et on va voir l'IA travailler en direct sur ce screen.",
+    "start": 5590.622,
+    "end": 5595.682,
+    "word_count": 23
+  },
+  {
+    "id": 209,
+    "text": "Ok, c'est super. Par contre, il y a quelques problèmes, la safe area ne marche pas correctement,",
+    "start": 5603.459,
+    "end": 5608.579,
+    "word_count": 17
+  },
+  {
+    "id": 210,
+    "text": "donc en haut,",
+    "start": 5609.279,
+    "end": 5609.899,
+    "word_count": 3
+  },
+  {
+    "id": 211,
+    "text": "le contenu va derrière le contenu du téléphone. On a aussi le sticky bouton qui est derrière la navigation,",
+    "start": 5610.819,
+    "end": 5616.459,
+    "word_count": 19
+  },
+  {
+    "id": 212,
+    "text": "donc il faut absolument corriger ça.",
+    "start": 5617.019,
+    "end": 5618.319,
+    "word_count": 6
+  },
+  {
+    "id": 213,
+    "text": "Et la, la, le ratio de l'image, les dimensions de l'image ne sont pas bonnes. Ça devrait être les dimensions de l'image originale, donc c'est-à-dire en landscape.",
+    "start": 5618.839,
+    "end": 5628.839,
+    "word_count": 27
+  },
+  {
+    "id": 214,
+    "text": "Je sais plus exactement c'est quoi le format, mais tu peux regarder dans les fichiers, tu peux regarder sur les autres screen.",
+    "start": 5629.733,
+    "end": 5635.973,
+    "word_count": 22
+  },
+  {
+    "id": 215,
+    "text": "Donc là je lui envoie, donc là je lui envoie ce qu'il faut corriger et on va directement aller sur l'application pour voir en direct les changements.",
+    "start": 5638.493,
+    "end": 5647.773,
+    "word_count": 27
+  },
+  {
+    "id": 216,
+    "text": "OK, donc là on vient de voir que ça vient de faire refreshing, ça vient de corriger la CFRIA.",
+    "start": 5653.493,
+    "end": 5657.473,
+    "word_count": 19
+  },
+  {
+    "id": 217,
+    "text": "Donc là on va attendre qu'il y ait un autre rafraîchissement pour corriger les autres problème.",
+    "start": 5658.053,
+    "end": 5661.853,
+    "word_count": 16
+  },
+  {
+    "id": 218,
+    "text": "Voilà, un autre rafraîchissement et là on vient d'avoir le bouton qui vient d'être mis correctement, donc il comprend super bien ce que je viens de lui dire. Et maintenant il manque plus que l'image qui n'est pas aux bonnes dimensions. Donc là je pense que ça devrait pas trop être un problème. Voilà, il vient de le corriger super simplement. Donc franchement, on a un screen qui est vraiment pas mal. Je lui ai même pas envoyé de mockup, je lui ai rien envoyé. Il y a bien on a bien le bouton de téléchargement ici qui est à droite. Alors je ne sais pas s'il marche si je clique dessus,",
+    "start": 5668.765,
+    "end": 5692.365,
+    "word_count": 112
+  },
+  {
+    "id": 219,
+    "text": "ça n'a pas l'air de marcher. Là ici pour les crédits, il m'a bien mis le placeholder, par contre quand je clique dessus il n'y a pas d'autre écran qui se met, donc il aurait peut-être pu faire ça même si je ne lui ai pas dit. On a bien les statistiques qui sont en dessous et on peut commencer à lire l'histoire. Donc il faut voir si le bouton marche, le bouton a l'air de marcher, donc là ça marche nickel.",
+    "start": 5692.964,
+    "end": 5709.764,
+    "word_count": 82
+  },
+  {
+    "id": 220,
+    "text": "Et si on revient en arrière,",
+    "start": 5710.531,
+    "end": 5712.211,
+    "word_count": 6
+  },
+  {
+    "id": 221,
+    "text": "Voilà, tout a l'air de marcher correctement. Il a bien enlevé aussi le bouton sur la— le bouton",
+    "start": 5712.711,
+    "end": 5716.271,
+    "word_count": 18
+  },
+  {
+    "id": 222,
+    "text": "de téléchargement sur la storycard.",
+    "start": 5717.666,
+    "end": 5720.091,
+    "word_count": 5
+  },
+  {
+    "id": 223,
+    "text": "Donc ça a l'air de marcher plutôt bien.",
+    "start": 5720.791,
+    "end": 5722.351,
+    "word_count": 8
+  },
+  {
+    "id": 224,
+    "text": "Franchement, je suis assez satisfait de l'écran. Il y a bien le gradient aussi derrière le titre.",
+    "start": 5722.871,
+    "end": 5726.971,
+    "word_count": 17
+  },
+  {
+    "id": 225,
+    "text": "Donc ça, franchement, il a très bien respecté ce que je lui ai demandé.",
+    "start": 5727.551,
+    "end": 5730.291,
+    "word_count": 14
+  },
+  {
+    "id": 226,
+    "text": "Donc j'ai envie de dire, c'est un succès.",
+    "start": 5731.211,
+    "end": 5732.791,
+    "word_count": 8
+  },
+  {
+    "id": 227,
+    "text": "Et voilà, on a cette nouvelle fonctionnalité qui est toute prête. Maintenant, j'aurais plus qu'à créer une pull request en lui demandant sur Telegram de me faire une pull",
+    "start": 5744.838,
+    "end": 5767.558,
+    "word_count": 29
+  },
+  {
+    "id": 228,
+    "text": "request et de regarder. Et voilà, c'est, et voilà, c'est tout bon. J'ai mon nouvel écran, j'ai ma nouvelle fonctionnalité qui est toute prête. J'aurais pu le faire de n'importe où, même dans une— et voilà, c'est tout bon. J'ai mon nouvel, et voilà, c'est tout bon. J'ai mon nouvel écran qui est prêt, ma fonctionnalité marche. Alors il y a quelques trucs encore à régler, mais bon, pour que— et voilà, c'est bon. J'ai mon nouvel écran qui, et voilà, c'est bon. J'ai mon nouvel écran qui est prêt. Qui est prêt, qui—",
+    "start": 5772.935,
+    "end": 5796.395,
+    "word_count": 94
+  },
+  {
+    "id": 229,
+    "text": "et voilà, c'est tout bon, j'ai mon nouvel écran qui est prêt. Maintenant, il n'y a plus qu'à faire une pull request sur GitHub, et ensuite je pourrai regarder sur mon application GitHub sur le téléphone quels ont été les changements de code, etc. Et ça, j'aurais pu le faire de n'importe où. Là, je suis chez moi pour faire la vidéo, mais j'aurais pu le faire dans une salle d'attente, j'aurais pu le faire n'importe où. Et voilà, j'ai mon écran qui est tout prêt. Et voilà, j'ai mon,",
+    "start": 5798.872,
+    "end": 5827.472,
+    "word_count": 90
+  },
+  {
+    "id": 230,
+    "text": "et voilà, j'ai mon écran qui est prêt. Maintenant, j'ai plus qu'à créer une pull request en lui demandant sur Telegram et je pourrais regarder tous les changements de code qu'il y a eu sur GitHub sur mon téléphone. Et tout ça, j'aurais pu le faire de n'importe où. Là, je l'ai fait chez moi juste pour la vidéo, mais j'aurais pu le faire au bord de la plage sans aucun problème.",
+    "start": 5828.183,
+    "end": 5844.023,
+    "word_count": 72
+  },
+  {
+    "id": 231,
+    "text": "Donc voilà comment tu peux continuer d'avancer sur ton application mobile. Donc voilà comment tu peux continuer d'avancer sur ton application, d'avancer sur tes projets même quand tu es pas sur ton ordinateur.",
+    "start": 5866.608,
+    "end": 5877.548,
+    "word_count": 33
+  },
+  {
+    "id": 232,
+    "text": "Et franchement franchement, tu as plu. Et voilà comment tu peux continuer d'avancer sur tes projets.",
+    "start": 5878.048,
+    "end": 5888.908,
+    "word_count": 16
+  },
+  {
+    "id": 233,
+    "text": "Et voilà comment tu peux continuer d'avancer sur ton application,",
+    "start": 5889.693,
+    "end": 5892.373,
+    "word_count": 10
+  },
+  {
+    "id": 234,
+    "text": "d'avancer sur tes projets, même quand tu n'es pas chez toi. Tout ça grâce à OpenClo, à Hostinger. Tout ça, ça se met en 5 minutes, le setup est super simple et les possibilités sont infinies. Donc si tu veux toi aussi avoir un agent, encore une fois, je te mets le lien dans la description. Description pour mettre un VPS.",
+    "start": 5892.873,
+    "end": 5909.353,
+    "word_count": 61
+  },
+  {
+    "id": 235,
+    "text": "Donc si toi aussi tu veux avoir un agent qui code pendant que tu dors, tu as plus aucune excuse. Je te mets le lien pour Hostinger dans la description.",
+    "start": 5914.465,
+    "end": 5922.265,
+    "word_count": 30
+  },
+  {
+    "id": 236,
+    "text": "Tu peux avoir un VPS. Donc si toi aussi tu veux avoir un agent qui code pendant que que tu dors. Donc si toi aussi tu veux avoir un agent qui code pendant que tu dors, honnêtement tu n'as plus d'excuses, il n'y a pas besoin d'acheter un MacBook Mini.",
+    "start": 5922.765,
+    "end": 5942.845,
+    "word_count": 50
+  },
+  {
+    "id": 237,
+    "text": "Donc si toi aussi tu veux avoir un agent qui code pendant que tu dors, tu n'as plus d'excuses, il n'y a pas besoin d'avoir un Mac Mini, tu as juste besoin d'un VPS Hostinger avec OpenClaw qui est déjà dessus. Encore une fois, je te mets le lien dans la description et tu peux utiliser le code JEREMY10 pour avoir 10 de réduction.",
+    "start": 5944.705,
+    "end": 5960.205,
+    "word_count": 64
+  },
+  {
+    "id": 238,
+    "text": "Si cette vidéo t'a plu, n'oublie pas de la liker. Dis-moi en commentaire comment est-ce que tu utilises Cloud Clo—",
+    "start": 5963.005,
+    "end": 5972.425,
+    "word_count": 20
+  },
+  {
+    "id": 239,
+    "text": "Si cette vidéo t'a plu, n'oublie pas de la liker. Si cette vidéo t'a plu, n'oublie pas de la liker. N'hésite pas à me dire en commentaire comment est-ce que tu utilises OpenClo. Et si tu veux voir plus de vidéos comme ça, n'oublie pas de t'abonner. Et sur ce, je te dis à bientôt. Bientôt pour la prochaine vidéo.",
+    "start": 5977.493,
+    "end": 5990.813,
+    "word_count": 60
+  },
+  {
+    "id": 240,
+    "text": "Si cette vidéo t'a plu, n'oublie pas de la liker.",
+    "start": 5993.073,
+    "end": 5995.473,
+    "word_count": 10
+  },
+  {
+    "id": 241,
+    "text": "Si cette vidéo t'a plu, n'oublie pas de la liker.",
+    "start": 5995.973,
+    "end": 5998.033,
+    "word_count": 10
+  },
+  {
+    "id": 242,
+    "text": "Si cette vidéo t'a plu, n'oublie pas de la liker. Dis-moi en commentaire comment est-ce que tu utilises OpenClo, ça m'intéresse.",
+    "start": 5998.733,
+    "end": 6003.573,
+    "word_count": 21
+  },
+  {
+    "id": 243,
+    "text": "Et si cette",
+    "start": 6006.383,
+    "end": 6007.193,
+    "word_count": 3
+  },
+  {
+    "id": 244,
+    "text": "vidéo, si cette vidéo t'a plu, n'oublie pas de la liker. Hésite pas à me dire en commentaire comment est-ce que tu utilises OpenClo. Et abonne-toi si tu veux pas louper du contenu similaire.",
+    "start": 6007.763,
+    "end": 6015.083,
+    "word_count": 34
+  },
+  {
+    "id": 245,
+    "text": "Si cette vidéo t'a plu, n'oublie pas de la liker. Surtout, dis-moi en commentaire comment est-ce que tu utilises OpenClose, ça m'intéresse. Abonne-toi si tu veux plus de contenu comme celui-ci. Et sur ce, je te dis à bientôt pour la prochaine vidéo.",
+    "start": 6016.623,
+    "end": 6028.523,
+    "word_count": 43
+  }
+]

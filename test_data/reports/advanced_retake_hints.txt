@@ -1,0 +1,373 @@
+## REPRISES PRÉ-DÉTECTÉES (DÉTECTION AVANCÉE)
+
+Ces groupes ont été détectés algorithmiquement comme des REPRISES (même contenu répété).
+
+Pour chaque groupe, garde UNIQUEMENT le DERNIER chunk indiqué.
+
+
+⚠️ GROUPE DE REPRISES #1:
+   Chunks: [2, 3, 4, 9]
+   → GARDER SEULEMENT: [9]
+   → SUPPRIMER: [2, 3, 4]
+
+  [2] Alors pour régler ce problème, on a eu— alors bien évidemmen...
+  [3] Alors bien évidemment Cloud Code ça
+  [4] reste un outil incroyable surtout quand on est sur son ordin...
+  [9] Alors pour régler ce problème des 30-45 minutes maximum, on ...
+
+⚠️ GROUPE DE REPRISES #2:
+   Chunks: [7, 19]
+   → GARDER SEULEMENT: [19]
+   → SUPPRIMER: [7]
+
+  [7] Et puis au final en avril-mai j'ai commencé à l'utiliser et ...
+  [19] Et puis surtout ralfloop en fait c'est rien du tout, c'est j...
+
+⚠️ GROUPE DE REPRISES #3:
+   Chunks: [24, 28]
+   → GARDER SEULEMENT: [28]
+   → SUPPRIMER: [24]
+
+  [24] qui me sort 5 ou 6 nouvelles fonctionnalités sur mon applica...
+  [28] Je veux aussi avoir 4-5-6, même 10 nouvelles fonctionnalités...
+
+⚠️ GROUPE DE REPRISES #4:
+   Chunks: [32, 35]
+   → GARDER SEULEMENT: [35]
+   → SUPPRIMER: [32]
+
+  [32] Alors, comment est-ce que OpenClo fonctionne? Eh bien, norma...
+  [35] c'est absolument à éviter de mettre OpenClaw sur son ordinat...
+
+⚠️ GROUPE DE REPRISES #5:
+   Chunks: [38, 43]
+   → GARDER SEULEMENT: [43]
+   → SUPPRIMER: [38]
+
+  [38] Voilà ce dont je parlais, OpenClo est déjà disponible direct...
+  [43] Voilà ce dont je parlais, OpenClo est déjà disponible sur de...
+
+⚠️ GROUPE DE REPRISES #6:
+   Chunks: [46, 50]
+   → GARDER SEULEMENT: [50]
+   → SUPPRIMER: [46]
+
+  [46] Et là, OpenClo est devenu populaire il y a seulement quelque...
+  [50] soit tu cliques ici sur Terminal et tu arriveras directement...
+
+⚠️ GROUPE DE REPRISES #7:
+   Chunks: [49, 55]
+   → GARDER SEULEMENT: [55]
+   → SUPPRIMER: [49]
+
+  [49] Tu vas ensuite arriver sur cet écran où tu as toutes les inf...
+  [55] Donc là, maintenant, on a juste à suivre les instructions. P...
+
+⚠️ GROUPE DE REPRISES #8:
+   Chunks: [53, 54]
+   → GARDER SEULEMENT: [54]
+   → SUPPRIMER: [53]
+
+  [53] C'est Et là, on arrive directement sur le setup de OpenClose...
+  [54] Et là, on arrive directement sur le setup de OpenClose. C'es...
+
+⚠️ GROUPE DE REPRISES #9:
+   Chunks: [57, 58, 59, 61, 68, 69]
+   → GARDER SEULEMENT: [69]
+   → SUPPRIMER: [57, 58, 59, 61, 68]
+
+  [57] Et là, on arrive directement sur le setup d'open/close.
+  [58] C'est là où je dis qu'Hostinger,
+  [59] c'est vraiment super simple.
+  [61] et on arrive directement sur le setup d'open/close. C'est po...
+  [68] Et maintenant je peux retourner sur le terminal et j'ai mon ...
+  [69] J'ai plus qu'à le copier et à le coller ici dans le terminal...
+
+⚠️ GROUPE DE REPRISES #10:
+   Chunks: [66, 77]
+   → GARDER SEULEMENT: [77]
+   → SUPPRIMER: [66]
+
+  [66] je vais copier la commande et ensuite je vais la mettre just...
+  [77] Ici tu vas devoir mettre ton propre,
+
+⚠️ GROUPE DE REPRISES #11:
+   Chunks: [72, 76]
+   → GARDER SEULEMENT: [76]
+   → SUPPRIMER: [72]
+
+  [72] Donc ici, je sélectionne Telegram.
+  [76] OpenClo. Ici, tu vas devoir mettre ton identifiant.
+
+⚠️ GROUPE DE REPRISES #12:
+   Chunks: [73, 74, 78]
+   → GARDER SEULEMENT: [78]
+   → SUPPRIMER: [73, 74]
+
+  [73] Et on va devoir chercher l'utilisateur Botfather. En fait, c...
+  [74] Et ensuite, je dois lui donner un nom qui finit par bot. Don...
+  [78] ici tu dois mettre ton propre identifiant Telegram, c'est po...
+
+⚠️ GROUPE DE REPRISES #13:
+   Chunks: [79, 92]
+   → GARDER SEULEMENT: [92]
+   → SUPPRIMER: [79]
+
+  [79] Maintenant je peux configurer des skills. Ici je vais dire o...
+  [92] Maintenant on va pouvoir configurer des hooks et là en l'occ...
+
+⚠️ GROUPE DE REPRISES #14:
+   Chunks: [81, 91]
+   → GARDER SEULEMENT: [91]
+   → SUPPRIMER: [81]
+
+  [81] on va choisir le Node Manager npm,
+  [91] et je vais mettre non ici aussi.
+
+⚠️ GROUPE DE REPRISES #15:
+   Chunks: [84, 86, 88, 94]
+   → GARDER SEULEMENT: [94]
+   → SUPPRIMER: [84, 86, 88]
+
+  [84] Le seul qui pourrait être bien, ça pourrait être pour par ex...
+  [86] pourquoi pas Gemini pour faire des recherches, ça peut être ...
+  [88] Moi ici pour le moment je vais aller, je vais juste en mettr...
+  [94] Ici je vais mettre yes pour avoir l'autocomplétion. Question...
+
+⚠️ GROUPE DE REPRISES #16:
+   Chunks: [85, 87]
+   → GARDER SEULEMENT: [87]
+   → SUPPRIMER: [85]
+
+  [85] Whisper pour avoir le speech-to-text, c'est-à-dire que quand...
+  [87] ça peut être pas mal aussi quand on demande à l'IA de nous f...
+
+⚠️ GROUPE DE REPRISES #17:
+   Chunks: [89, 93]
+   → GARDER SEULEMENT: [93]
+   → SUPPRIMER: [89]
+
+  [89] Ici je vais mettre non à tout puisque j'ai pas besoin de clé...
+  [93] Ici je vais, maintenant je peux activer l'autocomplétion.
+
+⚠️ GROUPE DE REPRISES #18:
+   Chunks: [103, 104]
+   → GARDER SEULEMENT: [104]
+   → SUPPRIMER: [103]
+
+  [103] et ici on peut voir qu'on, et ici on va écouter le port 1878...
+  [104] on va écouter le port 18789 de la machine qui est juste ici,...
+
+⚠️ GROUPE DE REPRISES #19:
+   Chunks: [113, 115]
+   → GARDER SEULEMENT: [115]
+   → SUPPRIMER: [113]
+
+  [113] Ensuite, tu as les channels, donc là c'est Telegram, et puis...
+  [115] toutes les commandes et tous les prompts dont on va parler d...
+
+⚠️ GROUPE DE REPRISES #20:
+   Chunks: [124, 128]
+   → GARDER SEULEMENT: [128]
+   → SUPPRIMER: [124]
+
+  [124] On va maintenant utiliser notre bot sur Telegram. Alors pour...
+  [128] On va maintenant passer sur Telegram puisque c'est quand mêm...
+
+⚠️ GROUPE DE REPRISES #21:
+   Chunks: [132, 133]
+   → GARDER SEULEMENT: [133]
+   → SUPPRIMER: [132]
+
+  [132] Donc là ici ici, si tu cliques ici, tu as accès à
+  [133] plein— si tu cliques ici, tu as accès à
+
+⚠️ GROUPE DE REPRISES #22:
+   Chunks: [136, 143]
+   → GARDER SEULEMENT: [143]
+   → SUPPRIMER: [136]
+
+  [136] Et puis surtout, si tu utilises une version qui est gratuite...
+  [143] On est sur mon téléphone et je vais utiliser WhisperFlow pou...
+
+⚠️ GROUPE DE REPRISES #23:
+   Chunks: [145, 146]
+   → GARDER SEULEMENT: [146]
+   → SUPPRIMER: [145]
+
+  [145] super. Donc il vient de nous répondre, il a bien accès au re...
+  [146] Ok, super. Est-ce que tu peux créer une nouvelle branche à p...
+
+⚠️ GROUPE DE REPRISES #24:
+   Chunks: [148, 150]
+   → GARDER SEULEMENT: [150]
+   → SUPPRIMER: [148]
+
+  [148] quelque chose comme ça. Fais juste en sorte que ce soit bien
+  [150] Et ensuite, une fois que c'est fait, lance un server, mais a...
+
+⚠️ GROUPE DE REPRISES #25:
+   Chunks: [153, 162]
+   → GARDER SEULEMENT: [162]
+   → SUPPRIMER: [153]
+
+  [153] Voilà, c'est tout bon,
+  [162] avec le titre qui est— le titre
+
+⚠️ GROUPE DE REPRISES #26:
+   Chunks: [155, 158, 163]
+   → GARDER SEULEMENT: [163]
+   → SUPPRIMER: [155, 158]
+
+  [155] je mets l'URL, je me connecte, et ensuite ça va lancer l'app...
+  [158] Donc je vais retourner ici et je vais lui faire mon petit pr...
+  [163] de l'histoire qui est en bas de l'image. Image
+
+⚠️ GROUPE DE REPRISES #27:
+   Chunks: [156, 166]
+   → GARDER SEULEMENT: [166]
+   → SUPPRIMER: [156]
+
+  [156] Là c'est en train de créer l'application, là c'est en train ...
+  [166] Ensuite, en dessous de cette image, on doit avoir les tags d...
+
+⚠️ GROUPE DE REPRISES #28:
+   Chunks: [164, 165, 168]
+   → GARDER SEULEMENT: [168]
+   → SUPPRIMER: [164, 165]
+
+  [164] avec un gradient vers le haut, un gradient
+  [165] noir vers le haut.
+  [168] Ensuite, tu peux ajouter une nouvelle section pour
+
+⚠️ GROUPE DE REPRISES #29:
+   Chunks: [173, 177]
+   → GARDER SEULEMENT: [177]
+   → SUPPRIMER: [173]
+
+  [173] Donc ça y est, il est en train de commencer à travailler. Il...
+  [177] Voilà, donc là il a commencé à travailler.
+
+⚠️ GROUPE DE REPRISES #30:
+   Chunks: [175, 179]
+   → GARDER SEULEMENT: [179]
+   → SUPPRIMER: [175]
+
+  [175] on va directement aller sur mon application et là, on va pou...
+  [179] mais dès que la navigation sera bonne, on pourra aller sur l...
+
+⚠️ GROUPE DE REPRISES #31:
+   Chunks: [191, 192, 193, 198]
+   → GARDER SEULEMENT: [198]
+   → SUPPRIMER: [191, 192, 193]
+
+  [191] au niveau du layout, faut que ça marche pas trop bien.
+  [192] Change le ratio, l'aspect ratio de l'image,
+  [193] et peut-être on peut faire quoi d'autre?
+  [198] Non, tu peux directement casser tout, casse ce qu'il faut ca...
+
+⚠️ GROUPE DE REPRISES #32:
+   Chunks: [194, 197]
+   → GARDER SEULEMENT: [197]
+   → SUPPRIMER: [194]
+
+  [194] Et tu peux casser quelque chose d'autre et je te dirai de co...
+  [197] tu checkes sur le branch, tu m'envoies le lien du funnel et ...
+
+⚠️ GROUPE DE REPRISES #33:
+   Chunks: [201, 204]
+   → GARDER SEULEMENT: [204]
+   → SUPPRIMER: [201]
+
+  [201] OK, super, maintenant j'ai accès à l'écran.
+  [204] Ça y est, c'est bon, j'ai accès à l'écran.
+
+⚠️ GROUPE DE REPRISES #34:
+   Chunks: [206, 211]
+   → GARDER SEULEMENT: [211]
+   → SUPPRIMER: [206]
+
+  [206] on a le contenu qui va derrière le contenu du téléphone tout...
+  [211] le contenu va derrière le contenu du téléphone. On a aussi l...
+
+⚠️ GROUPE DE REPRISES #35:
+   Chunks: [207, 209]
+   → GARDER SEULEMENT: [209]
+   → SUPPRIMER: [207]
+
+  [207] elle est un petit peu trop en landscape donc on la voit pas ...
+  [209] Ok, c'est super. Par contre, il y a quelques problèmes, la s...
+
+⚠️ GROUPE DE REPRISES #36:
+   Chunks: [208, 212, 215, 216, 225]
+   → GARDER SEULEMENT: [225]
+   → SUPPRIMER: [208, 212, 215, 216]
+
+  [208] Donc je vais faire un prompt et on va corriger tout ça et on...
+  [212] donc il faut absolument corriger ça.
+  [215] Donc là je lui envoie, donc là je lui envoie ce qu'il faut c...
+  [216] OK, donc là on vient de voir que ça vient de faire refreshin...
+  [225] Donc ça, franchement, il a très bien respecté ce que je lui ...
+
+⚠️ GROUPE DE REPRISES #37:
+   Chunks: [210, 220, 226]
+   → GARDER SEULEMENT: [226]
+   → SUPPRIMER: [210, 220]
+
+  [210] donc en haut,
+  [220] Et si on revient en arrière,
+  [226] Donc j'ai envie de dire, c'est un succès.
+
+⚠️ GROUPE DE REPRISES #38:
+   Chunks: [217, 224]
+   → GARDER SEULEMENT: [224]
+   → SUPPRIMER: [217]
+
+  [217] Donc là on va attendre qu'il y ait un autre rafraîchissement...
+  [224] Franchement, je suis assez satisfait de l'écran. Il y a bien...
+
+⚠️ GROUPE DE REPRISES #39:
+   Chunks: [221, 223]
+   → GARDER SEULEMENT: [223]
+   → SUPPRIMER: [221]
+
+  [221] Voilà, tout a l'air de marcher correctement. Il a bien enlev...
+  [223] Donc ça a l'air de marcher plutôt bien.
+
+⚠️ GROUPE DE REPRISES #40:
+   Chunks: [222, 233]
+   → GARDER SEULEMENT: [233]
+   → SUPPRIMER: [222]
+
+  [222] de téléchargement sur la storycard.
+  [233] Et voilà comment tu peux continuer d'avancer sur ton applica...
+
+⚠️ GROUPE DE REPRISES #41:
+   Chunks: [227, 235]
+   → GARDER SEULEMENT: [235]
+   → SUPPRIMER: [227]
+
+  [227] Et voilà, on a cette nouvelle fonctionnalité qui est toute p...
+  [235] Donc si toi aussi tu veux avoir un agent qui code pendant qu...
+
+⚠️ GROUPE DE REPRISES #42:
+   Chunks: [231, 232]
+   → GARDER SEULEMENT: [232]
+   → SUPPRIMER: [231]
+
+  [231] Donc voilà comment tu peux continuer d'avancer sur ton appli...
+  [232] Et franchement franchement, tu as plu. Et voilà comment tu p...
+
+⚠️ GROUPE DE REPRISES #43:
+   Chunks: [238, 239, 240, 241, 242, 244, 245]
+   → GARDER SEULEMENT: [245]
+   → SUPPRIMER: [238, 239, 240, 241, 242, 244]
+
+  [238] Si cette vidéo t'a plu, n'oublie pas de la liker. Dis-moi en...
+  [239] Si cette vidéo t'a plu, n'oublie pas de la liker. Si cette v...
+  [240] Si cette vidéo t'a plu, n'oublie pas de la liker.
+  [241] Si cette vidéo t'a plu, n'oublie pas de la liker.
+  [242] Si cette vidéo t'a plu, n'oublie pas de la liker. Dis-moi en...
+  [244] vidéo, si cette vidéo t'a plu, n'oublie pas de la liker. Hés...
+  [245] Si cette vidéo t'a plu, n'oublie pas de la liker. Surtout, d...
+
