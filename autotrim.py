@@ -6,7 +6,8 @@ This script:
 1. Loads cached transcriptions (raw + expected) from AssemblyAI
 2. Aligns words between raw and expected using difflib
 3. Identifies which time ranges in raw correspond to the expected output
-4. Renders the final output using ffmpeg
+4. Splits matched blocks at large internal gaps (removes silences/bad takes)
+5. Renders the final output using ffmpeg
 
 Usage:
     python3 autotrim.py [--raw RAW_FILE] [--expected EXPECTED_FILE] [--output OUTPUT_FILE]
@@ -18,6 +19,7 @@ import json
 import subprocess
 import difflib
 import argparse
+import re
 import time
 from pathlib import Path
 
@@ -40,58 +42,88 @@ def get_words(transcription):
     """Extract word list from transcription."""
     return transcription.get('words', [])
 
-def align_words(raw_words, exp_words):
+def normalize_word(text):
+    """Normalize a word for matching: lowercase, strip all punctuation."""
+    return re.sub(r'[^a-z0-9àâäéèêëïîôùûüÿçœæ]', '', text.lower())
+
+def align_words(raw_words, exp_words, min_block_size=2, max_internal_gap_ms=1500):
     """
     Use difflib.SequenceMatcher to find matching blocks between
-    raw and expected word sequences.
-    Returns list of matching blocks with time ranges.
+    raw and expected word sequences, then split blocks at large internal gaps.
+    
+    Returns list of segments with time ranges.
     """
-    raw_texts = [w['text'].lower().strip('.,!?;:') for w in raw_words]
-    exp_texts = [w['text'].lower().strip('.,!?;:') for w in exp_words]
+    raw_texts = [normalize_word(w['text']) for w in raw_words]
+    exp_texts = [normalize_word(w['text']) for w in exp_words]
     
     sm = difflib.SequenceMatcher(None, raw_texts, exp_texts, autojunk=False)
     blocks = sm.get_matching_blocks()
     
+    log(f"  difflib found {len(blocks)} raw matching blocks")
+    
     segments = []
     for block in blocks:
-        if block.size < 2:  # Skip tiny matches
+        if block.size < min_block_size:
             continue
         
-        raw_start_idx = block.a
-        raw_end_idx = block.a + block.size - 1
-        exp_start_idx = block.b
-        exp_end_idx = block.b + block.size - 1
+        # Split this block at large internal gaps in the raw audio
+        sub_start = block.a
+        sub_exp_start = block.b
         
-        # Get timestamps from word data
-        raw_start_ms = raw_words[raw_start_idx]['start']
-        raw_end_ms = raw_words[raw_end_idx]['end']
-        exp_start_ms = exp_words[exp_start_idx]['start']
-        exp_end_ms = exp_words[exp_end_idx]['end']
+        for i in range(block.size - 1):
+            raw_idx = block.a + i
+            next_raw_idx = block.a + i + 1
+            gap = raw_words[next_raw_idx]['start'] - raw_words[raw_idx]['end']
+            
+            if gap > max_internal_gap_ms:
+                # End current sub-block here
+                sub_size = (raw_idx + 1) - sub_start
+                if sub_size >= min_block_size:
+                    segments.append(_make_segment(
+                        raw_words, exp_words, raw_texts,
+                        sub_start, sub_size,
+                        sub_exp_start, sub_size
+                    ))
+                # Start new sub-block
+                sub_start = next_raw_idx
+                sub_exp_start = block.b + i + 1
         
-        segments.append({
-            'raw_start_ms': raw_start_ms,
-            'raw_end_ms': raw_end_ms,
-            'raw_start_idx': raw_start_idx,
-            'raw_end_idx': raw_end_idx,
-            'exp_start_ms': exp_start_ms,
-            'exp_end_ms': exp_end_ms,
-            'exp_start_idx': exp_start_idx,
-            'exp_end_idx': exp_end_idx,
-            'word_count': block.size,
-            'preview': ' '.join(raw_texts[raw_start_idx:raw_start_idx+min(6, block.size)]),
-        })
+        # Final sub-block
+        sub_size = (block.a + block.size) - sub_start
+        if sub_size >= min_block_size:
+            segments.append(_make_segment(
+                raw_words, exp_words, raw_texts,
+                sub_start, sub_size,
+                sub_exp_start, sub_size
+            ))
     
     return segments
 
-def merge_segments(segments, gap_threshold_ms=300):
+def _make_segment(raw_words, exp_words, raw_texts, raw_start_idx, size, exp_start_idx, exp_size):
+    """Create a segment dict from indices."""
+    raw_end_idx = raw_start_idx + size - 1
+    exp_end_idx = exp_start_idx + exp_size - 1
+    
+    return {
+        'raw_start_ms': raw_words[raw_start_idx]['start'],
+        'raw_end_ms': raw_words[raw_end_idx]['end'],
+        'raw_start_idx': raw_start_idx,
+        'raw_end_idx': raw_end_idx,
+        'exp_start_ms': exp_words[exp_start_idx]['start'],
+        'exp_end_ms': exp_words[exp_end_idx]['end'],
+        'exp_start_idx': exp_start_idx,
+        'exp_end_idx': exp_end_idx,
+        'word_count': size,
+        'preview': ' '.join(raw_texts[raw_start_idx:raw_start_idx + min(6, size)]),
+    }
+
+def merge_segments(segments, gap_threshold_ms=500):
     """
     Merge segments that are close together in the raw timeline.
-    gap_threshold_ms: if two segments are within this gap in raw time, merge them.
     """
     if not segments:
         return []
     
-    # Sort by raw start time
     segments = sorted(segments, key=lambda s: s['raw_start_ms'])
     
     merged = [segments[0].copy()]
@@ -100,101 +132,128 @@ def merge_segments(segments, gap_threshold_ms=300):
         gap = seg['raw_start_ms'] - prev['raw_end_ms']
         
         if gap <= gap_threshold_ms:
-            # Merge: extend the previous segment
             prev['raw_end_ms'] = max(prev['raw_end_ms'], seg['raw_end_ms'])
             prev['raw_end_idx'] = max(prev['raw_end_idx'], seg['raw_end_idx'])
             prev['exp_end_ms'] = max(prev['exp_end_ms'], seg['exp_end_ms'])
             prev['exp_end_idx'] = max(prev['exp_end_idx'], seg['exp_end_idx'])
             prev['word_count'] += seg['word_count']
-            prev['preview'] = prev['preview'] + ' ... ' + seg.get('preview', '')
+            prev['preview'] = prev.get('preview', '') + ' ... ' + seg.get('preview', '')
         else:
             merged.append(seg.copy())
     
     return merged
 
-def add_padding(segments, raw_words, padding_ms=100):
-    """
-    Add small padding before/after each segment to avoid cutting words.
-    Also ensure we capture the full word boundaries.
-    """
+def add_padding(segments, padding_ms=100):
+    """Add small padding before/after each segment."""
     padded = []
     for seg in segments:
-        start = max(0, seg['raw_start_ms'] - padding_ms)
-        end = seg['raw_end_ms'] + padding_ms
         padded.append({
             **seg,
-            'raw_start_ms': start,
-            'raw_end_ms': end,
+            'raw_start_ms': max(0, seg['raw_start_ms'] - padding_ms),
+            'raw_end_ms': seg['raw_end_ms'] + padding_ms,
         })
     return padded
 
-def refine_segments_with_word_boundaries(segments, raw_words, exp_words):
-    """
-    For each segment, look at the gap between consecutive expected words
-    at segment boundaries. If there's a very short gap in the expected output,
-    we should bridge segments (the silence was removed in editing).
-    """
-    # This is already handled by merging - the key is the merge threshold
-    return segments
-
-def render_audio(segments, input_file, output_file):
-    """
-    Use ffmpeg to extract and concatenate audio segments.
-    """
-    log(f"Rendering {len(segments)} segments from {input_file}")
+def remove_overlaps(segments):
+    """Ensure no segments overlap in the raw timeline."""
+    if not segments:
+        return []
     
-    # Create a temporary directory for segment files
+    segments = sorted(segments, key=lambda s: s['raw_start_ms'])
+    result = [segments[0].copy()]
+    
+    for seg in segments[1:]:
+        prev = result[-1]
+        if seg['raw_start_ms'] < prev['raw_end_ms']:
+            # Overlap: trim the start of current segment
+            seg = seg.copy()
+            seg['raw_start_ms'] = prev['raw_end_ms']
+        if seg['raw_start_ms'] < seg['raw_end_ms']:
+            result.append(seg)
+    
+    return result
+
+def render_with_concat(segments, input_file, output_file):
+    """
+    Render by extracting each segment individually, then concatenating.
+    Uses -ss before -i for fast seeking on large files.
+    """
+    log(f"Rendering {len(segments)} segments via concat method")
+    
     tmp_dir = TEST_DIR / 'tmp_segments'
     tmp_dir.mkdir(exist_ok=True)
     
-    # Extract each segment
+    # Clean any leftover temp files
+    for f in tmp_dir.glob('seg_*.ts'):
+        f.unlink()
+    
     segment_files = []
+    failed = 0
+    
     for i, seg in enumerate(segments):
         start_s = seg['raw_start_ms'] / 1000.0
         duration_s = (seg['raw_end_ms'] - seg['raw_start_ms']) / 1000.0
-        seg_file = tmp_dir / f'seg_{i:04d}.aac'
+        
+        if duration_s <= 0:
+            continue
+        
+        # Use .ts (MPEG-TS) for seamless concatenation
+        seg_file = tmp_dir / f'seg_{i:04d}.ts'
         
         cmd = [
             'ffmpeg', '-y',
             '-ss', f'{start_s:.3f}',
             '-i', str(input_file),
             '-t', f'{duration_s:.3f}',
-            '-acodec', 'aac',
+            '-c:a', 'aac',
             '-b:a', '128k',
             '-ar', '44100',
             '-ac', '2',
+            '-vn',  # no video
+            '-f', 'mpegts',
             str(seg_file)
         ]
         
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
         if result.returncode != 0:
-            log(f"  Warning: segment {i} extraction failed: {result.stderr[-200:]}")
+            log(f"  Warning: segment {i} failed (start={start_s:.1f}s, dur={duration_s:.1f}s)")
+            failed += 1
             continue
         
-        segment_files.append(seg_file)
+        # Verify file is not empty
+        if seg_file.stat().st_size > 0:
+            segment_files.append(seg_file)
+        else:
+            log(f"  Warning: segment {i} produced empty file")
+            failed += 1
     
-    log(f"Extracted {len(segment_files)} segments")
+    if failed > 0:
+        log(f"  {failed} segments failed, {len(segment_files)} succeeded")
     
-    # Create concat list
+    if not segment_files:
+        log("ERROR: No segments extracted!")
+        return False
+    
+    # Concatenate using concat protocol
     concat_file = tmp_dir / 'concat.txt'
     with open(concat_file, 'w') as f:
         for sf in segment_files:
             f.write(f"file '{sf}'\n")
     
-    # Concatenate
     cmd = [
         'ffmpeg', '-y',
         '-f', 'concat',
         '-safe', '0',
         '-i', str(concat_file),
-        '-acodec', 'aac',
+        '-c:a', 'aac',
         '-b:a', '128k',
         '-ar', '44100',
         '-ac', '2',
+        '-vn',
         str(output_file)
     ]
     
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
     if result.returncode != 0:
         log(f"Concat failed: {result.stderr[-500:]}")
         return False
@@ -203,133 +262,12 @@ def render_audio(segments, input_file, output_file):
     
     # Cleanup
     for sf in segment_files:
-        sf.unlink()
-    concat_file.unlink()
-    tmp_dir.rmdir()
-    
-    return True
-
-def render_audio_complex_filter(segments, input_file, output_file):
-    """
-    Use ffmpeg complex filter to extract and concatenate in one pass.
-    More efficient for many segments.
-    """
-    log(f"Rendering {len(segments)} segments with complex filter")
-    
-    # Build filter parts
-    filter_parts = []
-    concat_inputs = []
-    
-    for i, seg in enumerate(segments):
-        start_s = seg['raw_start_ms'] / 1000.0
-        end_s = seg['raw_end_ms'] / 1000.0
-        filter_parts.append(
-            f"[0:a]atrim=start={start_s:.3f}:end={end_s:.3f},asetpts=PTS-STARTPTS[a{i}]"
-        )
-        concat_inputs.append(f"[a{i}]")
-    
-    # Limit to reasonable batch sizes (ffmpeg has limits)
-    BATCH_SIZE = 50
-    if len(segments) > BATCH_SIZE:
-        return render_audio_batched(segments, input_file, output_file, BATCH_SIZE)
-    
-    filter_str = ';'.join(filter_parts) + ';' + ''.join(concat_inputs) + f"concat=n={len(segments)}:v=0:a=1[out]"
-    
-    cmd = [
-        'ffmpeg', '-y',
-        '-i', str(input_file),
-        '-filter_complex', filter_str,
-        '-map', '[out]',
-        '-acodec', 'aac',
-        '-b:a', '128k',
-        '-ar', '44100',
-        '-ac', '2',
-        str(output_file)
-    ]
-    
-    log(f"Running ffmpeg with {len(segments)} segments...")
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    if result.returncode != 0:
-        log(f"Complex filter failed: {result.stderr[-500:]}")
-        # Fall back to concat method
-        return render_audio(segments, input_file, output_file)
-    
-    log(f"Output saved to {output_file}")
-    return True
-
-def render_audio_batched(segments, input_file, output_file, batch_size=50):
-    """Render in batches for large numbers of segments."""
-    log(f"Rendering {len(segments)} segments in batches of {batch_size}")
-    
-    tmp_dir = TEST_DIR / 'tmp_segments'
-    tmp_dir.mkdir(exist_ok=True)
-    
-    batch_files = []
-    for batch_start in range(0, len(segments), batch_size):
-        batch = segments[batch_start:batch_start + batch_size]
-        batch_file = tmp_dir / f'batch_{batch_start:04d}.aac'
-        
-        filter_parts = []
-        concat_inputs = []
-        for i, seg in enumerate(batch):
-            start_s = seg['raw_start_ms'] / 1000.0
-            end_s = seg['raw_end_ms'] / 1000.0
-            filter_parts.append(
-                f"[0:a]atrim=start={start_s:.3f}:end={end_s:.3f},asetpts=PTS-STARTPTS[a{i}]"
-            )
-            concat_inputs.append(f"[a{i}]")
-        
-        filter_str = ';'.join(filter_parts) + ';' + ''.join(concat_inputs) + f"concat=n={len(batch)}:v=0:a=1[out]"
-        
-        cmd = [
-            'ffmpeg', '-y',
-            '-i', str(input_file),
-            '-filter_complex', filter_str,
-            '-map', '[out]',
-            '-acodec', 'aac',
-            '-b:a', '128k',
-            '-ar', '44100',
-            '-ac', '2',
-            str(batch_file)
-        ]
-        
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        if result.returncode != 0:
-            log(f"Batch {batch_start} failed: {result.stderr[-300:]}")
-            continue
-        
-        batch_files.append(batch_file)
-    
-    # Concat all batches
-    concat_file = tmp_dir / 'concat.txt'
-    with open(concat_file, 'w') as f:
-        for bf in batch_files:
-            f.write(f"file '{bf}'\n")
-    
-    cmd = [
-        'ffmpeg', '-y',
-        '-f', 'concat',
-        '-safe', '0',
-        '-i', str(concat_file),
-        '-acodec', 'aac',
-        '-b:a', '128k',
-        '-ar', '44100',
-        '-ac', '2',
-        str(output_file)
-    ]
-    
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    if result.returncode != 0:
-        log(f"Final concat failed: {result.stderr[-500:]}")
-        return False
-    
-    log(f"Output saved to {output_file}")
-    
-    # Cleanup
-    for bf in batch_files:
-        bf.unlink()
-    concat_file.unlink()
+        try:
+            sf.unlink()
+        except:
+            pass
     try:
+        concat_file.unlink()
         tmp_dir.rmdir()
     except:
         pass
@@ -378,8 +316,10 @@ def main():
     parser.add_argument('--raw-transcription', default=str(TEST_DIR / 'raw_transcription.json'))
     parser.add_argument('--expected-transcription', default=str(TEST_DIR / 'expected_transcription.json'))
     parser.add_argument('--merge-gap', type=int, default=500, help='Max gap in ms to merge segments')
-    parser.add_argument('--padding', type=int, default=80, help='Padding in ms around segments')
+    parser.add_argument('--padding', type=int, default=100, help='Padding in ms around segments')
     parser.add_argument('--min-words', type=int, default=2, help='Minimum words for a matching block')
+    parser.add_argument('--max-internal-gap', type=int, default=1500, help='Max gap within a block before splitting (ms)')
+    parser.add_argument('--dry-run', action='store_true', help='Only compute segments, skip rendering')
     args = parser.parse_args()
     
     log("Loading transcriptions...")
@@ -389,28 +329,33 @@ def main():
     raw_words = get_words(raw_trans)
     exp_words = get_words(exp_trans)
     
-    log(f"Raw: {len(raw_words)} words")
-    log(f"Expected: {len(exp_words)} words")
+    log(f"Raw: {len(raw_words)} words, {raw_words[-1]['end']/1000:.1f}s")
+    log(f"Expected: {len(exp_words)} words, {exp_words[-1]['end']/1000:.1f}s")
     
-    # Step 1: Align words
-    log("Aligning words...")
-    segments = align_words(raw_words, exp_words)
-    log(f"Found {len(segments)} matching blocks")
-    
-    # Filter by minimum word count
-    segments = [s for s in segments if s['word_count'] >= args.min_words]
-    log(f"After filtering (min {args.min_words} words): {len(segments)} segments")
+    # Step 1: Align words with gap splitting
+    log(f"Aligning words (min_words={args.min_words}, max_internal_gap={args.max_internal_gap}ms)...")
+    segments = align_words(
+        raw_words, exp_words,
+        min_block_size=args.min_words,
+        max_internal_gap_ms=args.max_internal_gap
+    )
+    log(f"Found {len(segments)} segments after gap splitting")
     
     # Step 2: Add padding
-    segments = add_padding(segments, raw_words, padding_ms=args.padding)
+    segments = add_padding(segments, padding_ms=args.padding)
     
     # Step 3: Merge close segments
     segments = merge_segments(segments, gap_threshold_ms=args.merge_gap)
     log(f"After merging (gap {args.merge_gap}ms): {len(segments)} segments")
     
-    # Calculate total duration
+    # Step 4: Remove overlaps
+    segments = remove_overlaps(segments)
+    
+    # Calculate stats
     total_ms = sum(s['raw_end_ms'] - s['raw_start_ms'] for s in segments)
     log(f"Total segment duration: {total_ms/1000:.1f}s ({total_ms/60000:.1f}min)")
+    log(f"Target (expected): {exp_words[-1]['end']/1000:.1f}s")
+    log(f"Ratio: {total_ms / exp_words[-1]['end'] * 100:.1f}%")
     
     # Save segments for inspection
     segments_path = REPORTS_DIR / 'segments.json'
@@ -418,11 +363,19 @@ def main():
         json.dump(segments, f, indent=2, ensure_ascii=False)
     log(f"Segments saved to {segments_path}")
     
-    # Step 4: Render
-    success = render_audio_complex_filter(segments, args.raw, args.output)
+    if args.dry_run:
+        log("Dry run - skipping rendering")
+        return
+    
+    # Step 5: Render
+    log("Starting render...")
+    t0 = time.time()
+    success = render_with_concat(segments, args.raw, args.output)
+    render_time = time.time() - t0
+    log(f"Render took {render_time:.1f}s")
     
     if success:
-        # Step 5: Compare
+        # Step 6: Compare
         report = compare_outputs(args.output, args.expected, REPORTS_DIR / 'comparison.json')
         
         log("\n" + "=" * 50)
@@ -430,6 +383,11 @@ def main():
         log("=" * 50)
         log(f"Duration similarity: {report['duration_similarity']*100:.1f}%")
         log(f"Output: {args.output}")
+        
+        if report['duration_similarity'] >= 0.95:
+            log("✅ SUCCESS: Duration within 5% of expected!")
+        else:
+            log(f"❌ Need {0.95*100:.0f}% similarity, got {report['duration_similarity']*100:.1f}%")
     else:
         log("Rendering failed!")
         sys.exit(1)
