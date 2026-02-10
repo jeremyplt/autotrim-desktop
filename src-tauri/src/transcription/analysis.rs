@@ -779,597 +779,300 @@ fn is_truncated(text: &str) -> bool {
         || trimmed.ends_with("…")
 }
 
-/// Detect groups of chunks that are retakes via multiple strategies:
-/// 1. Same 3-word opener (original logic, lowered to min_group_size=2)
-/// 2. Cross-chunk N-gram matching (any shared 3-word sequence)
-/// 3. Content-word overlap (for truly different reformulations)
-fn build_retake_hints(chunks: &[SpeechChunk]) -> String {
-    use std::collections::{HashMap, HashSet};
-
-    let min_match = 3;
-    let max_time_span = 180.0; // Allow wider retake groups — speaker can retry for 3 min
-    let max_gap_between_members = 60.0; // Allow 60s gap between members (retakes can have long pauses)
-    // Track all retake pairs we've found (earlier_id, later_id) to avoid duplicates
-    let mut retake_pairs: Vec<(usize, usize, String)> = Vec::new(); // (remove_id, keep_id, reason)
-
-    // === TIER 1: Same 3-word opener (min_group_size=2 with content overlap) ===
-    let mut opener_groups: HashMap<Vec<String>, Vec<usize>> = HashMap::new();
-    for chunk in chunks {
-        if chunk.word_count < min_match {
-            continue;
-        }
-        let words: Vec<String> = chunk.text.split_whitespace()
-            .take(min_match)
-            .map(|w| normalize_word(w))
-            .collect();
-        if words.len() == min_match {
-            opener_groups.entry(words).or_default().push(chunk.id);
-        }
+/// Extract the first 3 normalized words from a chunk's text as an "opener" tuple.
+fn get_opener(text: &str) -> Option<(String, String, String)> {
+    let words: Vec<String> = text.split_whitespace()
+        .take(3)
+        .map(|w| normalize_word(w))
+        .collect();
+    if words.len() == 3 {
+        Some((words[0].clone(), words[1].clone(), words[2].clone()))
+    } else {
+        None
     }
-
-    let mut opener_hint_ids: HashSet<usize> = HashSet::new();
-    let mut hints = Vec::new();
-
-    for (opener_key, ids) in &opener_groups {
-        if ids.len() < 2 {
-            continue;
-        }
-
-        // No hard frequency limit — we rely on content overlap checks below
-        // to distinguish real retake groups from common French transitions.
-        // Previously max_opener_frequency=6 caused real retake groups (8+ repetitions)
-        // to be skipped entirely.
-
-        // Split into sub-groups based on max_gap_between_members.
-        // This prevents a single large gap from invalidating the entire group.
-        let mut sub_groups: Vec<Vec<usize>> = Vec::new();
-        let mut current_sub: Vec<usize> = vec![ids[0]];
-
-        for pair in ids.windows(2) {
-            if let (Some(a), Some(b)) = (chunks.get(pair[0]), chunks.get(pair[1])) {
-                if b.start - a.end > max_gap_between_members {
-                    // Gap too large, start a new sub-group
-                    sub_groups.push(current_sub);
-                    current_sub = vec![pair[1]];
-                } else {
-                    current_sub.push(pair[1]);
-                }
-            }
-        }
-        sub_groups.push(current_sub);
-
-        for sub_ids in &sub_groups {
-            if sub_ids.len() < 2 {
-                continue;
-            }
-
-            // Check time span within sub-group
-            let first = chunks.get(*sub_ids.first().unwrap());
-            let last = chunks.get(*sub_ids.last().unwrap());
-            if let (Some(f), Some(l)) = (first, last) {
-                if l.end - f.start > max_time_span {
-                    continue;
-                }
-            }
-
-            // Require content overlap for ALL group sizes (not just pairs).
-            // Common French openers match across unrelated content — content overlap
-            // confirms they're actually discussing the same topic.
-            {
-                // Check pairwise: at least one pair in the group must share ≥3 content words
-                let mut has_overlap = false;
-                'outer: for (ai, &id_a) in sub_ids.iter().enumerate() {
-                    for &id_b in &sub_ids[ai + 1..] {
-                        if let (Some(a), Some(b)) = (chunks.get(id_a), chunks.get(id_b)) {
-                            let shared = count_shared_content_words(&a.text, &b.text);
-                            if shared >= 3 {
-                                has_overlap = true;
-                                break 'outer;
-                            }
-                        }
-                    }
-                }
-                if !has_overlap {
-                    continue;
-                }
-            }
-
-            let last_id = *sub_ids.last().unwrap();
-            let opener_text = opener_key.join(" ");
-
-            let mut detail_lines = Vec::new();
-            for &id in sub_ids {
-                if let Some(c) = chunks.get(id) {
-                    let preview: String = c.text.chars().take(60).collect();
-                    let ellipsis = if c.text.chars().count() > 60 { "..." } else { "" };
-                    let marker = if id == last_id { " ← GARDER" } else { " ← supprimer" };
-                    detail_lines.push(format!(
-                        "  [{}] ({} mots) \"{}{}\"{}", id, c.word_count, preview, ellipsis, marker
-                    ));
-                    opener_hint_ids.insert(id);
-                }
-            }
-
-            hints.push(format!(
-                "⚠️ REPRISES DÉTECTÉES (ouverture \"{}\"): segments {:?} → garder SEULEMENT [{}]\n{}",
-                opener_text, sub_ids, last_id, detail_lines.join("\n")
-            ));
-
-            for &id in sub_ids {
-                if id != last_id {
-                    retake_pairs.push((id, last_id, format!("opener \"{}\"", opener_text)));
-                }
-            }
-        }
-    }
-
-    // === TIER 1.5: Post-keep continuation detection ===
-    // After finding a group [A,B,C] → keep C, check if chunks AFTER C also share
-    // content with the group. This catches "continued retake sequences" where the
-    // speaker makes MORE attempts after what seemed like the final version.
-    {
-        let mut extended_pairs: Vec<(usize, usize, String)> = Vec::new();
-
-        // Group retake_pairs by keep_id to find the current "keep" for each group
-        let mut keep_to_group: HashMap<usize, Vec<usize>> = HashMap::new();
-        for &(remove_id, keep_id, _) in &retake_pairs {
-            keep_to_group.entry(keep_id).or_default().push(remove_id);
-        }
-
-        for (&old_keep_id, _group_members) in &keep_to_group {
-            let old_keep = match chunks.get(old_keep_id) {
-                Some(c) => c,
-                None => continue,
-            };
-
-            // Look at chunks after old_keep_id, within 60s
-            let mut new_last_id = old_keep_id;
-            for candidate_id in (old_keep_id + 1)..chunks.len() {
-                let candidate = match chunks.get(candidate_id) {
-                    Some(c) => c,
-                    None => break,
-                };
-
-                let gap = candidate.start - old_keep.end;
-                if gap > 60.0 {
-                    break;
-                }
-
-                // Check if candidate shares content with the old keep
-                let shared = count_shared_content_words(&old_keep.text, &candidate.text);
-                let candidate_opener: Vec<String> = candidate.text.split_whitespace()
-                    .take(min_match)
-                    .map(|w| normalize_word(w))
-                    .collect();
-                let keep_opener: Vec<String> = old_keep.text.split_whitespace()
-                    .take(min_match)
-                    .map(|w| normalize_word(w))
-                    .collect();
-                let same_opener = candidate_opener.len() == min_match
-                    && keep_opener.len() == min_match
-                    && candidate_opener == keep_opener;
-
-                // Strong signal: same opener OR high content overlap
-                if same_opener || shared >= 3 {
-                    // This is a continuation of the retake sequence
-                    if candidate_id > new_last_id {
-                        new_last_id = candidate_id;
-                    }
-                }
-            }
-
-            if new_last_id > old_keep_id {
-                // The old keep becomes a remove, new_last_id becomes the new keep
-                extended_pairs.push((old_keep_id, new_last_id,
-                    format!("extended retake: old keep [{}] superseded by [{}]", old_keep_id, new_last_id)));
-
-                // Also mark intermediate chunks as removes
-                for between_id in (old_keep_id + 1)..new_last_id {
-                    if let Some(between) = chunks.get(between_id) {
-                        let shared_with_new = chunks.get(new_last_id)
-                            .map(|k| count_shared_content_words(&between.text, &k.text))
-                            .unwrap_or(0);
-                        // Only remove if it's related (shared content or fragment)
-                        if shared_with_new >= 2 || between.word_count < 8 {
-                            extended_pairs.push((between_id, new_last_id,
-                                format!("part of extended retake [{}-{}]", old_keep_id, new_last_id)));
-                        }
-                    }
-                }
-
-                if let Some(new_keep) = chunks.get(new_last_id) {
-                    let preview: String = new_keep.text.chars().take(60).collect();
-                    let ellipsis = if new_keep.text.chars().count() > 60 { "..." } else { "" };
-                    hints.push(format!(
-                        "⚠️ REPRISES PROLONGÉES: le groupe se poursuit après [{}] → garder [{}] \"{}{}\"\n  Les segments [{}-{}] sont des tentatives supplémentaires → supprimer",
-                        old_keep_id, new_last_id, preview, ellipsis, old_keep_id, new_last_id - 1
-                    ));
-                }
-
-                eprintln!("Retake hints: extended group past [{}] to [{}]", old_keep_id, new_last_id);
-            }
-        }
-
-        retake_pairs.extend(extended_pairs);
-    }
-
-    // === TIER 2: Cross-chunk N-gram matching ===
-    // For pairs within 30s, check if any 3-word sequence from one appears in the other.
-    // Only match N-grams containing at least one meaningful word (not all stop words).
-
-    // Count N-gram frequency across all chunks to filter out very common ones
-    let mut ngram_frequency: HashMap<Vec<String>, usize> = HashMap::new();
-    for chunk in chunks {
-        let windows: HashSet<Vec<String>> = extract_ngram_windows(&chunk.text, 3).into_iter().collect();
-        for w in windows {
-            *ngram_frequency.entry(w).or_insert(0) += 1;
-        }
-    }
-    let max_ngram_freq = 4; // Ignore N-grams appearing in 4+ chunks (too common)
-
-    for i in 0..chunks.len() {
-        for j in (i + 1)..chunks.len() {
-            // Both already handled by opener hints? Skip.
-            if opener_hint_ids.contains(&chunks[i].id) && opener_hint_ids.contains(&chunks[j].id) {
-                continue;
-            }
-
-            let gap = chunks[j].start - chunks[i].end;
-            if gap > 120.0 || gap < 0.0 {
-                continue;
-            }
-
-            // Skip very short chunks (< 5 words: too little context to judge)
-            if chunks[i].word_count < 5 || chunks[j].word_count < 5 {
-                continue;
-            }
-
-            let shared = shared_ngrams(&chunks[i].text, &chunks[j].text, 3);
-            // Filter: N-gram must be uncommon AND contain at least one meaningful word (not all stop words)
-            let meaningful_shared: Vec<&Vec<String>> = shared.iter()
-                .filter(|ng| {
-                    let freq = ngram_frequency.get(*ng).copied().unwrap_or(0);
-                    if freq >= max_ngram_freq {
-                        return false;
-                    }
-                    // At least one word must be a content word (not a stop word, ≥4 chars)
-                    ng.iter().any(|w| w.len() >= 4 && !FRENCH_STOP_WORDS.contains(&w.as_str()))
-                })
-                .collect();
-
-            // Require ≥2 meaningful shared N-grams to reduce false positives
-            // (a single shared 3-word sequence is often coincidental in French)
-            if meaningful_shared.len() < 2 {
-                continue;
-            }
-
-            // Determine which is the retake (earlier) and which to keep (later)
-            let remove_id = chunks[i].id;
-            let keep_id = chunks[j].id;
-            let ngram_text = meaningful_shared.iter()
-                .take(2)
-                .map(|ng| ng.join(" "))
-                .collect::<Vec<_>>()
-                .join(", ");
-
-            // Skip if this pair is already in retake_pairs
-            if retake_pairs.iter().any(|(r, k, _)| *r == remove_id && *k == keep_id) {
-                continue;
-            }
-
-            retake_pairs.push((remove_id, keep_id, format!("N-gram partagé: \"{}\"", ngram_text)));
-
-            if let (Some(a), Some(b)) = (chunks.get(i), chunks.get(j)) {
-                let preview_a: String = a.text.chars().take(50).collect();
-                let ellipsis_a = if a.text.chars().count() > 50 { "..." } else { "" };
-                let preview_b: String = b.text.chars().take(50).collect();
-                let ellipsis_b = if b.text.chars().count() > 50 { "..." } else { "" };
-
-                let confidence = if is_truncated(&a.text) { "HAUTE" } else { "PROBABLE" };
-
-                hints.push(format!(
-                    "⚠️ REPRISE PAR CHEVAUCHEMENT (N-gram \"{}\"): [{}] puis [{}] → garder SEULEMENT [{}] (confiance: {})\n  [{}] \"{}{}\"\n  [{}] \"{}{}\"",
-                    ngram_text, remove_id, keep_id, keep_id, confidence,
-                    remove_id, preview_a, ellipsis_a,
-                    keep_id, preview_b, ellipsis_b,
-                ));
-            }
-        }
-    }
-
-    // === TIER 3: Content-word overlap (for truly different reformulations) ===
-    for i in 0..chunks.len() {
-        for j in (i + 1)..chunks.len() {
-            let gap = chunks[j].start - chunks[i].end;
-            if gap > 120.0 || gap < 0.0 {
-                continue;
-            }
-
-            // Skip pairs already detected
-            if retake_pairs.iter().any(|(r, k, _)| *r == chunks[i].id && *k == chunks[j].id) {
-                continue;
-            }
-
-            if chunks[i].word_count < 5 || chunks[j].word_count < 5 {
-                continue;
-            }
-
-            let content_a: HashSet<String> = extract_content_words(&chunks[i].text).into_iter().collect();
-            let content_b: HashSet<String> = extract_content_words(&chunks[j].text).into_iter().collect();
-
-            let shared_count = content_a.intersection(&content_b).count();
-            let union_count = content_a.union(&content_b).count();
-
-            // Lower threshold for short chunks (they have fewer content words so need lower absolute count)
-            let min_shared = if chunks[i].word_count < 15 || chunks[j].word_count < 15 { 2 } else { 3 };
-            if shared_count < min_shared || union_count == 0 {
-                continue;
-            }
-
-            let jaccard = shared_count as f64 / union_count as f64;
-            if jaccard < 0.20 {
-                continue;
-            }
-
-            // Flag as retake if: truncated sentence, high overlap, or short chunk with decent overlap
-            let is_aborted = is_truncated(&chunks[i].text);
-            let is_short = chunks[i].word_count < 15;
-            if !is_aborted && !is_short && jaccard < 0.40 {
-                continue; // Not confident enough for long non-truncated chunks
-            }
-
-            let remove_id = chunks[i].id;
-            let keep_id = chunks[j].id;
-            let shared_words: Vec<String> = content_a.intersection(&content_b).cloned().collect();
-
-            retake_pairs.push((remove_id, keep_id, format!("content overlap: {:?}", &shared_words[..shared_words.len().min(4)])));
-
-            if let (Some(a), Some(b)) = (chunks.get(i), chunks.get(j)) {
-                let preview_a: String = a.text.chars().take(50).collect();
-                let ellipsis_a = if a.text.chars().count() > 50 { "..." } else { "" };
-                let preview_b: String = b.text.chars().take(50).collect();
-                let ellipsis_b = if b.text.chars().count() > 50 { "..." } else { "" };
-
-                hints.push(format!(
-                    "🔄 REPRISE PROBABLE (mots partagés: {}): [{}] → [{}] (Jaccard: {:.0}%)\n  [{}] \"{}{}\"\n  [{}] \"{}{}\"",
-                    shared_words.iter().take(4).cloned().collect::<Vec<_>>().join(", "),
-                    remove_id, keep_id, jaccard * 100.0,
-                    remove_id, preview_a, ellipsis_a,
-                    keep_id, preview_b, ellipsis_b,
-                ));
-            }
-        }
-    }
-
-    // === MULTI-CHUNK BLOCK DETECTION ===
-    // When chunk A is a retake of chunk C, chunks between A and C that are continuations
-    // (SUITE markers or no overlap with C) should also be removed.
-    let mut additional_removes: Vec<(usize, usize, String)> = Vec::new(); // (remove_id, keep_id, reason)
-
-    for &(remove_id, keep_id, ref _reason) in &retake_pairs {
-        if keep_id <= remove_id + 1 {
-            continue; // No chunks between them
-        }
-
-        for between_id in (remove_id + 1)..keep_id {
-            if let Some(between_chunk) = chunks.get(between_id) {
-                // Already marked for removal? Skip.
-                if retake_pairs.iter().any(|(r, _, _)| *r == between_id) {
-                    continue;
-                }
-                if additional_removes.iter().any(|(r, _, _)| *r == between_id) {
-                    continue;
-                }
-
-                // Is it a continuation (starts lowercase = SUITE)?
-                let starts_lowercase = between_chunk.text.chars().next()
-                    .map(|c| c.is_lowercase()).unwrap_or(false);
-
-                // Is it very short (likely a fragment)?
-                let is_fragment = between_chunk.word_count < 3;
-
-                // Does it have NO content overlap with the keep chunk?
-                let keep_chunk = chunks.get(keep_id);
-                let no_overlap = keep_chunk.map(|kc| {
-                    count_shared_content_words(&between_chunk.text, &kc.text) == 0
-                }).unwrap_or(false);
-
-                // Be conservative: only include if it's clearly a continuation of the failed attempt
-                // (starts lowercase = SUITE) or a tiny fragment, AND has no overlap with keep chunk
-                if is_fragment || (starts_lowercase && no_overlap) {
-                    additional_removes.push((between_id, keep_id,
-                        format!("partie du bloc de reprise [{}-{}]", remove_id, keep_id)));
-
-                    let preview: String = between_chunk.text.chars().take(50).collect();
-                    let ellipsis = if between_chunk.text.chars().count() > 50 { "..." } else { "" };
-                    hints.push(format!(
-                        "  ↳ [{}] fait partie de la tentative ratée [{}-{}] → supprimer\n    \"{}{}\"",
-                        between_id, remove_id, keep_id, preview, ellipsis,
-                    ));
-                }
-            }
-        }
-    }
-
-    // Merge additional removes into retake_pairs
-    retake_pairs.extend(additional_removes);
-
-    if hints.is_empty() {
-        return String::new();
-    }
-
-    let mut result = String::from(
-        "=== REPRISES PRÉ-DÉTECTÉES ===\n\
-        Les groupes suivants ont été identifiés comme des reprises potentielles.\n\
-        - ⚠️ REPRISES DÉTECTÉES (même ouverture) → FIABLES, suis-les\n\
-        - ⚠️ REPRISE PAR CHEVAUCHEMENT / 🔄 REPRISE PROBABLE → SUGGESTIONS, utilise ton jugement\n\n"
-    );
-    for hint in &hints {
-        result.push_str(hint);
-        result.push('\n');
-    }
-    result.push('\n');
-
-    let opener_count = opener_groups.values().filter(|ids| ids.len() >= 2).count();
-    eprintln!("Retake hints: {} opener groups, {} total hints ({} pairs detected)",
-        opener_count, hints.len(), retake_pairs.len());
-    result
 }
 
-/// Send the full transcript (as chunks) to Claude Sonnet in ONE call.
-/// Detect all retake pairs algorithmically. Returns (remove_id, keep_id, reason).
-/// This is the core detection that runs BEFORE Claude sees anything.
+/// Detect groups of chunks that are retakes via multiple strategies.
+/// This is a FAITHFUL PORT of the Python retake_detector.py detect() function.
+/// Returns (remove_id, keep_id, reason) pairs.
 fn detect_all_retake_pairs(chunks: &[SpeechChunk]) -> Vec<(usize, usize, String)> {
     use std::collections::{HashMap, HashSet};
 
-    let min_match = 3;
-    let max_time_span = 180.0;
-    let max_gap_between_members = 60.0;
+    let n = chunks.len();
+    let mut rm: HashSet<usize> = HashSet::new(); // IDs to remove
+    let mut pairs: Vec<(usize, usize)> = Vec::new(); // (remove_id, keep_id)
 
-    let mut retake_pairs: Vec<(usize, usize, String)> = Vec::new();
-
-    // === STRATEGY 1: Same 3-word opener with content overlap ===
-    let mut opener_groups: HashMap<Vec<String>, Vec<usize>> = HashMap::new();
-    for chunk in chunks {
-        if chunk.word_count < min_match { continue; }
-        let words: Vec<String> = chunk.text.split_whitespace()
-            .take(min_match)
-            .map(|w| normalize_word(w))
-            .collect();
-        if words.len() == min_match {
-            opener_groups.entry(words).or_default().push(chunk.id);
+    // Opener frequency count
+    let mut ofreq: HashMap<(String, String, String), usize> = HashMap::new();
+    for c in chunks {
+        if let Some(o) = get_opener(&c.text) {
+            *ofreq.entry(o).or_insert(0) += 1;
         }
     }
 
-    let mut opener_hint_ids: HashSet<usize> = HashSet::new();
+    // ═══ S1: Opener groups with per-member keeper verification ═══
+    let mut ogrp: HashMap<(String, String, String), Vec<usize>> = HashMap::new();
+    for c in chunks {
+        if let Some(o) = get_opener(&c.text) {
+            if c.word_count >= 3 {
+                ogrp.entry(o).or_default().push(c.id);
+            }
+        }
+    }
 
-    for (opener_key, ids) in &opener_groups {
+    for (op, ids) in &ogrp {
         if ids.len() < 2 { continue; }
+        let freq = ofreq.get(op).copied().unwrap_or(0);
 
-        // Split into sub-groups based on time gap
-        let mut sub_groups: Vec<Vec<usize>> = Vec::new();
-        let mut current_sub: Vec<usize> = vec![ids[0]];
-        for pair in ids.windows(2) {
-            if let (Some(a), Some(b)) = (chunks.get(pair[0]), chunks.get(pair[1])) {
-                if b.start - a.end > max_gap_between_members {
-                    sub_groups.push(current_sub);
-                    current_sub = vec![pair[1]];
+        // Split by time (max 120s gap)
+        let mut subs: Vec<Vec<usize>> = vec![vec![ids[0]]];
+        for k in 1..ids.len() {
+            let prev_idx = ids[k - 1];
+            let curr_idx = ids[k];
+            if let (Some(prev_chunk), Some(curr_chunk)) = (chunks.get(prev_idx), chunks.get(curr_idx)) {
+                if curr_chunk.start - prev_chunk.end > 120.0 {
+                    subs.push(vec![curr_idx]);
                 } else {
-                    current_sub.push(pair[1]);
+                    subs.last_mut().unwrap().push(curr_idx);
                 }
             }
         }
-        sub_groups.push(current_sub);
 
-        for sub_ids in &sub_groups {
-            if sub_ids.len() < 2 { continue; }
+        for sub in &subs {
+            if sub.len() < 2 { continue; }
 
-            if let (Some(f), Some(l)) = (chunks.get(*sub_ids.first().unwrap()), chunks.get(*sub_ids.last().unwrap())) {
-                if l.end - f.start > max_time_span { continue; }
-            }
-
-            // Require content overlap
-            let mut has_overlap = false;
-            'outer: for (ai, &id_a) in sub_ids.iter().enumerate() {
-                for &id_b in &sub_ids[ai + 1..] {
-                    if let (Some(a), Some(b)) = (chunks.get(id_a), chunks.get(id_b)) {
-                        if count_shared_content_words(&a.text, &b.text) >= 3 {
-                            has_overlap = true;
+            // Group-level overlap check: at least one pair shares content
+            let min_grp_shared = if freq >= 4 { 3 } else { 2 };
+            let mut has_grp_overlap = false;
+            'outer: for a_idx in 0..sub.len() {
+                for b_idx in (a_idx + 1)..sub.len() {
+                    if let (Some(chunk_a), Some(chunk_b)) = (chunks.get(sub[a_idx]), chunks.get(sub[b_idx])) {
+                        let shared = count_shared_content_words(&chunk_a.text, &chunk_b.text);
+                        if shared >= min_grp_shared {
+                            has_grp_overlap = true;
                             break 'outer;
                         }
                     }
                 }
             }
-            if !has_overlap { continue; }
+            if !has_grp_overlap { continue; }
 
-            let last_id = *sub_ids.last().unwrap();
-            for &id in sub_ids {
-                if id != last_id {
-                    retake_pairs.push((id, last_id, format!("opener \"{}\"", opener_key.join(" "))));
-                    opener_hint_ids.insert(id);
+            let keep_id = *sub.last().unwrap();
+            let keeper_chunk = match chunks.get(keep_id) {
+                Some(c) => c,
+                None => continue,
+            };
+            let cw_k: HashSet<String> = extract_content_words(&keeper_chunk.text).into_iter().collect();
+
+            // Per-member verification against keeper
+            for &cid in &sub[..sub.len() - 1] {
+                let c = match chunks.get(cid) {
+                    Some(ch) => ch,
+                    None => continue,
+                };
+                let cw_c: HashSet<String> = extract_content_words(&c.text).into_iter().collect();
+                let shared_set: HashSet<_> = cw_c.intersection(&cw_k).collect();
+                let shared_count = shared_set.len();
+
+                // Basic requirement: share at least 2 content words with keeper
+                if shared_count < 2 { continue; }
+
+                // For common openers, require higher overlap
+                if freq >= 4 {
+                    let cov_c = if !cw_c.is_empty() { shared_count as f64 / cw_c.len() as f64 } else { 0.0 };
+                    let cov_k = if !cw_k.is_empty() { shared_count as f64 / cw_k.len() as f64 } else { 0.0 };
+                    // Both must have ≥15% coverage AND share ≥4 words
+                    if shared_count < 4 || cov_c.min(cov_k) < 0.15 {
+                        continue;
+                    }
                 }
-                opener_hint_ids.insert(id);
+
+                rm.insert(cid);
+                pairs.push((cid, keep_id));
             }
         }
     }
 
-    // === STRATEGY 2: Similarity-based detection (transitive) ===
-    {
-        let time_window = 180.0;
-        let min_similarity = 0.35;
-        let groups = detect_retake_groups_advanced(chunks, time_window, min_similarity);
-        for group in &groups {
-            if group.len() < 2 { continue; }
-            let last_id = *group.last().unwrap();
-            for &id in group {
-                if id != last_id {
-                    if !retake_pairs.iter().any(|(r, _, _)| *r == id) {
-                        retake_pairs.push((id, last_id, "similarity".to_string()));
+    // ═══ S2: Zone filling between retake pairs ═══
+    for &(removed_id, keeper_id) in pairs.clone().iter() {
+        for bid in (removed_id + 1)..keeper_id {
+            if rm.contains(&bid) { continue; }
+            let c = match chunks.get(bid) {
+                Some(ch) => ch,
+                None => continue,
+            };
+            let gap = if bid > 0 {
+                if let Some(prev) = chunks.get(bid - 1) {
+                    c.start - prev.end
+                } else {
+                    999.0
+                }
+            } else {
+                999.0
+            };
+            let low = c.text.chars().next().map(|ch| ch.is_lowercase()).unwrap_or(false);
+            let trunc = is_truncated(&c.text);
+            let pr = if bid > 0 { rm.contains(&(bid - 1)) } else { false };
+            let wc = c.word_count;
+
+            let mut do_remove = false;
+            if wc < 8 && pr && gap < 10.0 { do_remove = true; }
+            if low && pr && gap < 5.0 && wc < 20 { do_remove = true; }
+            if trunc && wc < 12 && pr { do_remove = true; }
+            if wc < 5 && pr { do_remove = true; }
+
+            // Content overlap with keeper
+            if !do_remove && wc >= 5 {
+                if let Some(keeper_chunk) = chunks.get(keeper_id) {
+                    let ci: HashSet<String> = extract_content_words(&c.text).into_iter().collect();
+                    let ck: HashSet<String> = extract_content_words(&keeper_chunk.text).into_iter().collect();
+                    let sh: HashSet<_> = ci.intersection(&ck).collect();
+                    let sh_count = sh.len();
+                    if !ci.is_empty() && sh_count >= 3 && (sh_count as f64 / ci.len() as f64) >= 0.25 {
+                        do_remove = true;
                     }
                 }
             }
-        }
-    }
 
-    // === STRATEGY 3: N-gram overlap (wider window) ===
-    let mut ngram_frequency: HashMap<Vec<String>, usize> = HashMap::new();
-    for chunk in chunks {
-        let windows: HashSet<Vec<String>> = extract_ngram_windows(&chunk.text, 3).into_iter().collect();
-        for w in windows {
-            *ngram_frequency.entry(w).or_insert(0) += 1;
-        }
-    }
-
-    for i in 0..chunks.len() {
-        for j in (i + 1)..chunks.len() {
-            if retake_pairs.iter().any(|(r, _, _)| *r == chunks[i].id) { continue; }
-            let gap = chunks[j].start - chunks[i].end;
-            if gap > 120.0 || gap < 0.0 { continue; }
-            if chunks[i].word_count < 5 || chunks[j].word_count < 5 { continue; }
-
-            let shared = shared_ngrams(&chunks[i].text, &chunks[j].text, 3);
-            let meaningful: Vec<&Vec<String>> = shared.iter()
-                .filter(|ng| {
-                    let freq = ngram_frequency.get(*ng).copied().unwrap_or(0);
-                    freq < 4 && ng.iter().any(|w| w.len() >= 4 && !FRENCH_STOP_WORDS.contains(&w.as_str()))
-                })
-                .collect();
-            if meaningful.len() >= 2 {
-                retake_pairs.push((chunks[i].id, chunks[j].id, "ngram-overlap".to_string()));
+            if do_remove {
+                rm.insert(bid);
+                pairs.push((bid, keeper_id));
             }
         }
     }
 
-    // === STRATEGY 4: Content-word overlap for short/truncated chunks ===
-    for i in 0..chunks.len() {
-        for j in (i + 1)..chunks.len() {
-            if retake_pairs.iter().any(|(r, _, _)| *r == chunks[i].id) { continue; }
+    // ═══ S3: High-similarity content detection (very strict) ═══
+    for i in 0..n {
+        if rm.contains(&i) || chunks[i].word_count < 10 { continue; }
+        let ci: HashSet<String> = extract_content_words(&chunks[i].text).into_iter().collect();
+        if ci.len() < 5 { continue; }
+        for j in (i + 1)..n {
+            if rm.contains(&j) || chunks[j].word_count < 10 { continue; }
             let gap = chunks[j].start - chunks[i].end;
-            if gap > 120.0 || gap < 0.0 { continue; }
-            if chunks[i].word_count < 5 || chunks[j].word_count < 5 { continue; }
-
-            let content_a: HashSet<String> = extract_content_words(&chunks[i].text).into_iter().collect();
-            let content_b: HashSet<String> = extract_content_words(&chunks[j].text).into_iter().collect();
-            let shared_count = content_a.intersection(&content_b).count();
-            let union_count = content_a.union(&content_b).count();
-            if shared_count < 2 || union_count == 0 { continue; }
-            let jaccard = shared_count as f64 / union_count as f64;
-
-            let is_aborted = is_truncated(&chunks[i].text);
-            let is_short = chunks[i].word_count < 15;
-            if (is_aborted || is_short) && jaccard >= 0.20 {
-                retake_pairs.push((chunks[i].id, chunks[j].id, "content-overlap".to_string()));
-            } else if jaccard >= 0.40 {
-                retake_pairs.push((chunks[i].id, chunks[j].id, "high-content-overlap".to_string()));
+            if gap > 60.0 { break; }
+            if gap < 0.0 { continue; }
+            let cj: HashSet<String> = extract_content_words(&chunks[j].text).into_iter().collect();
+            let sh: HashSet<_> = ci.intersection(&cj).collect();
+            let un: HashSet<_> = ci.union(&cj).collect();
+            let sh_count = sh.len();
+            let un_count = un.len();
+            if sh_count >= 6 && un_count > 0 && (sh_count as f64 / un_count as f64) >= 0.35 {
+                rm.insert(i);
+                pairs.push((i, j));
+                break;
             }
         }
     }
 
-    eprintln!("Algorithmic retake detection: {} pairs to remove", retake_pairs.len());
-    retake_pairs
+    // ═══ S4: Fragment/continuation cleanup ═══
+    for _ in 0..5 {
+        let mut changed = false;
+        for i in 0..n {
+            if rm.contains(&i) { continue; }
+            let c = &chunks[i];
+            let pr = i > 0 && rm.contains(&(i - 1));
+            let nr = i < n - 1 && rm.contains(&(i + 1));
+            let gb = if i > 0 {
+                if let Some(prev) = chunks.get(i - 1) {
+                    c.start - prev.end
+                } else {
+                    999.0
+                }
+            } else {
+                999.0
+            };
+            let low = c.text.chars().next().map(|ch| ch.is_lowercase()).unwrap_or(false);
+            let trunc = is_truncated(&c.text);
+            let wc = c.word_count;
+
+            let mut do_remove = false;
+            if wc < 5 && pr && nr { do_remove = true; }
+            if wc < 4 && pr && gb < 5.0 { do_remove = true; }
+            if trunc && wc < 8 && (pr || nr) { do_remove = true; }
+            if low && wc < 12 && pr && gb < 5.0 { do_remove = true; }
+
+            // Short chunk with most content in nearby later chunk
+            if !do_remove && wc >= 3 && wc <= 12 {
+                let ci: HashSet<String> = extract_content_words(&c.text).into_iter().collect();
+                if !ci.is_empty() {
+                    for j in (i + 1)..std::cmp::min(i + 5, n) {
+                        if let Some(later_chunk) = chunks.get(j) {
+                            if later_chunk.start - c.end > 30.0 { break; }
+                            let cj: HashSet<String> = extract_content_words(&later_chunk.text).into_iter().collect();
+                            let sh: HashSet<_> = ci.intersection(&cj).collect();
+                            let sh_count = sh.len();
+                            if sh_count >= 1 && (sh_count as f64 / ci.len() as f64) >= 0.6 && later_chunk.word_count > wc {
+                                do_remove = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if do_remove {
+                rm.insert(i);
+                changed = true;
+            }
+        }
+        if !changed { break; }
+    }
+
+    // ═══ S5: Non-French detection ═══
+    let fr: HashSet<&str> = [
+        "le", "la", "les", "un", "une", "des", "de", "du", "je", "tu", "il", "elle", "on",
+        "nous", "vous", "et", "ou", "mais", "donc", "est", "sont", "pas", "plus", "dans", "sur",
+        "avec", "pour", "que", "qui", "ça", "ce", "cette"
+    ].iter().copied().collect();
+    for c in chunks {
+        if rm.contains(&c.id) { continue; }
+        let wl: Vec<String> = c.text.split_whitespace()
+            .map(|w| w.to_lowercase().trim_matches(|ch: char| ".,!?".contains(ch)).to_string())
+            .collect();
+        if !wl.is_empty() {
+            let fr_count = wl.iter().filter(|w| fr.contains(w.as_str())).count();
+            if (fr_count as f64 / wl.len() as f64) < 0.1 && c.word_count >= 3 {
+                rm.insert(c.id);
+            }
+        }
+    }
+
+    // Convert keep set to remove pairs (Python returns KEEP ids, Rust returns REMOVE pairs)
+    let keep_set: HashSet<usize> = (0..n).filter(|i| !rm.contains(i)).collect();
+    let mut result_pairs: Vec<(usize, usize, String)> = Vec::new();
+
+    // For each removed chunk, find the nearest kept chunk as the "keep_id"
+    for &remove_id in &rm {
+        // Check if it's already in pairs (from S1/S2)
+        if let Some(&(_, keep_id)) = pairs.iter().find(|(r, _)| *r == remove_id) {
+            result_pairs.push((remove_id, keep_id, "S1-S2".to_string()));
+        } else {
+            // Find nearest kept chunk (prefer later chunks)
+            let mut best_keep = 0;
+            for j in (remove_id + 1)..n {
+                if keep_set.contains(&j) {
+                    best_keep = j;
+                    break;
+                }
+            }
+            if best_keep == 0 {
+                // No later kept chunk, find earlier
+                for j in (0..remove_id).rev() {
+                    if keep_set.contains(&j) {
+                        best_keep = j;
+                        break;
+                    }
+                }
+            }
+            if best_keep != 0 {
+                result_pairs.push((remove_id, best_keep, "S3-S5".to_string()));
+            }
+        }
+    }
+
+    eprintln!("Python algorithm port: {} chunks to remove out of {}", rm.len(), n);
+    result_pairs
 }
-
-/// Send the full transcript (as chunks) to Claude Sonnet in ONE call.
 /// NEW STRATEGY: Pre-remove algorithmic retakes, send clean transcript to Claude.
 pub async fn determine_keep_ranges(
     chunks: &[SpeechChunk],
