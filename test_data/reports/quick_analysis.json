@@ -1,13 +1,13 @@
 {
-  "segments": 86,
-  "output_words": 6468,
+  "segments": 89,
+  "output_words": 6396,
   "expected_words": 6560,
-  "matched_words": 6400,
-  "precision": 0.9894867037724181,
-  "recall": 0.975609756097561,
-  "f1": 0.9824992324224747,
-  "similarity_pct": 97.5609756097561,
-  "duration_s": 1822.138,
+  "matched_words": 6339,
+  "precision": 0.9910881801125704,
+  "recall": 0.9663109756097561,
+  "f1": 0.9785427601111455,
+  "similarity_pct": 96.6310975609756,
+  "duration_s": 1805.618,
   "expected_duration_s": 1806.027,
-  "duration_ratio": 1.0089206861248474
+  "duration_ratio": 0.9997735360545551
 }

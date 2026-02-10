@@ -73,15 +73,27 @@
   },
   {
     "raw_start_ms": 331863,
-    "raw_end_ms": 369741,
+    "raw_end_ms": 341916,
     "raw_start_idx": 1028,
-    "raw_end_idx": 1168,
+    "raw_end_idx": 1063,
     "exp_start_ms": 198440,
-    "exp_end_ms": 236112,
+    "exp_end_ms": 208440,
     "exp_start_idx": 725,
+    "exp_end_idx": 760,
+    "word_count": 36,
+    "preview": "a vraiment aucune valeur ajoutée le"
+  },
+  {
+    "raw_start_ms": 346343,
+    "raw_end_ms": 369741,
+    "raw_start_idx": 1083,
+    "raw_end_idx": 1168,
+    "exp_start_ms": 213100,
+    "exp_end_ms": 236112,
+    "exp_start_idx": 779,
     "exp_end_idx": 864,
-    "word_count": 137,
-    "preview": "a vraiment aucune valeur ajoutée le ... cest pas vraiment très intéressant là ... ici le nombre ditérations maximales qui ... et on sort avec le code"
+    "word_count": 85,
+    "preview": "ici le nombre ditérations maximales qui ... et on sort avec le code"
   },
   {
     "raw_start_ms": 436971,
@@ -132,28 +144,28 @@
     "preview": "alors comment estce que openclo fonctionne"
   },
   {
-    "raw_start_ms": 591552,
+    "raw_start_ms": 596765,
     "raw_end_ms": 662378,
-    "raw_start_idx": 1783,
+    "raw_start_idx": 1803,
     "raw_end_idx": 2036,
-    "exp_start_ms": 355969,
+    "exp_start_ms": 361069,
     "exp_end_ms": 426589,
-    "exp_start_idx": 1296,
+    "exp_start_idx": 1314,
     "exp_end_idx": 1545,
-    "word_count": 249,
-    "preview": "il a accès total au système ... il a accès à tout notre ... franchement je crois quil a fait ... dacheter complètement un nouvel ordinateur et"
+    "word_count": 231,
+    "preview": "il a accès à tout notre ... franchement je crois quil a fait ... dacheter complètement un nouvel ordinateur et"
   },
   {
-    "raw_start_ms": 663178,
+    "raw_start_ms": 664498,
     "raw_end_ms": 668998,
-    "raw_start_idx": 2038,
+    "raw_start_idx": 2046,
     "raw_end_idx": 2062,
-    "exp_start_ms": 427589,
+    "exp_start_ms": 428909,
     "exp_end_ms": 433209,
-    "exp_start_idx": 1547,
+    "exp_start_idx": 1555,
     "exp_end_idx": 1571,
-    "word_count": 24,
-    "preview": "des vps où il y a ... qui est hébergé enfin ils sont"
+    "word_count": 17,
+    "preview": "qui est hébergé enfin ils sont"
   },
   {
     "raw_start_ms": 670171,
@@ -181,15 +193,27 @@
   },
   {
     "raw_start_ms": 935358,
-    "raw_end_ms": 988697,
+    "raw_end_ms": 947008,
     "raw_start_idx": 2732,
-    "raw_end_idx": 2928,
+    "raw_end_idx": 2775,
     "exp_start_ms": 502467,
-    "exp_end_ms": 555680,
+    "exp_end_ms": 514007,
     "exp_start_idx": 1828,
+    "exp_end_idx": 1871,
+    "word_count": 43,
+    "preview": "alors pour ceux qui connaissent pas ... wordpress lhébergement de"
+  },
+  {
+    "raw_start_ms": 948648,
+    "raw_end_ms": 988697,
+    "raw_start_idx": 2784,
+    "raw_end_idx": 2928,
+    "exp_start_ms": 515847,
+    "exp_end_ms": 555680,
+    "exp_start_idx": 1880,
     "exp_end_idx": 2023,
-    "word_count": 191,
-    "preview": "alors pour ceux qui connaissent pas ... wordpress lhébergement de ... internet on a aussi lachat de ... de domaine etc donc ... vraiment on peut faire un tas ... et ici je recommande dutiliser le ... quand même besoin de faire tourner"
+    "word_count": 142,
+    "preview": "de domaine etc donc ... vraiment on peut faire un tas ... et ici je recommande dutiliser le ... quand même besoin de faire tourner"
   },
   {
     "raw_start_ms": 989700,
@@ -228,16 +252,16 @@
     "preview": "voilà donc je viens de rentrer"
   },
   {
-    "raw_start_ms": 1369354,
+    "raw_start_ms": 1372334,
     "raw_end_ms": 1461083,
-    "raw_start_idx": 3371,
+    "raw_start_idx": 3383,
     "raw_end_idx": 3673,
-    "exp_start_ms": 636699,
+    "exp_start_ms": 639879,
     "exp_end_ms": 728350,
-    "exp_start_idx": 2317,
+    "exp_start_idx": 2330,
     "exp_end_idx": 2618,
-    "word_count": 299,
-    "preview": "et on arrive directement sur le ... cest pour ça ... cest vraiment super simple super pratique ... répondre donc première estce quon est ... plan ensuite minimax cest le cest"
+    "word_count": 289,
+    "preview": "cest vraiment super simple super pratique ... répondre donc première estce quon est ... plan ensuite minimax cest le cest"
   },
   {
     "raw_start_ms": 1462133,
@@ -781,15 +805,27 @@
   },
   {
     "raw_start_ms": 3750680,
-    "raw_end_ms": 3774600,
+    "raw_end_ms": 3760440,
     "raw_start_idx": 7254,
-    "raw_end_idx": 7347,
+    "raw_end_idx": 7289,
     "exp_start_ms": 1486938,
-    "exp_end_ms": 1509958,
+    "exp_end_ms": 1495568,
     "exp_start_idx": 5298,
+    "exp_end_idx": 5333,
+    "word_count": 36,
+    "preview": "cest tout bon il vient de"
+  },
+  {
+    "raw_start_ms": 3761380,
+    "raw_end_ms": 3774600,
+    "raw_start_idx": 7295,
+    "raw_end_idx": 7347,
+    "exp_start_ms": 1496918,
+    "exp_end_ms": 1509958,
+    "exp_start_idx": 5340,
     "exp_end_idx": 5392,
-    "word_count": 93,
-    "preview": "cest tout bon il vient de ... donc je suis sur ... development build je vais pas rentrer"
+    "word_count": 53,
+    "preview": "development build je vais pas rentrer"
   },
   {
     "raw_start_ms": 3781707,

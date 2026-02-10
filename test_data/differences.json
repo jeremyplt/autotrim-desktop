@@ -1,0 +1,1955 @@
+[
+  {
+    "type": "delete",
+    "out_words": "ne",
+    "exp_words": "",
+    "out_pos": "3-4",
+    "exp_pos": "3-3",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "replace",
+    "out_words": "je nutilise",
+    "exp_words": "jutilise",
+    "out_pos": "37-39",
+    "exp_pos": "36-37",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "je nai",
+    "exp_words": "jai",
+    "out_pos": "42-44",
+    "exp_pos": "40-41",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "opencloud",
+    "exp_words": "openclo",
+    "out_pos": "60-61",
+    "exp_pos": "57-58",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "cloudcode",
+    "exp_words": "cloud code",
+    "out_pos": "165-166",
+    "exp_pos": "162-164",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "delete",
+    "out_words": "ne",
+    "exp_words": "",
+    "out_pos": "174-175",
+    "exp_pos": "172-172",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "replace",
+    "out_words": "cloudcode",
+    "exp_words": "cloud code",
+    "out_pos": "209-210",
+    "exp_pos": "206-208",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "une",
+    "exp_words": "1",
+    "out_pos": "232-233",
+    "exp_pos": "230-231",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "delete",
+    "out_words": "et",
+    "exp_words": "",
+    "out_pos": "245-246",
+    "exp_pos": "243-243",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "bah",
+    "out_pos": "249-249",
+    "exp_pos": "246-247",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "24h",
+    "exp_words": "24 heures",
+    "out_pos": "285-286",
+    "exp_pos": "283-285",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "alors",
+    "out_pos": "331-331",
+    "exp_pos": "330-331",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "cloud",
+    "exp_words": "claude",
+    "out_pos": "333-334",
+    "exp_pos": "333-334",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "ça",
+    "out_pos": "335-335",
+    "exp_pos": "335-336",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "cloud",
+    "exp_words": "claude",
+    "out_pos": "349-350",
+    "exp_pos": "350-351",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "delete",
+    "out_words": "ne",
+    "exp_words": "",
+    "out_pos": "359-360",
+    "exp_pos": "360-360",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "replace",
+    "out_words": "ce nest",
+    "exp_words": "bah cest",
+    "out_pos": "364-366",
+    "exp_pos": "364-366",
+    "out_len": 2,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "cloud",
+    "exp_words": "et claude",
+    "out_pos": "369-370",
+    "exp_pos": "369-371",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "quand même",
+    "out_pos": "372-372",
+    "exp_pos": "373-375",
+    "out_len": 0,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "cloud",
+    "exp_words": "claude",
+    "out_pos": "392-393",
+    "exp_pos": "395-396",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "alors",
+    "out_pos": "398-398",
+    "exp_pos": "401-402",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "petit",
+    "out_pos": "401-401",
+    "exp_pos": "405-406",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "delete",
+    "out_words": "eu",
+    "exp_words": "",
+    "out_pos": "454-455",
+    "exp_pos": "459-459",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "eh bien",
+    "out_pos": "552-552",
+    "exp_pos": "556-558",
+    "out_len": 0,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "cloud",
+    "exp_words": "claude",
+    "out_pos": "566-567",
+    "exp_pos": "572-573",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "ce nest",
+    "exp_words": "cest",
+    "out_pos": "572-574",
+    "exp_pos": "578-579",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "cloud",
+    "exp_words": "claude",
+    "out_pos": "604-605",
+    "exp_pos": "609-610",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "dinteractions maximal",
+    "exp_words": "ditérations maximale",
+    "out_pos": "617-619",
+    "exp_pos": "622-624",
+    "out_len": 2,
+    "exp_len": 2
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "du coup",
+    "out_pos": "626-626",
+    "exp_pos": "631-633",
+    "out_len": 0,
+    "exp_len": 2
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "et ben",
+    "out_pos": "628-628",
+    "exp_pos": "635-637",
+    "out_len": 0,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "cloud",
+    "exp_words": "claude",
+    "out_pos": "634-635",
+    "exp_pos": "643-644",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "na",
+    "exp_words": "a",
+    "out_pos": "673-674",
+    "exp_pos": "682-683",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "de",
+    "out_pos": "676-676",
+    "exp_pos": "685-686",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "sur ralphloop",
+    "exp_words": "ralfloop",
+    "out_pos": "710-712",
+    "exp_pos": "720-721",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "ny",
+    "exp_words": "y",
+    "out_pos": "715-716",
+    "exp_pos": "724-725",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "ralphloop",
+    "exp_words": "ralfloop",
+    "out_pos": "724-725",
+    "exp_pos": "733-734",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "ralphloop",
+    "exp_words": "ralfloop",
+    "out_pos": "738-739",
+    "exp_pos": "747-748",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "me suis dit que ce nest",
+    "exp_words": "dis cest",
+    "out_pos": "752-758",
+    "exp_pos": "761-763",
+    "out_len": 6,
+    "exp_len": 2
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "ici",
+    "out_pos": "773-773",
+    "exp_pos": "778-779",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "bah en fait",
+    "out_pos": "832-832",
+    "exp_pos": "838-841",
+    "out_len": 0,
+    "exp_len": 3
+  },
+  {
+    "type": "replace",
+    "out_words": "maximale",
+    "exp_words": "maximales",
+    "out_pos": "848-849",
+    "exp_pos": "857-858",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "donc",
+    "exp_words": "bon",
+    "out_pos": "856-857",
+    "exp_pos": "865-866",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "veux",
+    "exp_words": "vais",
+    "out_pos": "886-887",
+    "exp_pos": "895-896",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "delete",
+    "out_words": "je vais",
+    "exp_words": "",
+    "out_pos": "913-915",
+    "exp_pos": "922-922",
+    "out_len": 2,
+    "exp_len": 0
+  },
+  {
+    "type": "replace",
+    "out_words": "application là",
+    "exp_words": "applicationlà",
+    "out_pos": "917-919",
+    "exp_pos": "924-925",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "4 5 6",
+    "out_pos": "932-932",
+    "exp_pos": "938-941",
+    "out_len": 0,
+    "exp_len": 3
+  },
+  {
+    "type": "replace",
+    "out_words": "trois",
+    "exp_words": "3",
+    "out_pos": "985-986",
+    "exp_pos": "994-995",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "ralph loop",
+    "exp_words": "ralfloop",
+    "out_pos": "1006-1008",
+    "exp_pos": "1015-1016",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "openclose",
+    "exp_words": "openclo",
+    "out_pos": "1014-1015",
+    "exp_pos": "1022-1023",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "openclose",
+    "exp_words": "openclo",
+    "out_pos": "1016-1017",
+    "exp_pos": "1024-1025",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "cloudbot",
+    "exp_words": "claudebot",
+    "out_pos": "1027-1028",
+    "exp_pos": "1035-1036",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "delete",
+    "out_words": "ne",
+    "exp_words": "",
+    "out_pos": "1030-1031",
+    "exp_pos": "1038-1038",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "replace",
+    "out_words": "cloudbud",
+    "exp_words": "claudebot",
+    "out_pos": "1047-1048",
+    "exp_pos": "1054-1055",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "cloudcode",
+    "exp_words": "claudecode",
+    "out_pos": "1058-1059",
+    "exp_pos": "1065-1066",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "opencloud",
+    "exp_words": "openclo",
+    "out_pos": "1085-1086",
+    "exp_pos": "1092-1093",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "opencloud",
+    "exp_words": "openclo",
+    "out_pos": "1105-1106",
+    "exp_pos": "1112-1113",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "dllm",
+    "exp_words": "des llm",
+    "out_pos": "1151-1152",
+    "exp_pos": "1158-1160",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "dmcp",
+    "exp_words": "des mcp",
+    "out_pos": "1158-1159",
+    "exp_pos": "1166-1168",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "puisque",
+    "out_pos": "1220-1220",
+    "exp_pos": "1229-1230",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "openclose",
+    "exp_words": "openclo",
+    "out_pos": "1278-1279",
+    "exp_pos": "1288-1289",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "bien",
+    "exp_words": "ben",
+    "out_pos": "1281-1282",
+    "exp_pos": "1291-1292",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "donc",
+    "out_pos": "1358-1358",
+    "exp_pos": "1368-1369",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "eh bien",
+    "out_pos": "1375-1375",
+    "exp_pos": "1386-1388",
+    "out_len": 0,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "openclose",
+    "exp_words": "openclaw",
+    "out_pos": "1408-1409",
+    "exp_pos": "1421-1422",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "delete",
+    "out_words": "il ne",
+    "exp_words": "",
+    "out_pos": "1412-1414",
+    "exp_pos": "1425-1425",
+    "out_len": 2,
+    "exp_len": 0
+  },
+  {
+    "type": "delete",
+    "out_words": "ne",
+    "exp_words": "",
+    "out_pos": "1455-1456",
+    "exp_pos": "1466-1466",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "delete",
+    "out_words": "euros",
+    "exp_words": "",
+    "out_pos": "1463-1464",
+    "exp_pos": "1473-1473",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "créer",
+    "out_pos": "1532-1532",
+    "exp_pos": "1541-1542",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "ny",
+    "exp_words": "y",
+    "out_pos": "1557-1558",
+    "exp_pos": "1567-1568",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "on",
+    "exp_words": "ont",
+    "out_pos": "1576-1577",
+    "exp_pos": "1586-1587",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "delete",
+    "out_words": "dollars",
+    "exp_words": "",
+    "out_pos": "1595-1596",
+    "exp_pos": "1605-1605",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "replace",
+    "out_words": "ny",
+    "exp_words": "y",
+    "out_pos": "1600-1601",
+    "exp_pos": "1609-1610",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "quand on a buzzcloud",
+    "exp_words": "on a openclo",
+    "out_pos": "1654-1658",
+    "exp_pos": "1663-1666",
+    "out_len": 4,
+    "exp_len": 3
+  },
+  {
+    "type": "replace",
+    "out_words": "au stinger",
+    "exp_words": "hostinger",
+    "out_pos": "1665-1667",
+    "exp_pos": "1673-1674",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "opencloud",
+    "exp_words": "openclo",
+    "out_pos": "1689-1690",
+    "exp_pos": "1696-1697",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "delete",
+    "out_words": "euros",
+    "exp_words": "",
+    "out_pos": "1710-1711",
+    "exp_pos": "1717-1717",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "delete",
+    "out_words": "euros",
+    "exp_words": "",
+    "out_pos": "1716-1717",
+    "exp_pos": "1722-1722",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "replace",
+    "out_words": "kvm2",
+    "exp_words": "kvm 2",
+    "out_pos": "1723-1724",
+    "exp_pos": "1728-1730",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "openclaw",
+    "exp_words": "openclo",
+    "out_pos": "1794-1795",
+    "exp_pos": "1800-1801",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "openclaw",
+    "exp_words": "openclo",
+    "out_pos": "1814-1815",
+    "exp_pos": "1820-1821",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "delete",
+    "out_words": "ne",
+    "exp_words": "",
+    "out_pos": "1819-1820",
+    "exp_pos": "1825-1825",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "replace",
+    "out_words": "sites",
+    "exp_words": "site",
+    "out_pos": "1856-1857",
+    "exp_pos": "1861-1862",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "sites",
+    "exp_words": "site",
+    "out_pos": "1860-1861",
+    "exp_pos": "1865-1866",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "vraiment",
+    "out_pos": "1873-1873",
+    "exp_pos": "1878-1879",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "evidemment",
+    "exp_words": "évidemment",
+    "out_pos": "1880-1881",
+    "exp_pos": "1886-1887",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "openclose",
+    "exp_words": "openclo",
+    "out_pos": "1899-1900",
+    "exp_pos": "1905-1906",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "kvm2",
+    "exp_words": "kvm 2",
+    "out_pos": "1906-1907",
+    "exp_pos": "1912-1914",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "kvm1",
+    "exp_words": "kvm 1",
+    "out_pos": "1910-1911",
+    "exp_pos": "1917-1919",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "cest quil ny",
+    "exp_words": "il y",
+    "out_pos": "1918-1921",
+    "exp_pos": "1926-1928",
+    "out_len": 3,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "8go",
+    "exp_words": "8 go",
+    "out_pos": "1958-1959",
+    "exp_pos": "1965-1967",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "bandes passantes",
+    "exp_words": "bande passante",
+    "out_pos": "1973-1975",
+    "exp_pos": "1981-1983",
+    "out_len": 2,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "jérémy10",
+    "exp_words": "jeremy10",
+    "out_pos": "2013-2014",
+    "exp_pos": "2021-2022",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "ce",
+    "exp_words": "ça",
+    "out_pos": "2023-2024",
+    "exp_pos": "2031-2032",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "petite",
+    "out_pos": "2031-2031",
+    "exp_pos": "2039-2040",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "lagent",
+    "exp_words": "la agent",
+    "out_pos": "2086-2087",
+    "exp_pos": "2095-2097",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "le que",
+    "out_pos": "2099-2099",
+    "exp_pos": "2109-2111",
+    "out_len": 0,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "est",
+    "exp_words": "ait",
+    "out_pos": "2100-2101",
+    "exp_pos": "2112-2113",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "est",
+    "exp_words": "ait",
+    "out_pos": "2105-2106",
+    "exp_pos": "2117-2118",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "route",
+    "exp_words": "root",
+    "out_pos": "2202-2203",
+    "exp_pos": "2214-2215",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "ce nest",
+    "exp_words": "cest",
+    "out_pos": "2267-2269",
+    "exp_pos": "2279-2280",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "dopenclose",
+    "exp_words": "dopencloak",
+    "out_pos": "2305-2306",
+    "exp_pos": "2316-2317",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "nauras",
+    "exp_words": "auras",
+    "out_pos": "2359-2360",
+    "exp_pos": "2370-2371",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "openclaw",
+    "exp_words": "openclo",
+    "out_pos": "2397-2398",
+    "exp_pos": "2408-2409",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "te",
+    "out_pos": "2409-2409",
+    "exp_pos": "2420-2421",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "de",
+    "exp_words": "le",
+    "out_pos": "2495-2496",
+    "exp_pos": "2507-2508",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "entropique",
+    "exp_words": "anthropic",
+    "out_pos": "2518-2519",
+    "exp_pos": "2530-2531",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "que tu as",
+    "out_pos": "2521-2521",
+    "exp_pos": "2533-2536",
+    "out_len": 0,
+    "exp_len": 3
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "cest le",
+    "out_pos": "2531-2531",
+    "exp_pos": "2546-2548",
+    "out_len": 0,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "dopencloud",
+    "exp_words": "de openclo",
+    "out_pos": "2538-2539",
+    "exp_pos": "2555-2557",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "nest",
+    "exp_words": "est",
+    "out_pos": "2551-2552",
+    "exp_pos": "2569-2570",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "et",
+    "out_pos": "2669-2669",
+    "exp_pos": "2687-2688",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "donc",
+    "out_pos": "2675-2675",
+    "exp_pos": "2694-2695",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "cloud",
+    "exp_words": "claude",
+    "out_pos": "2681-2682",
+    "exp_pos": "2701-2702",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "sony",
+    "exp_words": "sonnet",
+    "out_pos": "2722-2723",
+    "exp_pos": "2742-2743",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "ce nest",
+    "exp_words": "cest",
+    "out_pos": "2730-2732",
+    "exp_pos": "2750-2751",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "à",
+    "out_pos": "2743-2743",
+    "exp_pos": "2762-2763",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "cloud opus",
+    "exp_words": "claudeo",
+    "out_pos": "2749-2751",
+    "exp_pos": "2769-2770",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "donc",
+    "out_pos": "2815-2815",
+    "exp_pos": "2834-2835",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "youtube clo test",
+    "out_pos": "2866-2866",
+    "exp_pos": "2886-2889",
+    "out_len": 0,
+    "exp_len": 3
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "youtube clo test bot",
+    "out_pos": "2883-2883",
+    "exp_pos": "2906-2910",
+    "out_len": 0,
+    "exp_len": 4
+  },
+  {
+    "type": "replace",
+    "out_words": "opencode ici tu vas devoir mettre ton propre",
+    "exp_words": "openclo",
+    "out_pos": "2897-2905",
+    "exp_pos": "2924-2925",
+    "out_len": 8,
+    "exp_len": 1
+  },
+  {
+    "type": "delete",
+    "out_words": "ne",
+    "exp_words": "",
+    "out_pos": "2949-2950",
+    "exp_pos": "2969-2969",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "replace",
+    "out_words": "route",
+    "exp_words": "root",
+    "out_pos": "2996-2997",
+    "exp_pos": "3015-3016",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "nest",
+    "exp_words": "est",
+    "out_pos": "3065-3066",
+    "exp_pos": "3084-3085",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "je nen",
+    "exp_words": "jen",
+    "out_pos": "3092-3094",
+    "exp_pos": "3111-3112",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "pour",
+    "out_pos": "3112-3112",
+    "exp_pos": "3130-3131",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "open ai",
+    "exp_words": "openai",
+    "out_pos": "3114-3116",
+    "exp_pos": "3133-3134",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "speechtotexte",
+    "exp_words": "speechtotext",
+    "out_pos": "3120-3121",
+    "exp_pos": "3138-3139",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "eh bien",
+    "out_pos": "3129-3129",
+    "exp_pos": "3147-3149",
+    "out_len": 0,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "nano banana",
+    "exp_words": "nanobanana",
+    "out_pos": "3145-3147",
+    "exp_pos": "3165-3166",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "nano pdf",
+    "exp_words": "nanopdf",
+    "out_pos": "3187-3189",
+    "exp_pos": "3206-3207",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "lya",
+    "exp_words": "lia",
+    "out_pos": "3199-3200",
+    "exp_pos": "3217-3218",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "allez",
+    "exp_words": "aller",
+    "out_pos": "3228-3229",
+    "exp_pos": "3246-3247",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "place local place",
+    "out_pos": "3262-3262",
+    "exp_pos": "3280-3283",
+    "out_len": 0,
+    "exp_len": 3
+  },
+  {
+    "type": "replace",
+    "out_words": "puisque on",
+    "exp_words": "puisquon",
+    "out_pos": "3277-3279",
+    "exp_pos": "3298-3299",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "openclo",
+    "out_pos": "3324-3324",
+    "exp_pos": "3344-3345",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "lautocom",
+    "exp_words": "lautocomplétion",
+    "out_pos": "3331-3332",
+    "exp_pos": "3352-3353",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "open close",
+    "exp_words": "openclaw",
+    "out_pos": "3355-3357",
+    "exp_pos": "3376-3377",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "le",
+    "out_pos": "3459-3459",
+    "exp_pos": "3479-3480",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "bah",
+    "out_pos": "3488-3488",
+    "exp_pos": "3509-3510",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "ce nest",
+    "exp_words": "cest",
+    "out_pos": "3559-3561",
+    "exp_pos": "3581-3582",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "route",
+    "exp_words": "root",
+    "out_pos": "3645-3646",
+    "exp_pos": "3666-3667",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "nes",
+    "exp_words": "es",
+    "out_pos": "3668-3669",
+    "exp_pos": "3689-3690",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "delete",
+    "out_words": "ne",
+    "exp_words": "",
+    "out_pos": "3696-3697",
+    "exp_pos": "3717-3717",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "et une fois que",
+    "out_pos": "3716-3716",
+    "exp_pos": "3736-3740",
+    "out_len": 0,
+    "exp_len": 4
+  },
+  {
+    "type": "delete",
+    "out_words": "ne",
+    "exp_words": "",
+    "out_pos": "3879-3880",
+    "exp_pos": "3903-3903",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "replace",
+    "out_words": "openclaw",
+    "exp_words": "openclo",
+    "out_pos": "3910-3911",
+    "exp_pos": "3933-3934",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "et il",
+    "out_pos": "3922-3922",
+    "exp_pos": "3945-3947",
+    "out_len": 0,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "cest lécrire",
+    "exp_words": "qui sont très intéressantes cest les cron jobs cestàdire les",
+    "out_pos": "3968-3970",
+    "exp_pos": "3993-4003",
+    "out_len": 2,
+    "exp_len": 10
+  },
+  {
+    "type": "replace",
+    "out_words": "promptes",
+    "exp_words": "prompts",
+    "out_pos": "3998-3999",
+    "exp_pos": "4031-4032",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "promptes",
+    "exp_words": "prompts",
+    "out_pos": "4011-4012",
+    "exp_pos": "4044-4045",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "et",
+    "exp_words": "eh",
+    "out_pos": "4019-4020",
+    "exp_pos": "4052-4053",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "promptes",
+    "exp_words": "prompts",
+    "out_pos": "4046-4047",
+    "exp_pos": "4079-4080",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "eh bien",
+    "out_pos": "4074-4074",
+    "exp_pos": "4107-4109",
+    "out_len": 0,
+    "exp_len": 2
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "github",
+    "out_pos": "4088-4088",
+    "exp_pos": "4123-4124",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "donc",
+    "out_pos": "4099-4099",
+    "exp_pos": "4135-4136",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "7h",
+    "exp_words": "7 heures",
+    "out_pos": "4100-4101",
+    "exp_pos": "4137-4139",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "débugs",
+    "exp_words": "debug",
+    "out_pos": "4154-4155",
+    "exp_pos": "4192-4193",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "bah",
+    "out_pos": "4165-4165",
+    "exp_pos": "4203-4204",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "ou sur cloud",
+    "out_pos": "4182-4182",
+    "exp_pos": "4221-4224",
+    "out_len": 0,
+    "exp_len": 3
+  },
+  {
+    "type": "replace",
+    "out_words": "npxclohub",
+    "exp_words": "npx clohub",
+    "out_pos": "4209-4210",
+    "exp_pos": "4251-4253",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "delete",
+    "out_words": "en",
+    "exp_words": "",
+    "out_pos": "4376-4377",
+    "exp_pos": "4419-4419",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "father",
+    "out_pos": "4405-4405",
+    "exp_pos": "4447-4448",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "promptes",
+    "exp_words": "prompts",
+    "out_pos": "4442-4443",
+    "exp_pos": "4485-4486",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "on",
+    "out_pos": "4541-4541",
+    "exp_pos": "4584-4585",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "donc text to speech",
+    "out_pos": "4546-4546",
+    "exp_pos": "4590-4594",
+    "out_len": 0,
+    "exp_len": 4
+  },
+  {
+    "type": "replace",
+    "out_words": "texttospeech",
+    "exp_words": "text to speech",
+    "out_pos": "4551-4552",
+    "exp_pos": "4599-4602",
+    "out_len": 1,
+    "exp_len": 3
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "ça cest le speech to text",
+    "out_pos": "4562-4562",
+    "exp_pos": "4612-4618",
+    "out_len": 0,
+    "exp_len": 6
+  },
+  {
+    "type": "delete",
+    "out_words": "ne",
+    "exp_words": "",
+    "out_pos": "4567-4568",
+    "exp_pos": "4623-4623",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "le text to speech",
+    "out_pos": "4576-4576",
+    "exp_pos": "4631-4635",
+    "out_len": 0,
+    "exp_len": 4
+  },
+  {
+    "type": "delete",
+    "out_words": "ne",
+    "exp_words": "",
+    "out_pos": "4593-4594",
+    "exp_pos": "4652-4652",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "bah",
+    "out_pos": "4614-4614",
+    "exp_pos": "4672-4673",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "nest",
+    "exp_words": "elle est",
+    "out_pos": "4616-4617",
+    "exp_pos": "4675-4677",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "delete",
+    "out_words": "ne",
+    "exp_words": "",
+    "out_pos": "4621-4622",
+    "exp_pos": "4681-4681",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "intérêt davoir",
+    "out_pos": "4626-4626",
+    "exp_pos": "4685-4687",
+    "out_len": 0,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "whisperflow",
+    "exp_words": "whisper flow",
+    "out_pos": "4664-4665",
+    "exp_pos": "4725-4727",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "tu as",
+    "exp_words": "elle a",
+    "out_pos": "4799-4801",
+    "exp_pos": "4861-4863",
+    "out_len": 2,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "quils travaillent",
+    "exp_words": "quil travaille",
+    "out_pos": "4819-4821",
+    "exp_pos": "4881-4883",
+    "out_len": 2,
+    "exp_len": 2
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "super",
+    "out_pos": "4850-4850",
+    "exp_pos": "4912-4913",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "ou",
+    "out_pos": "4909-4909",
+    "exp_pos": "4972-4973",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "nouvel",
+    "out_pos": "5066-5066",
+    "exp_pos": "5130-5131",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "demanderai je lui",
+    "out_pos": "5103-5103",
+    "exp_pos": "5168-5171",
+    "out_len": 0,
+    "exp_len": 3
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "donc une story card",
+    "out_pos": "5141-5141",
+    "exp_pos": "5209-5213",
+    "out_len": 0,
+    "exp_len": 4
+  },
+  {
+    "type": "replace",
+    "out_words": "dependencies",
+    "exp_words": "dépendances",
+    "out_pos": "5183-5184",
+    "exp_pos": "5255-5256",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "expo",
+    "out_pos": "5254-5254",
+    "exp_pos": "5326-5327",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "delete",
+    "out_words": "ne",
+    "exp_words": "",
+    "out_pos": "5262-5263",
+    "exp_pos": "5335-5335",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "me diriger",
+    "out_pos": "5362-5362",
+    "exp_pos": "5434-5436",
+    "out_len": 0,
+    "exp_len": 2
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "il",
+    "out_pos": "5451-5451",
+    "exp_pos": "5525-5526",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "en fait",
+    "out_pos": "5469-5469",
+    "exp_pos": "5544-5546",
+    "out_len": 0,
+    "exp_len": 2
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "qui est le titre",
+    "out_pos": "5599-5599",
+    "exp_pos": "5676-5680",
+    "out_len": 0,
+    "exp_len": 4
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "limage",
+    "out_pos": "5606-5606",
+    "exp_pos": "5687-5688",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "delete",
+    "out_words": "donc là quand je",
+    "exp_words": "",
+    "out_pos": "5751-5755",
+    "exp_pos": "5833-5833",
+    "out_len": 4,
+    "exp_len": 0
+  },
+  {
+    "type": "replace",
+    "out_words": "seo",
+    "exp_words": "safeareaview donc",
+    "out_pos": "5845-5846",
+    "exp_pos": "5923-5925",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "active",
+    "out_pos": "5850-5850",
+    "exp_pos": "5929-5930",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "table barre qui nest",
+    "exp_words": "tab bar qui est",
+    "out_pos": "5872-5876",
+    "exp_pos": "5952-5956",
+    "out_len": 4,
+    "exp_len": 4
+  },
+  {
+    "type": "replace",
+    "out_words": "prise",
+    "exp_words": "pris",
+    "out_pos": "5878-5879",
+    "exp_pos": "5958-5959",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "na",
+    "exp_words": "a",
+    "out_pos": "5890-5891",
+    "exp_pos": "5970-5971",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "delete",
+    "out_words": "ne",
+    "exp_words": "",
+    "out_pos": "5905-5906",
+    "exp_pos": "5985-5985",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "en",
+    "out_pos": "5952-5952",
+    "exp_pos": "6031-6032",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "delete",
+    "out_words": "je lui envoie",
+    "exp_words": "",
+    "out_pos": "5978-5981",
+    "exp_pos": "6058-6058",
+    "out_len": 3,
+    "exp_len": 0
+  },
+  {
+    "type": "replace",
+    "out_words": "série",
+    "exp_words": "safe area",
+    "out_pos": "6021-6022",
+    "exp_pos": "6098-6100",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "problèmes",
+    "exp_words": "problème",
+    "out_pos": "6037-6038",
+    "exp_pos": "6115-6116",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "na",
+    "exp_words": "a",
+    "out_pos": "6147-6148",
+    "exp_pos": "6225-6226",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "play solder",
+    "exp_words": "placeholder",
+    "out_pos": "6162-6164",
+    "exp_pos": "6240-6241",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "replace",
+    "out_words": "ny",
+    "exp_words": "y",
+    "out_pos": "6171-6172",
+    "exp_pos": "6248-6249",
+    "out_len": 1,
+    "exp_len": 1
+  },
+  {
+    "type": "delete",
+    "out_words": "ne",
+    "exp_words": "",
+    "out_pos": "6189-6190",
+    "exp_pos": "6266-6266",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "delete",
+    "out_words": "il",
+    "exp_words": "",
+    "out_pos": "6211-6212",
+    "exp_pos": "6287-6287",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "sur la le bouton",
+    "out_pos": "6249-6249",
+    "exp_pos": "6324-6328",
+    "out_len": 0,
+    "exp_len": 4
+  },
+  {
+    "type": "replace",
+    "out_words": "story card",
+    "exp_words": "storycard",
+    "out_pos": "6253-6255",
+    "exp_pos": "6332-6333",
+    "out_len": 2,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "effet",
+    "out_pos": "6268-6268",
+    "exp_pos": "6346-6347",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "ça",
+    "out_pos": "6281-6281",
+    "exp_pos": "6360-6361",
+    "out_len": 0,
+    "exp_len": 1
+  },
+  {
+    "type": "delete",
+    "out_words": "toujours",
+    "exp_words": "",
+    "out_pos": "6295-6296",
+    "exp_pos": "6375-6375",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "delete",
+    "out_words": "que",
+    "exp_words": "",
+    "out_pos": "6299-6300",
+    "exp_pos": "6378-6378",
+    "out_len": 1,
+    "exp_len": 0
+  },
+  {
+    "type": "replace",
+    "out_words": "tas",
+    "exp_words": "tu as",
+    "out_pos": "6390-6391",
+    "exp_pos": "6468-6470",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "insert",
+    "out_words": "",
+    "exp_words": "dexcuses il y a pas",
+    "out_pos": "6392-6392",
+    "exp_pos": "6471-6476",
+    "out_len": 0,
+    "exp_len": 5
+  },
+  {
+    "type": "replace",
+    "out_words": "tas",
+    "exp_words": "tu as",
+    "out_pos": "6397-6398",
+    "exp_pos": "6481-6483",
+    "out_len": 1,
+    "exp_len": 2
+  },
+  {
+    "type": "replace",
+    "out_words": "au stinger",
+    "exp_words": "hostinger",
+    "out_pos": "6402-6404",
+    "exp_pos": "6487-6488",
+    "out_len": 2,
+    "exp_len": 1
+  }
+]
