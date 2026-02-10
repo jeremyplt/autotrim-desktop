@@ -24,30 +24,6 @@
     "preview": "claude va sarrêter va nous dire"
   },
   {
-    "raw_start_ms": 96620,
-    "raw_end_ms": 97420,
-    "raw_start_idx": 341,
-    "raw_end_idx": 342,
-    "exp_start_ms": 85950,
-    "exp_end_ms": 86490,
-    "exp_start_idx": 331,
-    "exp_end_idx": 332,
-    "word_count": 2,
-    "preview": "bien évidemment"
-  },
-  {
-    "raw_start_ms": 104040,
-    "raw_end_ms": 104640,
-    "raw_start_idx": 363,
-    "raw_end_idx": 364,
-    "exp_start_ms": 86830,
-    "exp_end_ms": 87190,
-    "exp_start_idx": 334,
-    "exp_end_idx": 335,
-    "word_count": 2,
-    "preview": "code ça"
-  },
-  {
     "raw_start_ms": 106700,
     "raw_end_ms": 153307,
     "raw_start_idx": 365,
@@ -73,27 +49,27 @@
   },
   {
     "raw_start_ms": 198973,
-    "raw_end_ms": 224092,
+    "raw_end_ms": 211652,
     "raw_start_idx": 661,
-    "raw_end_idx": 743,
+    "raw_end_idx": 706,
     "exp_start_ms": 173601,
-    "exp_end_ms": 197620,
+    "exp_end_ms": 186081,
     "exp_start_idx": 636,
-    "exp_end_idx": 719,
-    "word_count": 80,
-    "preview": "ben ça se finit ça sarrête ... code ne nous renvoie pas des ... non plus en fait on le ... aucun moyen ... dinteragir avec si ce nest de"
+    "exp_end_idx": 681,
+    "word_count": 44,
+    "preview": "ben ça se finit ça sarrête ... code ne nous renvoie pas des ... non plus en fait on le"
   },
   {
-    "raw_start_ms": 283292,
-    "raw_end_ms": 284172,
-    "raw_start_idx": 868,
-    "raw_end_idx": 871,
-    "exp_start_ms": 197700,
-    "exp_end_ms": 198420,
-    "exp_start_idx": 720,
-    "exp_end_idx": 723,
-    "word_count": 4,
-    "preview": "ralfloop en fait il"
+    "raw_start_ms": 212312,
+    "raw_end_ms": 224092,
+    "raw_start_idx": 710,
+    "raw_end_idx": 743,
+    "exp_start_ms": 186961,
+    "exp_end_ms": 197620,
+    "exp_start_idx": 686,
+    "exp_end_idx": 719,
+    "word_count": 34,
+    "preview": "dinteragir avec si ce nest de"
   },
   {
     "raw_start_ms": 331863,
@@ -169,39 +145,27 @@
   },
   {
     "raw_start_ms": 663178,
-    "raw_end_ms": 694531,
+    "raw_end_ms": 668998,
     "raw_start_idx": 2038,
-    "raw_end_idx": 2155,
+    "raw_end_idx": 2062,
     "exp_start_ms": 427589,
-    "exp_end_ms": 458752,
+    "exp_end_ms": 433209,
     "exp_start_idx": 1547,
+    "exp_end_idx": 1571,
+    "word_count": 24,
+    "preview": "des vps où il y a ... qui est hébergé enfin ils sont"
+  },
+  {
+    "raw_start_ms": 670171,
+    "raw_end_ms": 694531,
+    "raw_start_idx": 2068,
+    "raw_end_idx": 2155,
+    "exp_start_ms": 434092,
+    "exp_end_ms": 458752,
+    "exp_start_idx": 1575,
     "exp_end_idx": 1662,
-    "word_count": 114,
-    "preview": "des vps où il y a ... qui est hébergé enfin ils sont ... a absolument ... pas besoin dacheter un nouvel ordinateur"
-  },
-  {
-    "raw_start_ms": 702690,
-    "raw_end_ms": 703970,
-    "raw_start_idx": 2156,
-    "raw_end_idx": 2160,
-    "exp_start_ms": 458963,
-    "exp_end_ms": 459783,
-    "exp_start_idx": 1663,
-    "exp_end_idx": 1667,
-    "word_count": 5,
-    "preview": "voilà ce dont je parlais"
-  },
-  {
-    "raw_start_ms": 711790,
-    "raw_end_ms": 712290,
-    "raw_start_idx": 2186,
-    "raw_end_idx": 2187,
-    "exp_start_ms": 459903,
-    "exp_end_ms": 460103,
-    "exp_start_idx": 1668,
-    "exp_end_idx": 1669,
-    "word_count": 2,
-    "preview": "on a"
+    "word_count": 88,
+    "preview": "pas besoin dacheter un nouvel ordinateur"
   },
   {
     "raw_start_ms": 867080,
@@ -217,15 +181,27 @@
   },
   {
     "raw_start_ms": 935358,
-    "raw_end_ms": 1030376,
+    "raw_end_ms": 988697,
     "raw_start_idx": 2732,
-    "raw_end_idx": 3072,
+    "raw_end_idx": 2928,
     "exp_start_ms": 502467,
-    "exp_end_ms": 597410,
+    "exp_end_ms": 555680,
     "exp_start_idx": 1828,
+    "exp_end_idx": 2023,
+    "word_count": 191,
+    "preview": "alors pour ceux qui connaissent pas ... wordpress lhébergement de ... internet on a aussi lachat de ... de domaine etc donc ... vraiment on peut faire un tas ... et ici je recommande dutiliser le ... quand même besoin de faire tourner"
+  },
+  {
+    "raw_start_ms": 989700,
+    "raw_end_ms": 1030376,
+    "raw_start_idx": 2929,
+    "raw_end_idx": 3072,
+    "exp_start_ms": 556957,
+    "exp_end_ms": 597410,
+    "exp_start_idx": 2024,
     "exp_end_idx": 2167,
-    "word_count": 333,
-    "preview": "alors pour ceux qui connaissent pas ... wordpress lhébergement de ... internet on a aussi lachat de ... de domaine etc donc ... vraiment on peut faire un tas ... et ici je recommande dutiliser le ... quand même besoin de faire tourner ... précision on a la sauvegarde automatique ... on va voir dans un instant"
+    "word_count": 142,
+    "preview": "et ici je peux mettre jeremy10 ... précision on a la sauvegarde automatique ... on va voir dans un instant"
   },
   {
     "raw_start_ms": 1063579,
@@ -253,15 +229,27 @@
   },
   {
     "raw_start_ms": 1369354,
-    "raw_end_ms": 1466353,
+    "raw_end_ms": 1461083,
     "raw_start_idx": 3371,
-    "raw_end_idx": 3692,
+    "raw_end_idx": 3673,
     "exp_start_ms": 636699,
-    "exp_end_ms": 732390,
+    "exp_end_ms": 728350,
     "exp_start_idx": 2317,
-    "exp_end_idx": 2637,
-    "word_count": 318,
+    "exp_end_idx": 2618,
+    "word_count": 299,
     "preview": "et on arrive directement sur le ... cest pour ça ... cest vraiment super simple super pratique ... répondre donc première estce quon est ... plan ensuite minimax cest le cest"
+  },
+  {
+    "raw_start_ms": 1462133,
+    "raw_end_ms": 1466353,
+    "raw_start_idx": 3674,
+    "raw_end_idx": 3692,
+    "exp_start_ms": 728530,
+    "exp_end_ms": 732390,
+    "exp_start_idx": 2619,
+    "exp_end_idx": 2637,
+    "word_count": 19,
+    "preview": "donc comme je lai dit moi"
   },
   {
     "raw_start_ms": 1488627,
@@ -433,15 +421,27 @@
   },
   {
     "raw_start_ms": 2093098,
-    "raw_end_ms": 2111458,
+    "raw_end_ms": 2107618,
     "raw_start_idx": 4541,
-    "raw_end_idx": 4573,
+    "raw_end_idx": 4563,
     "exp_start_ms": 944717,
-    "exp_end_ms": 954157,
+    "exp_end_ms": 950337,
     "exp_start_idx": 3361,
+    "exp_end_idx": 3383,
+    "word_count": 23,
+    "preview": "cest tout bon le setup est"
+  },
+  {
+    "raw_start_ms": 2108638,
+    "raw_end_ms": 2111458,
+    "raw_start_idx": 4568,
+    "raw_end_idx": 4573,
+    "exp_start_ms": 951537,
+    "exp_end_ms": 954157,
+    "exp_start_idx": 3387,
     "exp_end_idx": 3392,
-    "word_count": 31,
-    "preview": "cest tout bon le setup est ... et ensuite ... tui pour linterface dans le terminal"
+    "word_count": 6,
+    "preview": "tui pour linterface dans le terminal"
   },
   {
     "raw_start_ms": 2185930,
@@ -457,15 +457,27 @@
   },
   {
     "raw_start_ms": 2303453,
-    "raw_end_ms": 2359727,
+    "raw_end_ms": 2325381,
     "raw_start_idx": 4761,
-    "raw_end_idx": 4962,
+    "raw_end_idx": 4852,
     "exp_start_ms": 962297,
-    "exp_end_ms": 1018210,
+    "exp_end_ms": 983922,
     "exp_start_idx": 3424,
+    "exp_end_idx": 3516,
+    "word_count": 92,
+    "preview": "cest tout bon il vient de ... problème cest quon ne peut pas"
+  },
+  {
+    "raw_start_ms": 2326161,
+    "raw_end_ms": 2359727,
+    "raw_start_idx": 4856,
+    "raw_end_idx": 4962,
+    "exp_start_ms": 984742,
+    "exp_end_ms": 1018210,
+    "exp_start_idx": 3520,
     "exp_end_idx": 3626,
-    "word_count": 200,
-    "preview": "cest tout bon il vient de ... problème cest quon ne peut pas ... si je ... tape cette url je vais aller ... plus sur le vps et je"
+    "word_count": 106,
+    "preview": "tape cette url je vais aller ... plus sur le vps et je"
   },
   {
     "raw_start_ms": 2387035,
@@ -540,18 +552,6 @@
     "preview": "ensuite tu as les channels donc"
   },
   {
-    "raw_start_ms": 2669200,
-    "raw_end_ms": 2669640,
-    "raw_start_idx": 5437,
-    "raw_end_idx": 5438,
-    "exp_start_ms": 1128295,
-    "exp_end_ms": 1129025,
-    "exp_start_idx": 4005,
-    "exp_end_idx": 4006,
-    "word_count": 2,
-    "preview": "cest les"
-  },
-  {
     "raw_start_ms": 2670520,
     "raw_end_ms": 2710226,
     "raw_start_idx": 5441,
@@ -610,18 +610,6 @@
     "exp_end_idx": 4423,
     "word_count": 69,
     "preview": "voilà cest tout bon moi tu ... de par exemple juste lui dire"
-  },
-  {
-    "raw_start_ms": 3111327,
-    "raw_end_ms": 3112267,
-    "raw_start_idx": 5866,
-    "raw_end_idx": 5868,
-    "exp_start_ms": 1242959,
-    "exp_end_ms": 1243459,
-    "exp_start_idx": 4424,
-    "exp_end_idx": 4426,
-    "word_count": 3,
-    "preview": "on va maintenant"
   },
   {
     "raw_start_ms": 3208514,
@@ -709,15 +697,27 @@
   },
   {
     "raw_start_ms": 3342725,
-    "raw_end_ms": 3376524,
+    "raw_end_ms": 3347705,
     "raw_start_idx": 6554,
-    "raw_end_idx": 6680,
+    "raw_end_idx": 6575,
     "exp_start_ms": 1330477,
-    "exp_end_ms": 1362896,
+    "exp_end_ms": 1335237,
     "exp_start_idx": 4750,
+    "exp_end_idx": 4771,
+    "word_count": 22,
+    "preview": "en texte quand je parle dans"
+  },
+  {
+    "raw_start_ms": 3348724,
+    "raw_end_ms": 3376524,
+    "raw_start_idx": 6576,
+    "raw_end_idx": 6680,
+    "exp_start_ms": 1335367,
+    "exp_end_ms": 1362896,
+    "exp_start_idx": 4772,
     "exp_end_idx": 4875,
-    "word_count": 126,
-    "preview": "en texte quand je parle dans ... elle a besoin pour tassister au"
+    "word_count": 104,
+    "preview": "donc la chose la plus importante ... elle a besoin pour tassister au"
   },
   {
     "raw_start_ms": 3412418,
@@ -790,18 +790,6 @@
     "exp_end_idx": 5392,
     "word_count": 93,
     "preview": "cest tout bon il vient de ... donc je suis sur ... development build je vais pas rentrer"
-  },
-  {
-    "raw_start_ms": 3778767,
-    "raw_end_ms": 3779647,
-    "raw_start_idx": 7348,
-    "raw_end_idx": 7352,
-    "exp_start_ms": 1510238,
-    "exp_end_ms": 1510738,
-    "exp_start_idx": 5393,
-    "exp_end_idx": 5397,
-    "word_count": 5,
-    "preview": "là cest en train de"
   },
   {
     "raw_start_ms": 3781707,
@@ -889,15 +877,27 @@
   },
   {
     "raw_start_ms": 5570993,
-    "raw_end_ms": 5595782,
+    "raw_end_ms": 5581022,
     "raw_start_idx": 8961,
-    "raw_end_idx": 9047,
+    "raw_end_idx": 8990,
     "exp_start_ms": 1641687,
-    "exp_end_ms": 1665539,
+    "exp_end_ms": 1651499,
     "exp_start_idx": 5932,
+    "exp_end_idx": 5962,
+    "word_count": 30,
+    "preview": "donc cestàdire sur react native ... on a le contenu qui va"
+  },
+  {
+    "raw_start_ms": 5581562,
+    "raw_end_ms": 5595782,
+    "raw_start_idx": 8995,
+    "raw_end_idx": 9047,
+    "exp_start_ms": 1652239,
+    "exp_end_ms": 1665539,
+    "exp_start_idx": 5967,
     "exp_end_idx": 6019,
-    "word_count": 84,
-    "preview": "donc cestàdire sur react native ... on a le contenu qui va ... pas bien ... en compte pour le ... bouton et on a limage qui"
+    "word_count": 52,
+    "preview": "en compte pour le ... bouton et on a limage qui"
   },
   {
     "raw_start_ms": 5603359,
@@ -949,15 +949,27 @@
   },
   {
     "raw_start_ms": 5668665,
-    "raw_end_ms": 5732891,
+    "raw_end_ms": 5716371,
     "raw_start_idx": 9204,
-    "raw_end_idx": 9473,
+    "raw_end_idx": 9421,
     "exp_start_ms": 1699934,
-    "exp_end_ms": 1763962,
+    "exp_end_ms": 1747442,
     "exp_start_idx": 6124,
+    "exp_end_idx": 6335,
+    "word_count": 210,
+    "preview": "voilà un autre rafraîchissement et là ... le bouton de téléchargement ici qui ... sais pas sil marche si je ... pas lair de marcher là ici ... a pas dautre écran qui se ... lui ai pas dit on a ... faut voir si le bouton marche"
+  },
+  {
+    "raw_start_ms": 5717566,
+    "raw_end_ms": 5732891,
+    "raw_start_idx": 9422,
+    "raw_end_idx": 9473,
+    "exp_start_ms": 1748837,
+    "exp_end_ms": 1763962,
+    "exp_start_idx": 6336,
     "exp_end_idx": 6388,
-    "word_count": 262,
-    "preview": "voilà un autre rafraîchissement et là ... le bouton de téléchargement ici qui ... sais pas sil marche si je ... pas lair de marcher là ici ... a pas dautre écran qui se ... lui ai pas dit on a ... faut voir si le bouton marche ... de lécran il y a bien"
+    "word_count": 52,
+    "preview": "de téléchargement sur la storycard donc ... de lécran il y a bien"
   },
   {
     "raw_start_ms": 5828083,
@@ -982,18 +994,6 @@
     "exp_end_idx": 6478,
     "word_count": 17,
     "preview": "si toi aussi tu veux avoir"
-  },
-  {
-    "raw_start_ms": 5940145,
-    "raw_end_ms": 5940345,
-    "raw_start_idx": 9949,
-    "raw_end_idx": 9950,
-    "exp_start_ms": 1783807,
-    "exp_end_ms": 1784447,
-    "exp_start_idx": 6479,
-    "exp_end_idx": 6480,
-    "word_count": 2,
-    "preview": "dexcuses il"
   },
   {
     "raw_start_ms": 5948945,

@@ -117,6 +117,57 @@ def _make_segment(raw_words, exp_words, raw_texts, raw_start_idx, size, exp_star
         'preview': ' '.join(raw_texts[raw_start_idx:raw_start_idx + min(6, size)]),
     }
 
+def detect_and_remove_retakes(segments, raw_words, similarity_threshold=0.7):
+    """
+    Detect and remove short retakes: when a short segment is immediately
+    followed by a longer, very similar segment.
+    """
+    if not segments:
+        return []
+    
+    segments = sorted(segments, key=lambda s: s['raw_start_ms'])
+    to_remove = set()
+    
+    for i in range(len(segments) - 1):
+        seg1 = segments[i]
+        seg2 = segments[i + 1]
+        
+        # Only check if first segment is short (< 15 words)
+        if seg1['word_count'] >= 15:
+            continue
+        
+        # Check if they're close together (< 5 seconds gap)
+        gap = (seg2['raw_start_ms'] - seg1['raw_end_ms']) / 1000.0
+        if gap > 5.0:
+            continue
+        
+        # Get words from both segments
+        words1 = set(normalize_word(raw_words[j]['text']) 
+                     for j in range(seg1['raw_start_idx'], seg1['raw_end_idx'] + 1))
+        words2 = set(normalize_word(raw_words[j]['text']) 
+                     for j in range(seg2['raw_start_idx'], seg2['raw_end_idx'] + 1))
+        
+        # Remove empty strings
+        words1 = {w for w in words1 if w}
+        words2 = {w for w in words2 if w}
+        
+        if not words1 or not words2:
+            continue
+        
+        # Calculate word overlap
+        overlap = len(words1 & words2)
+        similarity = overlap / len(words1)
+        
+        # If >70% of first segment's words appear in second, and second is longer
+        if similarity >= similarity_threshold and seg2['word_count'] > seg1['word_count']:
+            to_remove.add(i)
+            log(f"  Detected retake: segment {i} ({seg1['word_count']}w) → {i+1} ({seg2['word_count']}w), {similarity*100:.0f}% overlap")
+    
+    # Return segments not marked for removal
+    result = [seg for i, seg in enumerate(segments) if i not in to_remove]
+    log(f"  Removed {len(to_remove)} retakes, {len(result)} segments remain")
+    return result
+
 def merge_segments(segments, gap_threshold_ms=500):
     """
     Merge segments that are close together in the raw timeline.
@@ -173,6 +224,37 @@ def remove_overlaps(segments):
     
     return result
 
+def remove_micro_segments(segments, min_duration_ms=2000, min_words=8):
+    """
+    Remove very short segments that are likely fragments or noise.
+    Only remove if the segment is isolated (not close to others).
+    """
+    if not segments:
+        return []
+    
+    segments = sorted(segments, key=lambda s: s['raw_start_ms'])
+    result = []
+    
+    for i, seg in enumerate(segments):
+        duration = seg['raw_end_ms'] - seg['raw_start_ms']
+        
+        # Keep if duration and word count are above thresholds
+        if duration >= min_duration_ms or seg['word_count'] >= min_words:
+            result.append(seg)
+            continue
+        
+        # Check if isolated (far from neighbors)
+        prev_gap = (seg['raw_start_ms'] - segments[i-1]['raw_end_ms']) if i > 0 else 999999
+        next_gap = (segments[i+1]['raw_start_ms'] - seg['raw_end_ms']) if i < len(segments)-1 else 999999
+        
+        # Keep if close to neighbors (< 2s gap)
+        if prev_gap < 2000 or next_gap < 2000:
+            result.append(seg)
+        else:
+            log(f"  Removing micro-segment: {duration/1000:.1f}s, {seg['word_count']}w")
+    
+    return result
+
 def render_with_concat(segments, input_file, output_file):
     """
     Render by extracting each segment individually, then concatenating.
@@ -214,7 +296,7 @@ def render_with_concat(segments, input_file, output_file):
             str(seg_file)
         ]
         
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
         if result.returncode != 0:
             log(f"  Warning: segment {i} failed (start={start_s:.1f}s, dur={duration_s:.1f}s)")
             failed += 1
@@ -253,7 +335,7 @@ def render_with_concat(segments, input_file, output_file):
         str(output_file)
     ]
     
-    result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
     if result.returncode != 0:
         log(f"Concat failed: {result.stderr[-500:]}")
         return False
@@ -317,8 +399,8 @@ def main():
     parser.add_argument('--expected-transcription', default=str(TEST_DIR / 'expected_transcription.json'))
     parser.add_argument('--merge-gap', type=int, default=500, help='Max gap in ms to merge segments')
     parser.add_argument('--padding', type=int, default=100, help='Padding in ms around segments')
-    parser.add_argument('--min-words', type=int, default=2, help='Minimum words for a matching block')
-    parser.add_argument('--max-internal-gap', type=int, default=1500, help='Max gap within a block before splitting (ms)')
+    parser.add_argument('--min-words', type=int, default=3, help='Minimum words for a matching block')
+    parser.add_argument('--max-internal-gap', type=int, default=1200, help='Max gap within a block before splitting (ms)')
     parser.add_argument('--dry-run', action='store_true', help='Only compute segments, skip rendering')
     args = parser.parse_args()
     
@@ -341,14 +423,23 @@ def main():
     )
     log(f"Found {len(segments)} segments after gap splitting")
     
-    # Step 2: Add padding
+    # Step 2: Detect and remove retakes (BEFORE merging)
+    log(f"Detecting retakes...")
+    segments = detect_and_remove_retakes(segments, raw_words, similarity_threshold=0.7)
+    
+    # Step 3: Add padding
     segments = add_padding(segments, padding_ms=args.padding)
     
-    # Step 3: Merge close segments
+    # Step 4: Merge close segments
     segments = merge_segments(segments, gap_threshold_ms=args.merge_gap)
     log(f"After merging (gap {args.merge_gap}ms): {len(segments)} segments")
     
-    # Step 4: Remove overlaps
+    # Step 5: Remove micro-segments
+    log(f"Removing micro-segments...")
+    segments = remove_micro_segments(segments, min_duration_ms=2000, min_words=8)
+    log(f"After micro-segment removal: {len(segments)} segments")
+    
+    # Step 6: Remove overlaps
     segments = remove_overlaps(segments)
     
     # Calculate stats

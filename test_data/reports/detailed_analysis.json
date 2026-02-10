@@ -1,0 +1,71 @@
+{
+  "similarity": {
+    "matches": 6276,
+    "output_words": 6478,
+    "expected_words": 6568,
+    "precision": 0.9688175362766286,
+    "recall": 0.9555420219244823,
+    "f1": 0.9621339874290971,
+    "similarity_pct": 95.55420219244823
+  },
+  "problems": {
+    "extra_in_output": [
+      {
+        "output_range": [
+          752,
+          758
+        ],
+        "word_count": 6,
+        "output_text": "me suis dit que ce n'est",
+        "output_time": "3:28.755 - 3:29.035",
+        "duration_s": 0.28,
+        "note": "replaced content"
+      },
+      {
+        "output_range": [
+          2899,
+          2907
+        ],
+        "word_count": 8,
+        "output_text": "OpenCode. Ici tu vas devoir mettre ton propre...",
+        "output_time": "13:49.315 - 13:52.055",
+        "duration_s": 2.74,
+        "note": "replaced content"
+      }
+    ],
+    "missing_from_output": [
+      {
+        "expected_range": [
+          4006,
+          4011
+        ],
+        "word_count": 5,
+        "expected_text": "les cron jobs, c'est-à-dire les",
+        "expected_time": "18:48.935 - 18:50.575",
+        "duration_s": 1.64,
+        "note": "replaced content"
+      },
+      {
+        "expected_range": [
+          4620,
+          4626
+        ],
+        "word_count": 6,
+        "expected_text": "Ça, c'est le speech to text.",
+        "expected_time": "21:33.293 - 21:34.373",
+        "duration_s": 1.08
+      },
+      {
+        "expected_range": [
+          6479,
+          6484
+        ],
+        "word_count": 5,
+        "expected_text": "d'excuses. Il y a pas",
+        "expected_time": "29:43.807 - 29:44.587",
+        "duration_s": 0.78
+      }
+    ],
+    "out_of_order": []
+  }
+}

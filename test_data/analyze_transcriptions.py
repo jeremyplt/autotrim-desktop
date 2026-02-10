@@ -1,156 +1,242 @@
 #!/usr/bin/env python3
-"""Analyze raw vs expected transcriptions to understand the editing pattern."""
+"""
+Detailed analysis of output vs expected transcriptions to identify problematic passages.
+"""
 import json
 import difflib
+import re
+from collections import defaultdict
 
-def load_words(filepath):
-    with open(filepath) as f:
-        data = json.load(f)
-    return data.get('words', [])
+def normalize_word(text):
+    """Normalize a word for matching: lowercase, strip punctuation."""
+    return re.sub(r'[^a-z0-9àâäéèêëïîôùûüÿçœæ]', '', text.lower())
 
-def load_text(filepath):
-    with open(filepath) as f:
-        data = json.load(f)
-    return data.get('text', '')
+def load_transcription(path):
+    """Load an AssemblyAI transcription JSON file."""
+    with open(path) as f:
+        return json.load(f)
 
-def words_to_sentences(words, gap_threshold=1500):
-    """Group words into sentences based on gaps and punctuation."""
-    sentences = []
-    current = []
-    for w in words:
-        current.append(w)
-        # End sentence on period, question mark, or long gap
-        text = w.get('text', '')
-        if text.endswith(('.', '?', '!')) or (len(current) > 1 and current[-1]['start'] - current[-2]['end'] > gap_threshold):
-            sentences.append({
-                'text': ' '.join(ww['text'] for ww in current),
-                'start': current[0]['start'],
-                'end': current[-1]['end'],
-                'word_count': len(current)
-            })
-            current = []
-    if current:
-        sentences.append({
-            'text': ' '.join(ww['text'] for ww in current),
-            'start': current[0]['start'],
-            'end': current[-1]['end'],
-            'word_count': len(current)
-        })
-    return sentences
+def get_words(transcription):
+    """Extract word list from transcription."""
+    return transcription.get('words', [])
 
-def find_silences(words, threshold_ms=2000):
-    """Find gaps between words that are longer than threshold."""
-    silences = []
-    for i in range(1, len(words)):
-        gap = words[i]['start'] - words[i-1]['end']
-        if gap > threshold_ms:
-            silences.append({
-                'start': words[i-1]['end'],
-                'end': words[i]['start'],
-                'duration_ms': gap,
-                'before_word': words[i-1]['text'],
-                'after_word': words[i]['text'],
-            })
-    return silences
+def format_time(ms):
+    """Format milliseconds as MM:SS.mmm"""
+    secs = ms / 1000.0
+    mins = int(secs // 60)
+    secs = secs % 60
+    return f"{mins}:{secs:06.3f}"
+
+def analyze_alignment(output_words, expected_words):
+    """
+    Detailed alignment between output and expected.
+    Returns problematic passages.
+    """
+    out_texts = [normalize_word(w['text']) for w in output_words]
+    exp_texts = [normalize_word(w['text']) for w in expected_words]
+    
+    sm = difflib.SequenceMatcher(None, out_texts, exp_texts, autojunk=False)
+    
+    problems = {
+        'extra_in_output': [],  # Passages in output that shouldn't be there
+        'missing_from_output': [],  # Passages from expected that are missing
+        'out_of_order': []  # Passages in wrong order
+    }
+    
+    last_exp_idx = -1
+    
+    for opcode, o1, o2, e1, e2 in sm.get_opcodes():
+        if opcode == 'equal':
+            # Check for out-of-order
+            if e1 < last_exp_idx:
+                problems['out_of_order'].append({
+                    'output_range': (o1, o2),
+                    'expected_range': (e1, e2),
+                    'output_text': ' '.join([output_words[i]['text'] for i in range(o1, min(o2, o1+10))]),
+                    'output_time': f"{format_time(output_words[o1]['start'])} - {format_time(output_words[o2-1]['end'])}" if o1 < o2 else "empty"
+                })
+            last_exp_idx = max(last_exp_idx, e2)
+        
+        elif opcode == 'delete':
+            # Extra content in output (should have been removed)
+            if o2 - o1 >= 5:  # Only report if >= 5 words
+                problems['extra_in_output'].append({
+                    'output_range': (o1, o2),
+                    'word_count': o2 - o1,
+                    'output_text': ' '.join([output_words[i]['text'] for i in range(o1, min(o2, o1+20))]),
+                    'output_time': f"{format_time(output_words[o1]['start'])} - {format_time(output_words[o2-1]['end'])}",
+                    'duration_s': (output_words[o2-1]['end'] - output_words[o1]['start']) / 1000.0
+                })
+        
+        elif opcode == 'insert':
+            # Missing content from output (should have been kept)
+            if e2 - e1 >= 5:  # Only report if >= 5 words
+                problems['missing_from_output'].append({
+                    'expected_range': (e1, e2),
+                    'word_count': e2 - e1,
+                    'expected_text': ' '.join([expected_words[i]['text'] for i in range(e1, min(e2, e1+20))]),
+                    'expected_time': f"{format_time(expected_words[e1]['start'])} - {format_time(expected_words[e2-1]['end'])}",
+                    'duration_s': (expected_words[e2-1]['end'] - expected_words[e1]['start']) / 1000.0
+                })
+        
+        elif opcode == 'replace':
+            # Different content - could be either problem
+            if o2 - o1 >= 5:
+                problems['extra_in_output'].append({
+                    'output_range': (o1, o2),
+                    'word_count': o2 - o1,
+                    'output_text': ' '.join([output_words[i]['text'] for i in range(o1, min(o2, o1+20))]),
+                    'output_time': f"{format_time(output_words[o1]['start'])} - {format_time(output_words[o2-1]['end'])}",
+                    'duration_s': (output_words[o2-1]['end'] - output_words[o1]['start']) / 1000.0,
+                    'note': 'replaced content'
+                })
+            if e2 - e1 >= 5:
+                problems['missing_from_output'].append({
+                    'expected_range': (e1, e2),
+                    'word_count': e2 - e1,
+                    'expected_text': ' '.join([expected_words[i]['text'] for i in range(e1, min(e2, e1+20))]),
+                    'expected_time': f"{format_time(expected_words[e1]['start'])} - {format_time(expected_words[e2-1]['end'])}",
+                    'duration_s': (expected_words[e2-1]['end'] - expected_words[e1]['start']) / 1000.0,
+                    'note': 'replaced content'
+                })
+    
+    return problems
+
+def calculate_similarity(output_words, expected_words):
+    """Calculate word-level similarity."""
+    out_texts = [normalize_word(w['text']) for w in output_words]
+    exp_texts = [normalize_word(w['text']) for w in expected_words]
+    
+    sm = difflib.SequenceMatcher(None, out_texts, exp_texts, autojunk=False)
+    matches = sum(block.size for block in sm.get_matching_blocks())
+    
+    precision = matches / len(out_texts) if out_texts else 0
+    recall = matches / len(exp_texts) if exp_texts else 0
+    f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0
+    
+    return {
+        'matches': matches,
+        'output_words': len(out_texts),
+        'expected_words': len(exp_texts),
+        'precision': precision,
+        'recall': recall,
+        'f1': f1,
+        'similarity_pct': (matches / max(len(out_texts), len(exp_texts))) * 100 if max(len(out_texts), len(exp_texts)) > 0 else 0
+    }
 
 def main():
-    raw_words = load_words('raw_transcription.json')
-    exp_words = load_words('expected_transcription.json')
-    raw_text = load_text('raw_transcription.json')
-    exp_text = load_text('expected_transcription.json')
+    print("=" * 80)
+    print("TRANSCRIPTION ANALYSIS - Output vs Expected")
+    print("=" * 80)
+    print()
     
-    print("=" * 60)
-    print("TRANSCRIPTION ANALYSIS")
-    print("=" * 60)
+    # Load transcriptions
+    print("Loading transcriptions...")
+    output_trans = load_transcription('output_transcription.json')
+    expected_trans = load_transcription('expected_transcription.json')
     
-    print(f"\nRaw: {len(raw_words)} words, duration {raw_words[-1]['end']/1000:.0f}s")
-    print(f"Expected: {len(exp_words)} words, duration {exp_words[-1]['end']/1000:.0f}s")
-    print(f"Compression ratio: {len(exp_words)/len(raw_words)*100:.1f}% of words kept")
+    output_words = get_words(output_trans)
+    expected_words = get_words(expected_trans)
     
-    # Find silences in raw
-    silences = find_silences(raw_words, threshold_ms=2000)
-    print(f"\nSilences in raw (>2s): {len(silences)}")
-    total_silence = sum(s['duration_ms'] for s in silences) / 1000
-    print(f"Total silence time: {total_silence:.0f}s ({total_silence/60:.1f}min)")
+    output_duration = output_words[-1]['end'] / 1000.0 if output_words else 0
+    expected_duration = expected_words[-1]['end'] / 1000.0 if expected_words else 0
     
-    # Show top silences
-    silences_sorted = sorted(silences, key=lambda s: s['duration_ms'], reverse=True)
-    print(f"\nTop 10 longest silences:")
-    for s in silences_sorted[:10]:
-        print(f"  {s['start']/1000:.1f}s - {s['end']/1000:.1f}s ({s['duration_ms']/1000:.1f}s) '{s['before_word']}' → '{s['after_word']}'")
+    print(f"Output: {len(output_words)} words, duration: {output_duration/60:.2f} min")
+    print(f"Expected: {len(expected_words)} words, duration: {expected_duration/60:.2f} min")
+    print()
     
-    # Group words into sentences
-    raw_sentences = words_to_sentences(raw_words)
-    exp_sentences = words_to_sentences(exp_words)
-    print(f"\nRaw sentences: {len(raw_sentences)}")
-    print(f"Expected sentences: {len(exp_sentences)}")
+    # Calculate similarity
+    print("Calculating similarity...")
+    sim = calculate_similarity(output_words, expected_words)
+    print(f"Word matches: {sim['matches']} / {sim['expected_words']}")
+    print(f"Precision: {sim['precision']*100:.2f}%")
+    print(f"Recall: {sim['recall']*100:.2f}%")
+    print(f"F1 Score: {sim['f1']*100:.2f}%")
+    print(f"Overall similarity: {sim['similarity_pct']:.2f}%")
+    print()
     
-    # Use difflib to align raw and expected text
-    raw_lines = [s['text'] for s in raw_sentences]
-    exp_lines = [s['text'] for s in exp_sentences]
+    # Analyze alignment
+    print("Analyzing alignment (this may take a while)...")
+    problems = analyze_alignment(output_words, expected_words)
     
-    # Use SequenceMatcher on the full text to find matching blocks
-    sm = difflib.SequenceMatcher(None, raw_text.split(), exp_text.split())
-    ratio = sm.ratio()
-    print(f"\nText similarity ratio: {ratio:.3f}")
+    # Report problems
+    print("=" * 80)
+    print("PROBLEMATIC PASSAGES")
+    print("=" * 80)
+    print()
     
-    # Find matching blocks
-    blocks = sm.get_matching_blocks()
-    print(f"\nMatching blocks: {len(blocks)}")
+    # Extra content in output (should have been removed)
+    extra = problems['extra_in_output']
+    total_extra_duration = sum(p['duration_s'] for p in extra)
+    print(f"1. EXTRA CONTENT IN OUTPUT (should have been removed)")
+    print(f"   Count: {len(extra)} passages")
+    print(f"   Total duration: {total_extra_duration:.1f}s ({total_extra_duration/60:.2f} min)")
+    print()
+    if extra:
+        print("   Top 10 longest:")
+        for i, p in enumerate(sorted(extra, key=lambda x: x['duration_s'], reverse=True)[:10], 1):
+            note = f" [{p['note']}]" if 'note' in p else ""
+            print(f"   {i}. {p['output_time']} ({p['duration_s']:.1f}s, {p['word_count']} words){note}")
+            print(f"      {p['output_text'][:120]}...")
+            print()
     
-    # Show which raw sentences are kept
-    # For each expected sentence, find the best matching raw sentence
-    print("\n" + "=" * 60)
-    print("SEGMENT MAPPING (expected → raw)")
-    print("=" * 60)
+    # Missing content from output
+    missing = problems['missing_from_output']
+    total_missing_duration = sum(p['duration_s'] for p in missing)
+    print(f"2. MISSING CONTENT FROM OUTPUT (should have been kept)")
+    print(f"   Count: {len(missing)} passages")
+    print(f"   Total duration: {total_missing_duration:.1f}s ({total_missing_duration/60:.2f} min)")
+    print()
+    if missing:
+        print("   Top 10 longest:")
+        for i, p in enumerate(sorted(missing, key=lambda x: x['duration_s'], reverse=True)[:10], 1):
+            note = f" [{p['note']}]" if 'note' in p else ""
+            print(f"   {i}. {p['expected_time']} ({p['duration_s']:.1f}s, {p['word_count']} words){note}")
+            print(f"      {p['expected_text'][:120]}...")
+            print()
     
-    # Simple word-level alignment
-    raw_word_texts = [w['text'].lower() for w in raw_words]
-    exp_word_texts = [w['text'].lower() for w in exp_words]
+    # Out of order
+    ooo = problems['out_of_order']
+    print(f"3. OUT OF ORDER PASSAGES")
+    print(f"   Count: {len(ooo)} passages")
+    if ooo:
+        print()
+        for i, p in enumerate(ooo[:10], 1):
+            print(f"   {i}. {p['output_time']}")
+            print(f"      {p['output_text'][:120]}...")
+            print()
     
-    # Use SequenceMatcher on word sequences
-    sm2 = difflib.SequenceMatcher(None, raw_word_texts, exp_word_texts)
-    matching_blocks = sm2.get_matching_blocks()
+    # Summary
+    print("=" * 80)
+    print("SUMMARY")
+    print("=" * 80)
+    print(f"Current similarity: {sim['similarity_pct']:.2f}%")
+    print(f"Target similarity: 99.00%")
+    print(f"Gap: {99.0 - sim['similarity_pct']:.2f} percentage points")
+    print()
+    print(f"Issues to fix:")
+    print(f"  - Remove {len(extra)} extra passages ({total_extra_duration/60:.2f} min)")
+    print(f"  - Restore {len(missing)} missing passages ({total_missing_duration/60:.2f} min)")
+    print(f"  - Fix {len(ooo)} out-of-order passages")
+    print()
     
-    print(f"\nWord-level matching blocks: {len(matching_blocks)}")
-    kept_ranges = []
-    for block in matching_blocks:
-        if block.size > 3:  # Ignore tiny matches
-            raw_start_word = raw_words[block.a]
-            raw_end_word = raw_words[block.a + block.size - 1]
-            exp_start_word = exp_words[block.b]
-            exp_end_word = exp_words[block.b + block.size - 1]
-            
-            kept_ranges.append({
-                'raw_start': raw_start_word['start'],
-                'raw_end': raw_end_word['end'],
-                'exp_start': exp_start_word['start'],
-                'exp_end': exp_end_word['end'],
-                'size': block.size,
-                'raw_idx': block.a,
-                'text_preview': ' '.join(raw_word_texts[block.a:block.a+min(8, block.size)])
-            })
-            print(f"  Raw[{block.a}:{block.a+block.size}] → Exp[{block.b}:{block.b+block.size}] "
-                  f"({block.size} words) "
-                  f"raw_time={raw_start_word['start']/1000:.1f}-{raw_end_word['end']/1000:.1f}s "
-                  f"'{' '.join(raw_word_texts[block.a:block.a+min(6, block.size)])}...'")
-    
-    # Calculate total kept time
-    total_kept = sum(r['raw_end'] - r['raw_start'] for r in kept_ranges)
-    print(f"\nTotal kept time from matching: {total_kept/1000:.0f}s ({total_kept/60000:.1f}min)")
-    
-    # Save the analysis
-    analysis = {
-        'raw_words': len(raw_words),
-        'exp_words': len(exp_words),
-        'silences': silences,
-        'kept_ranges': kept_ranges,
-        'matching_blocks': [{'a': b.a, 'b': b.b, 'size': b.size} for b in matching_blocks],
-        'text_similarity': ratio
+    # Save detailed report
+    report = {
+        'similarity': sim,
+        'problems': {
+            'extra_in_output': extra,
+            'missing_from_output': missing,
+            'out_of_order': ooo
+        }
     }
-    with open('reports/analysis.json', 'w') as f:
-        json.dump(analysis, f, indent=2, ensure_ascii=False)
-    print("\nSaved analysis to reports/analysis.json")
+    
+    with open('reports/detailed_analysis.json', 'w') as f:
+        json.dump(report, f, indent=2, ensure_ascii=False)
+    
+    print("Detailed report saved to: reports/detailed_analysis.json")
+    print()
+    
+    return sim['similarity_pct']
 
 if __name__ == '__main__':
     main()

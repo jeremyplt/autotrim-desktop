@@ -1,0 +1,13 @@
+{
+  "segments": 86,
+  "output_words": 6468,
+  "expected_words": 6560,
+  "matched_words": 6400,
+  "precision": 0.9894867037724181,
+  "recall": 0.975609756097561,
+  "f1": 0.9824992324224747,
+  "similarity_pct": 97.5609756097561,
+  "duration_s": 1822.138,
+  "expected_duration_s": 1806.027,
+  "duration_ratio": 1.0089206861248474
+}
