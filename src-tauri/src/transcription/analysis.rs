@@ -637,19 +637,25 @@ fn detect_retake_groups_advanced(
                 continue;
             }
             
-            // Check if within time window
+            // Check if within time window from the FIRST chunk in the group
             if chunk_j.start - chunk_i.end > time_window {
                 break;
             }
             
-            // Calculate similarity using both methods
-            let ngram_sim = ngram_similarity(&chunk_i.text, &chunk_j.text, 3);
-            let seq_sim = sequence_matcher_similarity(&chunk_i.text, &chunk_j.text);
+            // Compare candidate against ALL group members (transitive similarity)
+            // This catches cases like: A ≈ B, B ≈ C, but A !≈ C
+            let is_similar_to_any = group.iter().any(|&group_member_id| {
+                if let Some(member) = chunks.get(group_member_id) {
+                    let ngram_sim = ngram_similarity(&member.text, &chunk_j.text, 3);
+                    let seq_sim = sequence_matcher_similarity(&member.text, &chunk_j.text);
+                    let similarity = ngram_sim.max(seq_sim);
+                    similarity >= min_similarity
+                } else {
+                    false
+                }
+            });
             
-            // Use max of the two similarities
-            let similarity = ngram_sim.max(seq_sim);
-            
-            if similarity >= min_similarity {
+            if is_similar_to_any {
                 group.push(chunk_j.id);
                 processed.insert(chunk_j.id);
             }
@@ -783,8 +789,6 @@ fn build_retake_hints(chunks: &[SpeechChunk]) -> String {
     let min_match = 3;
     let max_time_span = 180.0; // Allow wider retake groups — speaker can retry for 3 min
     let max_gap_between_members = 60.0; // Allow 60s gap between members (retakes can have long pauses)
-    let max_opener_frequency = 6; // Skip openers appearing in 7+ chunks (too common)
-
     // Track all retake pairs we've found (earlier_id, later_id) to avoid duplicates
     let mut retake_pairs: Vec<(usize, usize, String)> = Vec::new(); // (remove_id, keep_id, reason)
 
@@ -811,11 +815,10 @@ fn build_retake_hints(chunks: &[SpeechChunk]) -> String {
             continue;
         }
 
-        // Skip very common openers — they're French transitions, not retake signals
-        if ids.len() > max_opener_frequency {
-            eprintln!("Retake hints: skipping common opener '{}' ({} chunks)", opener_key.join(" "), ids.len());
-            continue;
-        }
+        // No hard frequency limit — we rely on content overlap checks below
+        // to distinguish real retake groups from common French transitions.
+        // Previously max_opener_frequency=6 caused real retake groups (8+ repetitions)
+        // to be skipped entirely.
 
         // Split into sub-groups based on max_gap_between_members.
         // This prevents a single large gap from invalidating the entire group.
@@ -1012,7 +1015,7 @@ fn build_retake_hints(chunks: &[SpeechChunk]) -> String {
             }
 
             let gap = chunks[j].start - chunks[i].end;
-            if gap > 30.0 || gap < 0.0 {
+            if gap > 120.0 || gap < 0.0 {
                 continue;
             }
 
@@ -1078,7 +1081,7 @@ fn build_retake_hints(chunks: &[SpeechChunk]) -> String {
     for i in 0..chunks.len() {
         for j in (i + 1)..chunks.len() {
             let gap = chunks[j].start - chunks[i].end;
-            if gap > 30.0 || gap < 0.0 {
+            if gap > 120.0 || gap < 0.0 {
                 continue;
             }
 
@@ -1223,7 +1226,14 @@ pub async fn determine_keep_ranges(
         return Ok(Vec::new());
     }
 
-    let retake_hints = build_advanced_hints(chunks);
+    // Use BOTH hint systems and combine them for maximum detection
+    let retake_hints_multi = build_retake_hints(chunks);
+    let retake_hints_advanced = build_advanced_hints(chunks);
+    let retake_hints = if retake_hints_multi.is_empty() && retake_hints_advanced.is_empty() {
+        String::new()
+    } else {
+        format!("{}\n{}", retake_hints_multi, retake_hints_advanced)
+    };
 
     let mut transcript = String::new();
     for (i, chunk) in chunks.iter().enumerate() {
