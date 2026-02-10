@@ -1217,6 +1217,160 @@ fn build_retake_hints(chunks: &[SpeechChunk]) -> String {
 }
 
 /// Send the full transcript (as chunks) to Claude Sonnet in ONE call.
+/// Detect all retake pairs algorithmically. Returns (remove_id, keep_id, reason).
+/// This is the core detection that runs BEFORE Claude sees anything.
+fn detect_all_retake_pairs(chunks: &[SpeechChunk]) -> Vec<(usize, usize, String)> {
+    use std::collections::{HashMap, HashSet};
+
+    let min_match = 3;
+    let max_time_span = 180.0;
+    let max_gap_between_members = 60.0;
+
+    let mut retake_pairs: Vec<(usize, usize, String)> = Vec::new();
+
+    // === STRATEGY 1: Same 3-word opener with content overlap ===
+    let mut opener_groups: HashMap<Vec<String>, Vec<usize>> = HashMap::new();
+    for chunk in chunks {
+        if chunk.word_count < min_match { continue; }
+        let words: Vec<String> = chunk.text.split_whitespace()
+            .take(min_match)
+            .map(|w| normalize_word(w))
+            .collect();
+        if words.len() == min_match {
+            opener_groups.entry(words).or_default().push(chunk.id);
+        }
+    }
+
+    let mut opener_hint_ids: HashSet<usize> = HashSet::new();
+
+    for (opener_key, ids) in &opener_groups {
+        if ids.len() < 2 { continue; }
+
+        // Split into sub-groups based on time gap
+        let mut sub_groups: Vec<Vec<usize>> = Vec::new();
+        let mut current_sub: Vec<usize> = vec![ids[0]];
+        for pair in ids.windows(2) {
+            if let (Some(a), Some(b)) = (chunks.get(pair[0]), chunks.get(pair[1])) {
+                if b.start - a.end > max_gap_between_members {
+                    sub_groups.push(current_sub);
+                    current_sub = vec![pair[1]];
+                } else {
+                    current_sub.push(pair[1]);
+                }
+            }
+        }
+        sub_groups.push(current_sub);
+
+        for sub_ids in &sub_groups {
+            if sub_ids.len() < 2 { continue; }
+
+            if let (Some(f), Some(l)) = (chunks.get(*sub_ids.first().unwrap()), chunks.get(*sub_ids.last().unwrap())) {
+                if l.end - f.start > max_time_span { continue; }
+            }
+
+            // Require content overlap
+            let mut has_overlap = false;
+            'outer: for (ai, &id_a) in sub_ids.iter().enumerate() {
+                for &id_b in &sub_ids[ai + 1..] {
+                    if let (Some(a), Some(b)) = (chunks.get(id_a), chunks.get(id_b)) {
+                        if count_shared_content_words(&a.text, &b.text) >= 3 {
+                            has_overlap = true;
+                            break 'outer;
+                        }
+                    }
+                }
+            }
+            if !has_overlap { continue; }
+
+            let last_id = *sub_ids.last().unwrap();
+            for &id in sub_ids {
+                if id != last_id {
+                    retake_pairs.push((id, last_id, format!("opener \"{}\"", opener_key.join(" "))));
+                    opener_hint_ids.insert(id);
+                }
+                opener_hint_ids.insert(id);
+            }
+        }
+    }
+
+    // === STRATEGY 2: Similarity-based detection (transitive) ===
+    {
+        let time_window = 180.0;
+        let min_similarity = 0.35;
+        let groups = detect_retake_groups_advanced(chunks, time_window, min_similarity);
+        for group in &groups {
+            if group.len() < 2 { continue; }
+            let last_id = *group.last().unwrap();
+            for &id in group {
+                if id != last_id {
+                    if !retake_pairs.iter().any(|(r, _, _)| *r == id) {
+                        retake_pairs.push((id, last_id, "similarity".to_string()));
+                    }
+                }
+            }
+        }
+    }
+
+    // === STRATEGY 3: N-gram overlap (wider window) ===
+    let mut ngram_frequency: HashMap<Vec<String>, usize> = HashMap::new();
+    for chunk in chunks {
+        let windows: HashSet<Vec<String>> = extract_ngram_windows(&chunk.text, 3).into_iter().collect();
+        for w in windows {
+            *ngram_frequency.entry(w).or_insert(0) += 1;
+        }
+    }
+
+    for i in 0..chunks.len() {
+        for j in (i + 1)..chunks.len() {
+            if retake_pairs.iter().any(|(r, _, _)| *r == chunks[i].id) { continue; }
+            let gap = chunks[j].start - chunks[i].end;
+            if gap > 120.0 || gap < 0.0 { continue; }
+            if chunks[i].word_count < 5 || chunks[j].word_count < 5 { continue; }
+
+            let shared = shared_ngrams(&chunks[i].text, &chunks[j].text, 3);
+            let meaningful: Vec<&Vec<String>> = shared.iter()
+                .filter(|ng| {
+                    let freq = ngram_frequency.get(*ng).copied().unwrap_or(0);
+                    freq < 4 && ng.iter().any(|w| w.len() >= 4 && !FRENCH_STOP_WORDS.contains(&w.as_str()))
+                })
+                .collect();
+            if meaningful.len() >= 2 {
+                retake_pairs.push((chunks[i].id, chunks[j].id, "ngram-overlap".to_string()));
+            }
+        }
+    }
+
+    // === STRATEGY 4: Content-word overlap for short/truncated chunks ===
+    for i in 0..chunks.len() {
+        for j in (i + 1)..chunks.len() {
+            if retake_pairs.iter().any(|(r, _, _)| *r == chunks[i].id) { continue; }
+            let gap = chunks[j].start - chunks[i].end;
+            if gap > 120.0 || gap < 0.0 { continue; }
+            if chunks[i].word_count < 5 || chunks[j].word_count < 5 { continue; }
+
+            let content_a: HashSet<String> = extract_content_words(&chunks[i].text).into_iter().collect();
+            let content_b: HashSet<String> = extract_content_words(&chunks[j].text).into_iter().collect();
+            let shared_count = content_a.intersection(&content_b).count();
+            let union_count = content_a.union(&content_b).count();
+            if shared_count < 2 || union_count == 0 { continue; }
+            let jaccard = shared_count as f64 / union_count as f64;
+
+            let is_aborted = is_truncated(&chunks[i].text);
+            let is_short = chunks[i].word_count < 15;
+            if (is_aborted || is_short) && jaccard >= 0.20 {
+                retake_pairs.push((chunks[i].id, chunks[j].id, "content-overlap".to_string()));
+            } else if jaccard >= 0.40 {
+                retake_pairs.push((chunks[i].id, chunks[j].id, "high-content-overlap".to_string()));
+            }
+        }
+    }
+
+    eprintln!("Algorithmic retake detection: {} pairs to remove", retake_pairs.len());
+    retake_pairs
+}
+
+/// Send the full transcript (as chunks) to Claude Sonnet in ONE call.
+/// NEW STRATEGY: Pre-remove algorithmic retakes, send clean transcript to Claude.
 pub async fn determine_keep_ranges(
     chunks: &[SpeechChunk],
     api_key: &str,
@@ -1226,29 +1380,40 @@ pub async fn determine_keep_ranges(
         return Ok(Vec::new());
     }
 
-    // Use BOTH hint systems and combine them for maximum detection
-    let retake_hints_multi = build_retake_hints(chunks);
-    let retake_hints_advanced = build_advanced_hints(chunks);
-    let retake_hints = if retake_hints_multi.is_empty() && retake_hints_advanced.is_empty() {
-        String::new()
-    } else {
-        format!("{}\n{}", retake_hints_multi, retake_hints_advanced)
-    };
+    // === PHASE 1: Algorithmic pre-removal ===
+    let retake_pairs = detect_all_retake_pairs(chunks);
+    let algo_remove: std::collections::HashSet<usize> = retake_pairs.iter().map(|(r, _, _)| *r).collect();
+
+    eprintln!("Phase 1 (algorithmic): removing {}/{} chunks", algo_remove.len(), chunks.len());
+    for (remove_id, keep_id, reason) in &retake_pairs {
+        if let Some(chunk) = chunks.get(*remove_id) {
+            let preview: String = chunk.text.chars().take(50).collect();
+            eprintln!("  REMOVE [{}] → KEEP [{}] ({}): \"{}...\"", remove_id, keep_id, reason, preview);
+        }
+    }
+
+    // Build transcript with ONLY surviving chunks (renumber for Claude)
+    let surviving_chunks: Vec<&SpeechChunk> = chunks.iter()
+        .filter(|c| !algo_remove.contains(&c.id))
+        .collect();
+
+    eprintln!("Phase 2 (Claude): analyzing {} surviving chunks", surviving_chunks.len());
 
     let mut transcript = String::new();
-    for (i, chunk) in chunks.iter().enumerate() {
+    for (i, chunk) in surviving_chunks.iter().enumerate() {
         if i > 0 {
-            let gap = chunk.start - chunks[i - 1].end;
+            let prev = surviving_chunks[i - 1];
+            let gap = chunk.start - prev.end;
             if gap >= 1.0 {
                 transcript.push_str(&format!("  --- {:.1}s ---\n", gap));
             }
         }
-        // Mark continuations: chunk starts with lowercase = continuation of previous sentence
         let continuation_marker = if chunk.text.chars().next().map(|c| c.is_lowercase()).unwrap_or(false) {
             " ⟵ SUITE"
         } else {
             ""
         };
+        // Use ORIGINAL IDs so we can map back
         transcript.push_str(&format!(
             "[{}] {}-{} ({:.1}s, {} mots){} {}\n",
             chunk.id,
@@ -1262,70 +1427,37 @@ pub async fn determine_keep_ranges(
     }
 
     let system_prompt = format!(
-        r#"Tu es un assistant de montage vidéo expert. Tu analyses la transcription brute d'un rush vidéo pour déterminer les moments à GARDER dans le montage final.
+        r#"Tu es un assistant de montage vidéo expert. Tu analyses une transcription PRÉ-NETTOYÉE d'un rush vidéo.
 
-La transcription est découpée en segments de parole numérotés. Chaque segment est un bloc continu de parole. Les silences entre segments sont automatiquement supprimés.
+Les reprises évidentes ont DÉJÀ été supprimées automatiquement. Tu vois uniquement les segments survivants.
 
 ## TON TRAVAIL
-Utilise ton raisonnement interne (thinking) pour analyser la transcription, puis retourne la liste des IDs de segments à GARDER via l'outil report_keep_segments.
+Cherche les reprises RESTANTES que l'algorithme aurait manquées, puis retourne les IDs des segments à GARDER.
 
-## RÈGLE N°1 (PRIORITÉ ABSOLUE) — REPRISES PRÉ-DÉTECTÉES
+## CE QUE TU DOIS CHERCHER
+1. **Reprises subtiles** : deux segments qui disent la même chose avec des mots différents, proches dans le temps (<3 min)
+2. **Faux départs** : segment très court (<6 mots) suivi d'un segment similaire plus complet → supprime le court
+3. **Phrases abandonnées** : segment qui se termine abruptement (incomplet) → supprime si le contenu est repris ailleurs
 
-Les groupes ci-dessous ont été détectés algorithmiquement avec haute confiance.
-**SUIS CES INDICATIONS STRICTEMENT** : pour chaque groupe, garde UNIQUEMENT le dernier chunk indiqué, supprime TOUS les autres du groupe.
+## CE QUE TU NE DOIS PAS FAIRE
+- NE supprime PAS de contenu unique (dit une seule fois)
+- NE supprime PAS des segments similaires qui sont éloignés dans le temps (>3 min)
+- NE supprime PAS de transitions normales ("voilà", "donc", "et puis")
 
-- Si un groupe dit : "garde SEULEMENT [42]" → tu gardes [42], tu supprimes tous les autres chunks du groupe
-- **AUCUNE exception** : même si un chunk intermédiaire te semble bon, supprime-le si les hints disent de le supprimer
+## SEGMENTS ⟵ SUITE
+= continuation du segment précédent. Garder ou supprimer ensemble, jamais séparément.
 
-## RÈGLE N°2 — RECHERCHE ACTIVE DE REPRISES NON-DÉTECTÉES
-
-Au-delà des reprises pré-détectées, cherche d'autres reprises que l'algorithme aurait manquées :
-
-**Critères pour identifier une reprise** :
-1. Deux segments **parlent du même sujet spécifique** dans une fenêtre de <3 minutes
-   - Exemple : "Et puis ralfloop..." répété 4 fois avec des mots légèrement différents
-   - Si détecté : garde SEULEMENT la version la plus complète/la dernière
-2. Deux segments **commencent par des expressions très similaires** (pas juste des transitions courantes)
-   - "Et là on arrive directement sur le setup..." (répété 3 fois) → garde le dernier
-   - MAIS "voilà" ou "donc" seuls NE SONT PAS des reprises (trop courants)
-3. Segment très court (<6 mots) suivi d'un segment similaire → faux départ → supprime le court
-4. Segment se terminant par "—" ou semblant incomplet → tentative abandonnée → supprime
-
-**IMPORTANT** : Une phrase courante répétée à différents moments avec des sujets différents N'EST PAS une reprise.
-- "Voilà ce dont je parlais" peut apparaître 5 fois dans la vidéo avec des contextes différents → garder tous
-- Mais "Et puis ralfloop en fait..." répété 4 fois en 2 minutes → C'EST une reprise → garder seulement le dernier
-
-## RÈGLE N°3 — SEGMENTS ⟵ SUITE (INDIVISIBLES)
-
-Segments marqués "⟵ SUITE" = continuation grammaticale du segment précédent.
-**BLOC INDIVISIBLE** : Garder ou supprimer [N] ET [N+1] ensemble. Jamais l'un sans l'autre.
-
-## RÈGLE N°4 — EN CAS DE DOUTE
-
-- Doute si chunk fait partie d'un groupe de reprises ? → Vérifie les hints d'abord. Si les hints ne mentionnent pas ce chunk, alors garde-le.
-- Doute si deux chunks sont des reprises l'un de l'autre ? → Compare le contenu précis : même sujet spécifique + proche dans le temps (< 2 min) = probable reprise → garde le dernier
-- Doute si chunk est utile ? → Si unique et pas dans un groupe de reprises → GARDE-LE
-
-## PROCESSUS RECOMMANDÉ
-
-1. **Première passe** : Suis TOUS les groupes de reprises pré-détectés sans exception
-2. **Deuxième passe** : Cherche des reprises que l'algorithme aurait manquées
-3. **Vérification finale** : Relis ta liste - y a-t-il 2 chunks qui disent la MÊME chose spécifique ? Si oui, garde seulement le dernier
-
-## MODE : AGRESSIF (mais équilibré)
-
-Tu dois supprimer les reprises de façon agressive, MAIS garde tout le contenu unique.
-- Préfère supprimer une reprise douteuse que de la garder
-- Mais ne supprime JAMAIS du contenu unique qui n'est dit qu'une seule fois
-- Cible : supprimer ~40-50% des chunks (retakes + pauses)
+## RETOURNE
+La liste des IDs des segments à GARDER (dans l'ordre chronologique).
+En cas de doute → GARDE le segment.
 
 ## {}"#,
         get_mode_instruction(mode)
     );
 
     let user_message = format!(
-        "Voici la transcription du rush vidéo. Retourne les IDs des segments à GARDER.\n\n{}{}",
-        retake_hints, transcript
+        "Transcription pré-nettoyée ({} segments, {} déjà supprimés par l'algorithme). Retourne les IDs à GARDER.\n\n{}",
+        surviving_chunks.len(), algo_remove.len(), transcript
     );
 
     let tool = serde_json::json!({
@@ -1344,7 +1476,7 @@ Tu dois supprimer les reprises de façon agressive, MAIS garde tout le contenu u
         }
     });
 
-    eprintln!("Calling Claude Sonnet with extended thinking for transcript analysis ({} chunks, mode: {})...", chunks.len(), mode);
+    eprintln!("Calling Claude Sonnet for remaining retake detection ({} chunks, mode: {})...", surviving_chunks.len(), mode);
 
     let result = call_anthropic_api(&system_prompt, &user_message, tool, "report_keep_segments", api_key, true).await?;
 
@@ -1352,16 +1484,22 @@ Tu dois supprimer les reprises de façon agressive, MAIS garde tout le contenu u
         .and_then(|v| serde_json::from_value(v.clone()).ok())
         .unwrap_or_default();
 
-    let max_id = chunks.len();
+    // Valid IDs must be from the original chunks AND not already removed
+    let surviving_ids: std::collections::HashSet<usize> = surviving_chunks.iter().map(|c| c.id).collect();
     let valid_ids: Vec<usize> = keep_ids.into_iter()
-        .filter(|&id| id < max_id)
+        .filter(|id| surviving_ids.contains(id))
         .collect();
 
-    eprintln!("Claude: keep {}/{} chunks ({} removed)",
-        valid_ids.len(), chunks.len(), chunks.len() - valid_ids.len());
+    let claude_removed = surviving_chunks.len() - valid_ids.len();
+    eprintln!("Phase 2 (Claude): kept {}/{} surviving chunks ({} additional removals)",
+        valid_ids.len(), surviving_chunks.len(), claude_removed);
+    eprintln!("Total: {}/{} chunks kept ({} algo + {} Claude removed)",
+        valid_ids.len(), chunks.len(), algo_remove.len(), claude_removed);
 
     Ok(valid_ids)
 }
+
+// Old hint-based approach removed — now using direct algorithmic removal + Claude verification
 
 fn format_time(seconds: f64) -> String {
     let mins = (seconds / 60.0) as u64;
