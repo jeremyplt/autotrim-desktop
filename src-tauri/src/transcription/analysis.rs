@@ -927,9 +927,15 @@ fn detect_all_retake_pairs(chunks: &[SpeechChunk]) -> Vec<(usize, usize, String)
     }
 
     // ═══ S2: Zone filling between retake pairs ═══
+    // Protect explicit keepers from prior strategies
+    let s1_keepers: HashSet<usize> = pairs.iter()
+        .filter(|(_, k)| !rm.contains(k))
+        .map(|(_, k)| *k)
+        .collect();
     for &(removed_id, keeper_id) in pairs.clone().iter() {
         for bid in (removed_id + 1)..keeper_id {
             if rm.contains(&bid) { continue; }
+            if s1_keepers.contains(&bid) { continue; } // Don't zone-fill explicit keepers
             let c = match chunks.get(bid) {
                 Some(ch) => ch,
                 None => continue,
@@ -1173,6 +1179,12 @@ fn detect_all_retake_pairs(chunks: &[SpeechChunk]) -> Vec<(usize, usize, String)
     // ═══ S8: Zone-fill after S6/S7 ═══
     // Re-run zone filling for newly created retake pairs from S6/S7
     {
+        // Protect explicit keepers from all prior strategies
+        let explicit_keepers: HashSet<usize> = pairs.iter()
+            .filter(|(_, k)| !rm.contains(k))
+            .map(|(_, k)| *k)
+            .collect();
+        
         let new_pairs: Vec<(usize, usize)> = pairs.iter()
             .filter(|(r, k)| rm.contains(r) && !rm.contains(k))
             .map(|(r, k)| (*r, *k))
@@ -1181,6 +1193,7 @@ fn detect_all_retake_pairs(chunks: &[SpeechChunk]) -> Vec<(usize, usize, String)
         for &(removed_id, keeper_id) in &new_pairs {
             for bid in (removed_id + 1)..keeper_id {
                 if rm.contains(&bid) { continue; }
+                if explicit_keepers.contains(&bid) { continue; } // Don't zone-fill explicit keepers
                 let c = match chunks.get(bid) {
                     Some(ch) => ch,
                     None => continue,
@@ -1360,45 +1373,58 @@ pub async fn determine_keep_ranges(
 Les reprises évidentes ont DÉJÀ été supprimées automatiquement. Tu vois uniquement les segments survivants. Ton travail est de nettoyer DAVANTAGE.
 
 ## TON TRAVAIL
-Identifie et SUPPRIME tous les segments qui ne devraient PAS apparaître dans le montage final. Retourne les IDs des segments à GARDER.
+Retourne les IDs des segments à GARDER dans le montage final. Tout ce que tu ne retournes pas sera coupé.
+
+## RÈGLE CRITIQUE #1: SÉLECTION DE VERSION
+Quand tu détectes des segments qui couvrent le MÊME sujet/idée (reprises), tu DOIS garder la version la plus TARDIVE chronologiquement (= la dernière dans le temps). 
+JAMAIS garder une version antérieure et supprimer la postérieure. Le locuteur fait des reprises pour s'améliorer — la dernière tentative est TOUJOURS la bonne.
+Exemple: Si [A] à 300s et [B] à 400s disent la même chose → SUPPRIME [A], GARDE [B]. Même si [A] est plus long ou plus détaillé.
 
 ## CE QUE TU DOIS SUPPRIMER
 
-### 1. Reprises subtiles
-Deux segments qui disent la même chose avec des mots différents, même si éloignés dans le temps (jusqu'à 5 min). Garde UNIQUEMENT la meilleure version (généralement la dernière).
+### 1. Reprises (même sujet répété)
+Quand le locuteur aborde le MÊME sujet/idée dans plusieurs segments (même éloignés de 5 min), SUPPRIME toutes les versions SAUF la dernière. Indices d'une reprise:
+- Même thème ou vocabulaire similaire
+- Version antérieure incomplète, hésitante, ou moins fluide
+- Phrase qui recommence une idée déjà exprimée plus tard
 
-### 2. Faux départs et phrases abandonnées
-- Segment très court (<8 mots) suivi d'un segment similaire plus complet
-- Segment qui se termine abruptement ou de manière incomplète
-- Segment qui recommence une idée déjà mieux exprimée ailleurs
+### 2. Faux départs et fragments abandonnés
+- Phrases inachevées ou qui s'interrompent
+- Segments très courts (<8 mots) sans pensée complète
+- Segments marqués ⟵ SUITE dont le parent est supprimé
 
-### 3. Dictée de prompts/instructions à une IA
-Sections où le locuteur dicte des instructions détaillées à un agent IA ou un système (ex: "fais en sorte que...", "mets un bouton...", "crée une nouvelle branche..."). Ces sections techniques de dictation doivent être SUPPRIMÉES car elles ne sont pas intéressantes pour le spectateur. SAUF si le locuteur explique le concept au spectateur.
+### 3. Instructions DÉTAILLÉES dictées à un agent IA
+SUPPRIME les passages où le locuteur dicte des instructions techniques détaillées à un agent IA. Signaux clés:
+- Impératifs directs à l'agent: "fais en sorte que...", "lance un server", "crée une branche", "checkes sur..."
+- Spécifications d'implémentation: "tu peux mettre les statistiques en dessous", "ajoute un bouton call to action", "tu peux ajouter une section pour les crédits"
+- Configuration technique: "variables d'environnement", noms de fichiers/branches spécifiques
+- Commandes de debug: "casse ce qu'il faut casser", "envoie-moi le lien"
 
-### 4. Sections de débogage/attente
-- Moments où le locuteur attend un résultat ("on va attendre...", "pas encore...")
-- Sections de troubleshooting en temps réel
-- Conversations de debugging avec une IA ("casse ça", "corrige ça", "envoie-moi le lien")
+IMPORTANT: Quand tu vois une SÉRIE de 3+ segments consécutifs avec des impératifs ("fais...", "mets...", "ajoute...", "lance..."), SUPPRIME la série ENTIÈRE — c'est de la dictée.
 
-### 5. Contenu hors-sujet
-Tout contenu qui n'est clairement pas lié au sujet principal de la vidéo (digressions, conversations en arrière-plan, contenu sans rapport)
+⚠️ GARDE les interactions COURTES (1-2 segments) qui montrent le workflow au spectateur: vérification d'accès, lancement d'une tâche, réaction à un résultat. Garde aussi les descriptions HIGH-LEVEL de l'interface quand le locuteur décrit la STRUCTURE GÉNÉRALE d'un écran.
 
-### 6. Versions multiples de la conclusion
-Si plusieurs tentatives de conclusion/outro existent, ne garde que la DERNIÈRE version complète.
+### 4. Attente, débogage et processus en temps réel
+SUPPRIME:
+- Attente/vérification en direct: "je vais cliquer pour voir si...", "toujours pas", "il y a rien pour le moment", "on va attendre"
+- Processus de debug: "casse ça", "corrige ça", "tu m'envoies le lien", "regarde dans les fichiers"
+- Commentaires de processus: "je vais retourner ici", "je vais lui faire mon prompt", "il me demande si je suis sûr"
+- Digressions et hors-sujet pendant les temps morts
+⚠️ GARDE les moments où le locuteur MONTRE/NARRE un résultat au spectateur ("voilà, il a commencé à travailler, si on va sur l'application on peut voir...").
+
+### 5. Conclusions multiples
+SUPPRIME toutes les tentatives de conclusion SAUF la TOUTE DERNIÈRE.
 
 ## CE QUE TU DOIS GARDER
-- Contenu explicatif unique destiné au spectateur
-- Démonstrations visuelles commentées (le locuteur montre quelque chose à l'écran)
-- Résultats et réactions aux résultats ("ça marche!", "voilà le résultat")
-- L'introduction et la conclusion finale
+- Contenu explicatif UNIQUE adressé au spectateur
+- Démonstrations visuelles : le locuteur MONTRE ce qui est à l'écran
+- Résultats et réactions : "ça marche", "voilà", "c'est tout bon" (quand c'est la première fois qu'on le dit)
+- Évaluation de bugs quand ça fait partie de la démo : "la safe area ne marche pas", "les dimensions sont pas bonnes"
+- Introduction et conclusion FINALE uniquement
+- Descriptions HIGH-LEVEL de l'architecture/interface (sans entrer dans les détails d'implémentation)
 
 ## SEGMENTS ⟵ SUITE
-= continuation du segment précédent. Garder ou supprimer ensemble, jamais séparément.
-
-## RETOURNE
-La liste des IDs des segments à GARDER (dans l'ordre chronologique).
-En cas de doute sur du contenu technique/dictation → SUPPRIME.
-En cas de doute sur du contenu explicatif unique → GARDE.
+Si un segment est supprimé, ses segments ⟵ SUITE doivent aussi être supprimés.
 
 ## {}"#,
         get_mode_instruction(mode)
