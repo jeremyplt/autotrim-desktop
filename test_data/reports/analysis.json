@@ -1,0 +1,4442 @@
+{
+  "raw_words": 10224,
+  "exp_words": 6568,
+  "silences": [
+    {
+      "start": 85600,
+      "end": 90380,
+      "duration_ms": 4780,
+      "before_word": "pas.",
+      "after_word": "Alors"
+    },
+    {
+      "start": 100920,
+      "end": 103040,
+      "duration_ms": 2120,
+      "before_word": "background.",
+      "after_word": "Alors"
+    },
+    {
+      "start": 104540,
+      "end": 106800,
+      "duration_ms": 2260,
+      "before_word": "ça",
+      "after_word": "reste"
+    },
+    {
+      "start": 153207,
+      "end": 159095,
+      "duration_ms": 5888,
+      "before_word": "ordinateur.",
+      "after_word": "Alors"
+    },
+    {
+      "start": 234832,
+      "end": 239251,
+      "duration_ms": 4419,
+      "before_word": "tourne",
+      "after_word": "Et"
+    },
+    {
+      "start": 250751,
+      "end": 253051,
+      "duration_ms": 2300,
+      "before_word": "un—",
+      "after_word": "et"
+    },
+    {
+      "start": 324831,
+      "end": 330663,
+      "duration_ms": 5832,
+      "before_word": "une—",
+      "after_word": "et"
+    },
+    {
+      "start": 369641,
+      "end": 384983,
+      "duration_ms": 15342,
+      "before_word": "1.",
+      "after_word": "Donc"
+    },
+    {
+      "start": 408043,
+      "end": 410988,
+      "duration_ms": 2945,
+      "before_word": "et",
+      "after_word": "donc"
+    },
+    {
+      "start": 501855,
+      "end": 520338,
+      "duration_ms": 18483,
+      "before_word": "vidéo.",
+      "after_word": "En"
+    },
+    {
+      "start": 694431,
+      "end": 702790,
+      "duration_ms": 8359,
+      "before_word": "VPS.",
+      "after_word": "Voilà"
+    },
+    {
+      "start": 756451,
+      "end": 760317,
+      "duration_ms": 3866,
+      "before_word": "Lab.",
+      "after_word": "Voilà"
+    },
+    {
+      "start": 807510,
+      "end": 838111,
+      "duration_ms": 30601,
+      "before_word": "plusieurs",
+      "after_word": "Voilà"
+    },
+    {
+      "start": 863331,
+      "end": 865600,
+      "duration_ms": 2269,
+      "before_word": "fonctionnalité,",
+      "after_word": "voilà"
+    },
+    {
+      "start": 908797,
+      "end": 935328,
+      "duration_ms": 26531,
+      "before_word": "OpenClo.",
+      "after_word": "Lo—"
+    },
+    {
+      "start": 1030276,
+      "end": 1063679,
+      "duration_ms": 33403,
+      "before_word": "possible.",
+      "after_word": "Tu"
+    },
+    {
+      "start": 1099823,
+      "end": 1107003,
+      "duration_ms": 7180,
+      "before_word": "passe.",
+      "after_word": "Voilà,"
+    },
+    {
+      "start": 1113683,
+      "end": 1171122,
+      "duration_ms": 57439,
+      "before_word": "connecté.",
+      "after_word": "C'est"
+    },
+    {
+      "start": 1185002,
+      "end": 1224025,
+      "duration_ms": 39023,
+      "before_word": "quitter.",
+      "after_word": "Et"
+    },
+    {
+      "start": 1244345,
+      "end": 1357895,
+      "duration_ms": 113550,
+      "before_word": "Up.",
+      "after_word": "Et"
+    },
+    {
+      "start": 1364595,
+      "end": 1369454,
+      "duration_ms": 4859,
+      "before_word": "juste—",
+      "after_word": "et"
+    },
+    {
+      "start": 1481913,
+      "end": 1488727,
+      "duration_ms": 6814,
+      "before_word": "gros,",
+      "after_word": "je"
+    },
+    {
+      "start": 1497107,
+      "end": 1500827,
+      "duration_ms": 3720,
+      "before_word": "J'autorise.",
+      "after_word": "Et"
+    },
+    {
+      "start": 1511767,
+      "end": 1519186,
+      "duration_ms": 7419,
+      "before_word": "setup.",
+      "after_word": "Ici"
+    },
+    {
+      "start": 1567212,
+      "end": 1585117,
+      "duration_ms": 17905,
+      "before_word": "Telegram.",
+      "after_word": "Et"
+    },
+    {
+      "start": 1609817,
+      "end": 1612083,
+      "duration_ms": 2266,
+      "before_word": "youtubeclotestbot.",
+      "after_word": "Ici,"
+    },
+    {
+      "start": 1616963,
+      "end": 1659957,
+      "duration_ms": 42994,
+      "before_word": "identifiant.",
+      "after_word": "Ici"
+    },
+    {
+      "start": 1662217,
+      "end": 1708793,
+      "duration_ms": 46576,
+      "before_word": "propre,",
+      "after_word": "ici"
+    },
+    {
+      "start": 1719973,
+      "end": 1852062,
+      "duration_ms": 132089,
+      "before_word": "identifiant.",
+      "after_word": "Maintenant"
+    },
+    {
+      "start": 1882243,
+      "end": 1885383,
+      "duration_ms": 3140,
+      "before_word": "npm,",
+      "after_word": "et"
+    },
+    {
+      "start": 1885743,
+      "end": 1888303,
+      "duration_ms": 2560,
+      "before_word": "ici",
+      "after_word": "Et"
+    },
+    {
+      "start": 1942782,
+      "end": 1944802,
+      "duration_ms": 2020,
+      "before_word": "mal.",
+      "after_word": "Moi"
+    },
+    {
+      "start": 1950402,
+      "end": 1952772,
+      "duration_ms": 2370,
+      "before_word": "Whisper.",
+      "after_word": "Ici"
+    },
+    {
+      "start": 1977352,
+      "end": 1995584,
+      "duration_ms": 18232,
+      "before_word": "OpenClose.",
+      "after_word": "Ici"
+    },
+    {
+      "start": 2002224,
+      "end": 2031241,
+      "duration_ms": 29017,
+      "before_word": "Question.",
+      "after_word": "Et"
+    },
+    {
+      "start": 2043361,
+      "end": 2085798,
+      "duration_ms": 42437,
+      "before_word": "quoi.",
+      "after_word": "C'est"
+    },
+    {
+      "start": 2111358,
+      "end": 2134617,
+      "duration_ms": 23259,
+      "before_word": "terminal.",
+      "after_word": "Et"
+    },
+    {
+      "start": 2139877,
+      "end": 2181310,
+      "duration_ms": 41433,
+      "before_word": "a",
+      "after_word": "C'est"
+    },
+    {
+      "start": 2194430,
+      "end": 2245030,
+      "duration_ms": 50600,
+      "before_word": "correctement.",
+      "after_word": "C'est"
+    },
+    {
+      "start": 2286372,
+      "end": 2303553,
+      "duration_ms": 17181,
+      "before_word": "ici.",
+      "after_word": "C'est"
+    },
+    {
+      "start": 2384960,
+      "end": 2387135,
+      "duration_ms": 2175,
+      "before_word": "ici",
+      "after_word": "on"
+    },
+    {
+      "start": 2438358,
+      "end": 2548493,
+      "duration_ms": 110135,
+      "before_word": "SSH.",
+      "after_word": "Et"
+    },
+    {
+      "start": 2555633,
+      "end": 2574481,
+      "duration_ms": 18848,
+      "before_word": "que,",
+      "after_word": "et"
+    },
+    {
+      "start": 2583401,
+      "end": 2588403,
+      "duration_ms": 5002,
+      "before_word": "l'interface.",
+      "after_word": "Ici"
+    },
+    {
+      "start": 2614663,
+      "end": 2620921,
+      "duration_ms": 6258,
+      "before_word": "chose,",
+      "after_word": "la"
+    },
+    {
+      "start": 2657259,
+      "end": 2664020,
+      "duration_ms": 6761,
+      "before_word": "correctement.",
+      "after_word": "Ensuite,"
+    },
+    {
+      "start": 2710126,
+      "end": 2712130,
+      "duration_ms": 2004,
+      "before_word": "choses.",
+      "after_word": "Ici,"
+    },
+    {
+      "start": 2731750,
+      "end": 2749964,
+      "duration_ms": 18214,
+      "before_word": "I'm",
+      "after_word": "going"
+    },
+    {
+      "start": 2751324,
+      "end": 2802057,
+      "duration_ms": 50733,
+      "before_word": "the",
+      "after_word": "Donc"
+    },
+    {
+      "start": 2839986,
+      "end": 2892625,
+      "duration_ms": 52639,
+      "before_word": "github.",
+      "after_word": "Voilà,"
+    },
+    {
+      "start": 2908765,
+      "end": 3111427,
+      "duration_ms": 202662,
+      "before_word": "ça.",
+      "after_word": "On"
+    },
+    {
+      "start": 3119647,
+      "end": 3122108,
+      "duration_ms": 2461,
+      "before_word": "but.",
+      "after_word": "Alors"
+    },
+    {
+      "start": 3149748,
+      "end": 3159537,
+      "duration_ms": 9789,
+      "before_word": "drôle.",
+      "after_word": "On"
+    },
+    {
+      "start": 3180137,
+      "end": 3198687,
+      "duration_ms": 18550,
+      "before_word": "marche.",
+      "after_word": "On"
+    },
+    {
+      "start": 3205387,
+      "end": 3208154,
+      "duration_ms": 2767,
+      "before_word": "manipulation.",
+      "after_word": "On"
+    },
+    {
+      "start": 3234894,
+      "end": 3237719,
+      "duration_ms": 2825,
+      "before_word": "VPS.",
+      "after_word": "Je"
+    },
+    {
+      "start": 3251505,
+      "end": 3255623,
+      "duration_ms": 4118,
+      "before_word": "à",
+      "after_word": "plein—"
+    },
+    {
+      "start": 3251719,
+      "end": 3255893,
+      "duration_ms": 4174,
+      "before_word": "à",
+      "after_word": "plein"
+    },
+    {
+      "start": 3376424,
+      "end": 3406098,
+      "duration_ms": 29674,
+      "before_word": "mieux.",
+      "after_word": "Tu"
+    },
+    {
+      "start": 3456863,
+      "end": 3484938,
+      "duration_ms": 28075,
+      "before_word": "Japanese.",
+      "after_word": "On"
+    },
+    {
+      "start": 3500958,
+      "end": 3524257,
+      "duration_ms": 23299,
+      "before_word": "OK,",
+      "after_word": "super."
+    },
+    {
+      "start": 3552857,
+      "end": 3556235,
+      "duration_ms": 3378,
+      "before_word": "instructions.",
+      "after_word": "Ok,"
+    },
+    {
+      "start": 3616077,
+      "end": 3619195,
+      "duration_ms": 3118,
+      "before_word": "téléphone.",
+      "after_word": "OK,"
+    },
+    {
+      "start": 3641875,
+      "end": 3748660,
+      "duration_ms": 106785,
+      "before_word": "parti.",
+      "after_word": "Voilà,"
+    },
+    {
+      "start": 3774500,
+      "end": 3778867,
+      "duration_ms": 4367,
+      "before_word": "l'application.",
+      "after_word": "Là"
+    },
+    {
+      "start": 3786267,
+      "end": 3793936,
+      "duration_ms": 7669,
+      "before_word": "téléphone.",
+      "after_word": "Voilà,"
+    },
+    {
+      "start": 3842340,
+      "end": 3849607,
+      "duration_ms": 7267,
+      "before_word": "carte.",
+      "after_word": "Donc"
+    },
+    {
+      "start": 3852647,
+      "end": 3855787,
+      "duration_ms": 3140,
+      "before_word": "prompt.",
+      "after_word": "OK,"
+    },
+    {
+      "start": 3954247,
+      "end": 3958667,
+      "duration_ms": 4420,
+      "before_word": "l'image.",
+      "after_word": "Voilà,"
+    },
+    {
+      "start": 3973967,
+      "end": 4204741,
+      "duration_ms": 230774,
+      "before_word": "ça.",
+      "after_word": "Donc"
+    },
+    {
+      "start": 4229101,
+      "end": 4238693,
+      "duration_ms": 9592,
+      "before_word": "ensemble.",
+      "after_word": "Voilà,"
+    },
+    {
+      "start": 4259693,
+      "end": 4262150,
+      "duration_ms": 2457,
+      "before_word": "faire.",
+      "after_word": "Là,"
+    },
+    {
+      "start": 4282910,
+      "end": 4467265,
+      "duration_ms": 184355,
+      "before_word": "changements.",
+      "after_word": "Donc"
+    },
+    {
+      "start": 4481085,
+      "end": 4591246,
+      "duration_ms": 110161,
+      "before_word": "problèmes.",
+      "after_word": "OK,"
+    },
+    {
+      "start": 4600879,
+      "end": 4939715,
+      "duration_ms": 338836,
+      "before_word": "bon,",
+      "after_word": "tu"
+    },
+    {
+      "start": 4600903,
+      "end": 4939715,
+      "duration_ms": 338812,
+      "before_word": "sais",
+      "after_word": "quoi,"
+    },
+    {
+      "start": 4600928,
+      "end": 4939715,
+      "duration_ms": 338787,
+      "before_word": "ce",
+      "after_word": "qu'on"
+    },
+    {
+      "start": 4601001,
+      "end": 4939715,
+      "duration_ms": 338714,
+      "before_word": "c'est",
+      "after_word": "que"
+    },
+    {
+      "start": 4601026,
+      "end": 4939715,
+      "duration_ms": 338689,
+      "before_word": "vas",
+      "after_word": "directement"
+    },
+    {
+      "start": 4980497,
+      "end": 4984077,
+      "duration_ms": 3580,
+      "before_word": "d'autre?",
+      "after_word": "Et"
+    },
+    {
+      "start": 5010565,
+      "end": 5017238,
+      "duration_ms": 6673,
+      "before_word": "d'accord?",
+      "after_word": "Commence"
+    },
+    {
+      "start": 5037178,
+      "end": 5470855,
+      "duration_ms": 433677,
+      "before_word": "de",
+      "after_word": "suite,"
+    },
+    {
+      "start": 5480535,
+      "end": 5521278,
+      "duration_ms": 40743,
+      "before_word": "Okay.",
+      "after_word": "OK,"
+    },
+    {
+      "start": 5523718,
+      "end": 5527180,
+      "duration_ms": 3462,
+      "before_word": "recorder.",
+      "after_word": "OK,"
+    },
+    {
+      "start": 5595682,
+      "end": 5603459,
+      "duration_ms": 7777,
+      "before_word": "screen.",
+      "after_word": "Ok,"
+    },
+    {
+      "start": 5635973,
+      "end": 5638493,
+      "duration_ms": 2520,
+      "before_word": "screen.",
+      "after_word": "Donc"
+    },
+    {
+      "start": 5647773,
+      "end": 5653493,
+      "duration_ms": 5720,
+      "before_word": "changements.",
+      "after_word": "OK,"
+    },
+    {
+      "start": 5661853,
+      "end": 5668765,
+      "duration_ms": 6912,
+      "before_word": "problème.",
+      "after_word": "Voilà,"
+    },
+    {
+      "start": 5732791,
+      "end": 5744838,
+      "duration_ms": 12047,
+      "before_word": "succès.",
+      "after_word": "Et"
+    },
+    {
+      "start": 5767558,
+      "end": 5772935,
+      "duration_ms": 5377,
+      "before_word": "pull",
+      "after_word": "request"
+    },
+    {
+      "start": 5796395,
+      "end": 5798872,
+      "duration_ms": 2477,
+      "before_word": "qui—",
+      "after_word": "et"
+    },
+    {
+      "start": 5844023,
+      "end": 5866608,
+      "duration_ms": 22585,
+      "before_word": "problème.",
+      "after_word": "Donc"
+    },
+    {
+      "start": 5909353,
+      "end": 5914465,
+      "duration_ms": 5112,
+      "before_word": "VPS.",
+      "after_word": "Donc"
+    },
+    {
+      "start": 5960205,
+      "end": 5963005,
+      "duration_ms": 2800,
+      "before_word": "réduction.",
+      "after_word": "Si"
+    },
+    {
+      "start": 5972425,
+      "end": 5977493,
+      "duration_ms": 5068,
+      "before_word": "Clo—",
+      "after_word": "Si"
+    },
+    {
+      "start": 5990813,
+      "end": 5993073,
+      "duration_ms": 2260,
+      "before_word": "vidéo.",
+      "after_word": "Si"
+    },
+    {
+      "start": 6003573,
+      "end": 6006383,
+      "duration_ms": 2810,
+      "before_word": "m'intéresse.",
+      "after_word": "Et"
+    }
+  ],
+  "kept_ranges": [
+    {
+      "raw_start": 318,
+      "raw_end": 7278,
+      "exp_start": 402,
+      "exp_end": 7322,
+      "size": 38,
+      "raw_idx": 0,
+      "text_preview": "alors là, je sais pas si on voit"
+    },
+    {
+      "raw_start": 7518,
+      "raw_end": 38778,
+      "exp_start": 7522,
+      "exp_end": 38809,
+      "size": 120,
+      "raw_idx": 39,
+      "text_preview": "code, j'ai pas utilisé mon ordinateur, j'ai juste"
+    },
+    {
+      "raw_start": 39138,
+      "raw_end": 40578,
+      "exp_start": 39169,
+      "exp_end": 40609,
+      "size": 4,
+      "raw_idx": 160,
+      "text_preview": "c'est qu'avec cloud code,"
+    },
+    {
+      "raw_start": 41058,
+      "raw_end": 49178,
+      "exp_start": 41089,
+      "exp_end": 49209,
+      "size": 33,
+      "raw_idx": 166,
+      "text_preview": "il faut être sur son ordinateur, on peut"
+    },
+    {
+      "raw_start": 49778,
+      "raw_end": 61098,
+      "exp_start": 49769,
+      "exp_end": 61129,
+      "size": 35,
+      "raw_idx": 200,
+      "text_preview": "c'est un peu compliqué. et puis surtout, cloud"
+    },
+    {
+      "raw_start": 61760,
+      "raw_end": 62860,
+      "exp_start": 61777,
+      "exp_end": 62897,
+      "size": 4,
+      "raw_idx": 236,
+      "text_preview": "c'est qu'au bout d'un"
+    },
+    {
+      "raw_start": 63720,
+      "raw_end": 65180,
+      "exp_start": 63177,
+      "exp_end": 65157,
+      "size": 7,
+      "raw_idx": 242,
+      "text_preview": "claude va s'arrêter, va nous dire bah"
+    },
+    {
+      "raw_start": 65240,
+      "raw_end": 69820,
+      "exp_start": 65437,
+      "exp_end": 69897,
+      "size": 24,
+      "raw_idx": 250,
+      "text_preview": "je viens de finir la première étape du"
+    },
+    {
+      "raw_start": 70180,
+      "raw_end": 83620,
+      "exp_start": 70077,
+      "exp_end": 83637,
+      "size": 48,
+      "raw_idx": 275,
+      "text_preview": "on veut pas ça, on veut un agent"
+    },
+    {
+      "raw_start": 84760,
+      "raw_end": 90640,
+      "exp_start": 84637,
+      "exp_end": 85950,
+      "size": 6,
+      "raw_idx": 327,
+      "text_preview": "il ne le fait pas. alors"
+    },
+    {
+      "raw_start": 104380,
+      "raw_end": 107380,
+      "exp_start": 87110,
+      "exp_end": 87790,
+      "size": 4,
+      "raw_idx": 364,
+      "text_preview": "ça reste un outil"
+    },
+    {
+      "raw_start": 108020,
+      "raw_end": 109580,
+      "exp_start": 88590,
+      "exp_end": 89970,
+      "size": 7,
+      "raw_idx": 369,
+      "text_preview": "surtout quand on est sur son ordinateur."
+    },
+    {
+      "raw_start": 111320,
+      "raw_end": 113520,
+      "exp_start": 91710,
+      "exp_end": 93910,
+      "size": 13,
+      "raw_idx": 380,
+      "text_preview": "code quand je suis chez moi, mais quand"
+    },
+    {
+      "raw_start": 113700,
+      "raw_end": 115484,
+      "exp_start": 94190,
+      "exp_end": 96070,
+      "size": 5,
+      "raw_idx": 393,
+      "text_preview": "c'est pas vraiment faisable. et"
+    },
+    {
+      "raw_start": 115664,
+      "raw_end": 120394,
+      "exp_start": 96530,
+      "exp_end": 100990,
+      "size": 16,
+      "raw_idx": 399,
+      "text_preview": "code, c'est quand même ce qui m'a permis"
+    },
+    {
+      "raw_start": 120584,
+      "raw_end": 122524,
+      "exp_start": 100990,
+      "exp_end": 102870,
+      "size": 4,
+      "raw_idx": 416,
+      "text_preview": "000 de revenus annuels."
+    },
+    {
+      "raw_start": 124304,
+      "raw_end": 125444,
+      "exp_start": 104690,
+      "exp_end": 105830,
+      "size": 4,
+      "raw_idx": 425,
+      "text_preview": "est sorti en février."
+    },
+    {
+      "raw_start": 125724,
+      "raw_end": 127224,
+      "exp_start": 106070,
+      "exp_end": 107630,
+      "size": 12,
+      "raw_idx": 430,
+      "text_preview": "j'ai été un petit peu long à la"
+    },
+    {
+      "raw_start": 127284,
+      "raw_end": 127724,
+      "exp_start": 107670,
+      "exp_end": 108130,
+      "size": 5,
+      "raw_idx": 442,
+      "text_preview": "l'ai pas tout de suite"
+    },
+    {
+      "raw_start": 128787,
+      "raw_end": 132227,
+      "exp_start": 109027,
+      "exp_end": 112627,
+      "size": 12,
+      "raw_idx": 448,
+      "text_preview": "je pensais que je codais encore mieux que"
+    },
+    {
+      "raw_start": 132427,
+      "raw_end": 135667,
+      "exp_start": 112847,
+      "exp_end": 116067,
+      "size": 9,
+      "raw_idx": 461,
+      "text_preview": "pas besoin d'ia pour coder rapidement. et puis"
+    },
+    {
+      "raw_start": 137387,
+      "raw_end": 138567,
+      "exp_start": 117787,
+      "exp_end": 118967,
+      "size": 5,
+      "raw_idx": 473,
+      "text_preview": "j'ai commencé à l'utiliser et"
+    },
+    {
+      "raw_start": 138687,
+      "raw_end": 141047,
+      "exp_start": 119067,
+      "exp_end": 121587,
+      "size": 15,
+      "raw_idx": 479,
+      "text_preview": "on peut voir qu'il y a une petite"
+    },
+    {
+      "raw_start": 142027,
+      "raw_end": 143087,
+      "exp_start": 122447,
+      "exp_end": 123487,
+      "size": 7,
+      "raw_idx": 495,
+      "text_preview": "il y a eu aussi des opérations"
+    },
+    {
+      "raw_start": 143987,
+      "raw_end": 145727,
+      "exp_start": 124387,
+      "exp_end": 126147,
+      "size": 8,
+      "raw_idx": 504,
+      "text_preview": "on a fait beaucoup de travail au niveau"
+    },
+    {
+      "raw_start": 147077,
+      "raw_end": 148107,
+      "exp_start": 127667,
+      "exp_end": 128437,
+      "size": 6,
+      "raw_idx": 517,
+      "text_preview": "voilà, tout ça pour dire que"
+    },
+    {
+      "raw_start": 148647,
+      "raw_end": 153207,
+      "exp_start": 129047,
+      "exp_end": 133607,
+      "size": 10,
+      "raw_idx": 524,
+      "text_preview": "ça reste l'outil ultime pour développer, pour coder"
+    },
+    {
+      "raw_start": 159335,
+      "raw_end": 166855,
+      "exp_start": 133858,
+      "exp_end": 141378,
+      "size": 25,
+      "raw_idx": 535,
+      "text_preview": "pour régler ce problème des 30-45 minutes maximum,"
+    },
+    {
+      "raw_start": 171375,
+      "raw_end": 173855,
+      "exp_start": 145878,
+      "exp_end": 148378,
+      "size": 11,
+      "raw_idx": 571,
+      "text_preview": "c'est-à-dire qu'au lieu de s'arrêter au bout de"
+    },
+    {
+      "raw_start": 173895,
+      "raw_end": 174395,
+      "exp_start": 148418,
+      "exp_end": 148918,
+      "size": 4,
+      "raw_idx": 583,
+      "text_preview": "on va faire des"
+    },
+    {
+      "raw_start": 174675,
+      "raw_end": 176495,
+      "exp_start": 149218,
+      "exp_end": 151038,
+      "size": 5,
+      "raw_idx": 588,
+      "text_preview": "de 30-45 minutes. donc en"
+    },
+    {
+      "raw_start": 176775,
+      "raw_end": 178795,
+      "exp_start": 151318,
+      "exp_end": 153280,
+      "size": 6,
+      "raw_idx": 594,
+      "text_preview": "on va relancer claude code. le"
+    },
+    {
+      "raw_start": 179595,
+      "raw_end": 189053,
+      "exp_start": 153740,
+      "exp_end": 163580,
+      "size": 33,
+      "raw_idx": 601,
+      "text_preview": "c'est que c'est pas agentique, c'est-à-dire qu'on va"
+    },
+    {
+      "raw_start": 189453,
+      "raw_end": 198313,
+      "exp_start": 163980,
+      "exp_end": 172841,
+      "size": 25,
+      "raw_idx": 635,
+      "text_preview": "code ne va pas continuer. et on va"
+    },
+    {
+      "raw_start": 199073,
+      "raw_end": 201273,
+      "exp_start": 173601,
+      "exp_end": 175841,
+      "size": 7,
+      "raw_idx": 661,
+      "text_preview": "ben ça se finit, ça s'arrête, et"
+    },
+    {
+      "raw_start": 201493,
+      "raw_end": 208092,
+      "exp_start": 176041,
+      "exp_end": 182581,
+      "size": 22,
+      "raw_idx": 669,
+      "text_preview": "code ne nous renvoie pas des messages pour"
+    },
+    {
+      "raw_start": 208492,
+      "raw_end": 211552,
+      "exp_start": 183041,
+      "exp_end": 186081,
+      "size": 15,
+      "raw_idx": 692,
+      "text_preview": "non plus. en fait, on le lance et"
+    },
+    {
+      "raw_start": 212412,
+      "raw_end": 217772,
+      "exp_start": 186961,
+      "exp_end": 192301,
+      "size": 13,
+      "raw_idx": 710,
+      "text_preview": "d'interagir avec, si ce n'est de devoir se"
+    },
+    {
+      "raw_start": 218252,
+      "raw_end": 223992,
+      "exp_start": 192841,
+      "exp_end": 197620,
+      "size": 20,
+      "raw_idx": 724,
+      "text_preview": "comme je l'ai dit, avec des applications qu'on"
+    },
+    {
+      "raw_start": 331963,
+      "raw_end": 332923,
+      "exp_start": 198440,
+      "exp_end": 199400,
+      "size": 4,
+      "raw_idx": 1028,
+      "text_preview": "a vraiment aucune valeur"
+    },
+    {
+      "raw_start": 335023,
+      "raw_end": 336503,
+      "exp_start": 201460,
+      "exp_end": 202960,
+      "size": 4,
+      "raw_idx": 1037,
+      "text_preview": "c'est uniquement ça. et"
+    },
+    {
+      "raw_start": 336803,
+      "raw_end": 338623,
+      "exp_start": 203260,
+      "exp_end": 205080,
+      "size": 8,
+      "raw_idx": 1042,
+      "text_preview": "j'avais pensé à en faire une vidéo sur"
+    },
+    {
+      "raw_start": 339103,
+      "raw_end": 341816,
+      "exp_start": 205560,
+      "exp_end": 208440,
+      "size": 13,
+      "raw_idx": 1051,
+      "text_preview": "mais quand j'ai vu le code et ce"
+    },
+    {
+      "raw_start": 342063,
+      "raw_end": 343583,
+      "exp_start": 208540,
+      "exp_end": 210060,
+      "size": 5,
+      "raw_idx": 1067,
+      "text_preview": "c'est pas vraiment très intéressant."
+    },
+    {
+      "raw_start": 344423,
+      "raw_end": 344823,
+      "exp_start": 210860,
+      "exp_end": 211280,
+      "size": 4,
+      "raw_idx": 1073,
+      "text_preview": "comme on peut le"
+    },
+    {
+      "raw_start": 345063,
+      "raw_end": 346443,
+      "exp_start": 211520,
+      "exp_end": 212900,
+      "size": 5,
+      "raw_idx": 1078,
+      "text_preview": "c'est juste une boucle avec"
+    },
+    {
+      "raw_start": 346443,
+      "raw_end": 351661,
+      "exp_start": 213100,
+      "exp_end": 218132,
+      "size": 18,
+      "raw_idx": 1083,
+      "text_preview": "ici le nombre d'itérations maximales qui est le"
+    },
+    {
+      "raw_start": 352101,
+      "raw_end": 357001,
+      "exp_start": 218572,
+      "exp_end": 223472,
+      "size": 20,
+      "raw_idx": 1102,
+      "text_preview": "ça va juste renvoyer en boucle le prompt.md,"
+    },
+    {
+      "raw_start": 357581,
+      "raw_end": 363201,
+      "exp_start": 224032,
+      "exp_end": 229672,
+      "size": 20,
+      "raw_idx": 1124,
+      "text_preview": "ou alors toutes les fonctionnalités qu'on a besoin"
+    },
+    {
+      "raw_start": 364021,
+      "raw_end": 367961,
+      "exp_start": 230492,
+      "exp_end": 234432,
+      "size": 14,
+      "raw_idx": 1147,
+      "text_preview": "on sort ici avec le code 0, ou"
+    },
+    {
+      "raw_start": 368481,
+      "raw_end": 369641,
+      "exp_start": 234952,
+      "exp_end": 236112,
+      "size": 7,
+      "raw_idx": 1162,
+      "text_preview": "et on sort avec le code 1."
+    },
+    {
+      "raw_start": 391823,
+      "raw_end": 393183,
+      "exp_start": 236898,
+      "exp_end": 238278,
+      "size": 7,
+      "raw_idx": 1189,
+      "text_preview": "pas très intéressant. moi ce que je"
+    },
+    {
+      "raw_start": 439271,
+      "raw_end": 451211,
+      "exp_start": 238678,
+      "exp_end": 250498,
+      "size": 47,
+      "raw_idx": 1341,
+      "text_preview": "c'est un agent qui tourne non-stop, un agent"
+    },
+    {
+      "raw_start": 451251,
+      "raw_end": 454431,
+      "exp_start": 250658,
+      "exp_end": 253878,
+      "size": 11,
+      "raw_idx": 1388,
+      "text_preview": "cette application-là, elle est incroyable, on va continuer"
+    },
+    {
+      "raw_start": 454951,
+      "raw_end": 455791,
+      "exp_start": 254418,
+      "exp_end": 255198,
+      "size": 4,
+      "raw_idx": 1399,
+      "text_preview": "je veux aussi avoir"
+    },
+    {
+      "raw_start": 456891,
+      "raw_end": 465751,
+      "exp_start": 256318,
+      "exp_end": 265158,
+      "size": 27,
+      "raw_idx": 1404,
+      "text_preview": "même 10 nouvelles fonctionnalités sur mon application shinobi,"
+    },
+    {
+      "raw_start": 469358,
+      "raw_end": 470558,
+      "exp_start": 268755,
+      "exp_end": 269975,
+      "size": 4,
+      "raw_idx": 1443,
+      "text_preview": "on l'ajoute à shinobi"
+    },
+    {
+      "raw_start": 472078,
+      "raw_end": 477218,
+      "exp_start": 271495,
+      "exp_end": 276615,
+      "size": 17,
+      "raw_idx": 1455,
+      "text_preview": "j'ai déjà 3 nouvelles fonctionnalités sur mon application"
+    },
+    {
+      "raw_start": 477418,
+      "raw_end": 482578,
+      "exp_start": 276815,
+      "exp_end": 281995,
+      "size": 14,
+      "raw_idx": 1473,
+      "text_preview": "on ne peut pas utiliser ralfloop, par contre"
+    },
+    {
+      "raw_start": 483238,
+      "raw_end": 486038,
+      "exp_start": 282655,
+      "exp_end": 285435,
+      "size": 10,
+      "raw_idx": 1488,
+      "text_preview": "c'est ce qui s'appelait avant moldbot, qui s'appelait"
+    },
+    {
+      "raw_start": 486718,
+      "raw_end": 490395,
+      "exp_start": 286115,
+      "exp_end": 289802,
+      "size": 18,
+      "raw_idx": 1499,
+      "text_preview": "alors je sais pas pourquoi ils ont changé"
+    },
+    {
+      "raw_start": 490975,
+      "raw_end": 493515,
+      "exp_start": 290382,
+      "exp_end": 292922,
+      "size": 13,
+      "raw_idx": 1518,
+      "text_preview": "je sais aussi qu'il y a eu des"
+    },
+    {
+      "raw_start": 493895,
+      "raw_end": 498975,
+      "exp_start": 293322,
+      "exp_end": 298382,
+      "size": 19,
+      "raw_idx": 1532,
+      "text_preview": "qui disait que c'est un nom qui se"
+    },
+    {
+      "raw_start": 499435,
+      "raw_end": 520558,
+      "exp_start": 298842,
+      "exp_end": 302204,
+      "size": 14,
+      "raw_idx": 1552,
+      "text_preview": "maintenant ça s'appelle openclo et c'est ce qu'on"
+    },
+    {
+      "raw_start": 520698,
+      "raw_end": 529108,
+      "exp_start": 301162,
+      "exp_end": 310204,
+      "size": 29,
+      "raw_idx": 1567,
+      "text_preview": "l'idée c'est très simple, on a accès à"
+    },
+    {
+      "raw_start": 529678,
+      "raw_end": 558152,
+      "exp_start": 310384,
+      "exp_end": 339169,
+      "size": 93,
+      "raw_idx": 1598,
+      "text_preview": "on peut lui faire des messages vocaux, etc."
+    },
+    {
+      "raw_start": 558512,
+      "raw_end": 572812,
+      "exp_start": 339769,
+      "exp_end": 353809,
+      "size": 55,
+      "raw_idx": 1692,
+      "text_preview": "puisque c'est ce dont on parle sur cette"
+    },
+    {
+      "raw_start": 584999,
+      "raw_end": 586999,
+      "exp_start": 353849,
+      "exp_end": 355809,
+      "size": 7,
+      "raw_idx": 1762,
+      "text_preview": "alors, comment est-ce que openclo fonctionne? eh"
+    },
+    {
+      "raw_start": 591652,
+      "raw_end": 594132,
+      "exp_start": 355969,
+      "exp_end": 358429,
+      "size": 9,
+      "raw_idx": 1783,
+      "text_preview": "il a accès total au système sur lequel"
+    },
+    {
+      "raw_start": 594512,
+      "raw_end": 596672,
+      "exp_start": 358829,
+      "exp_end": 360969,
+      "size": 8,
+      "raw_idx": 1793,
+      "text_preview": "c'est-à-dire que si on l'installe sur notre ordinateur,"
+    },
+    {
+      "raw_start": 596865,
+      "raw_end": 617006,
+      "exp_start": 361069,
+      "exp_end": 381301,
+      "size": 77,
+      "raw_idx": 1803,
+      "text_preview": "il a accès à tout notre ordinateur. et"
+    },
+    {
+      "raw_start": 618193,
+      "raw_end": 620853,
+      "exp_start": 382268,
+      "exp_end": 385168,
+      "size": 12,
+      "raw_idx": 1882,
+      "text_preview": "je crois qu'il a fait une vidéo qui"
+    },
+    {
+      "raw_start": 621393,
+      "raw_end": 630853,
+      "exp_start": 385728,
+      "exp_end": 395168,
+      "size": 26,
+      "raw_idx": 1896,
+      "text_preview": "allez voir sa vidéo si ça vous intéresse."
+    },
+    {
+      "raw_start": 632082,
+      "raw_end": 637942,
+      "exp_start": 395848,
+      "exp_end": 402448,
+      "size": 20,
+      "raw_idx": 1923,
+      "text_preview": "on a des tweetos, on a des gens"
+    },
+    {
+      "raw_start": 638142,
+      "raw_end": 647542,
+      "exp_start": 402448,
+      "exp_end": 411848,
+      "size": 35,
+      "raw_idx": 1945,
+      "text_preview": "complètement un nouvel ordinateur et notamment d'acheter un"
+    },
+    {
+      "raw_start": 648022,
+      "raw_end": 659258,
+      "exp_start": 412108,
+      "exp_end": 423549,
+      "size": 45,
+      "raw_idx": 1981,
+      "text_preview": "d'après moi, surtout un agent qui est sorti"
+    },
+    {
+      "raw_start": 659918,
+      "raw_end": 662278,
+      "exp_start": 424209,
+      "exp_end": 426589,
+      "size": 10,
+      "raw_idx": 2027,
+      "text_preview": "qui ont déjà, on va le voir dans"
+    },
+    {
+      "raw_start": 663278,
+      "raw_end": 664258,
+      "exp_start": 427589,
+      "exp_end": 428549,
+      "size": 7,
+      "raw_idx": 2038,
+      "text_preview": "des vps où il y a déjà"
+    },
+    {
+      "raw_start": 664598,
+      "raw_end": 668898,
+      "exp_start": 428909,
+      "exp_end": 433209,
+      "size": 17,
+      "raw_idx": 2046,
+      "text_preview": "qui est hébergé. enfin, ils sont incroyables, ils"
+    },
+    {
+      "raw_start": 670271,
+      "raw_end": 692791,
+      "exp_start": 434092,
+      "exp_end": 457092,
+      "size": 81,
+      "raw_idx": 2068,
+      "text_preview": "pas besoin d'acheter un nouvel ordinateur comme on"
+    },
+    {
+      "raw_start": 693151,
+      "raw_end": 703870,
+      "exp_start": 457432,
+      "exp_end": 459783,
+      "size": 11,
+      "raw_idx": 2150,
+      "text_preview": "on va partir avec un vps. voilà ce"
+    },
+    {
+      "raw_start": 867180,
+      "raw_end": 875100,
+      "exp_start": 460603,
+      "exp_end": 468503,
+      "size": 30,
+      "raw_idx": 2574,
+      "text_preview": "qui est déjà disponible sur des vps hostinger"
+    },
+    {
+      "raw_start": 875620,
+      "raw_end": 905237,
+      "exp_start": 469023,
+      "exp_end": 498623,
+      "size": 114,
+      "raw_idx": 2605,
+      "text_preview": "qui est déjà installé dessus et tous les"
+    },
+    {
+      "raw_start": 905477,
+      "raw_end": 908797,
+      "exp_start": 498883,
+      "exp_end": 502203,
+      "size": 11,
+      "raw_idx": 2720,
+      "text_preview": "et directement ils ont mis en place un"
+    },
+    {
+      "raw_start": 935588,
+      "raw_end": 940588,
+      "exp_start": 502687,
+      "exp_end": 507707,
+      "size": 20,
+      "raw_idx": 2733,
+      "text_preview": "pour ceux qui connaissent pas hostinger, c'est un"
+    },
+    {
+      "raw_start": 941328,
+      "raw_end": 945528,
+      "exp_start": 508427,
+      "exp_end": 512627,
+      "size": 18,
+      "raw_idx": 2754,
+      "text_preview": "c'est ce qui nous intéresse dans cette vidéo,"
+    },
+    {
+      "raw_start": 947008,
+      "raw_end": 948648,
+      "exp_start": 514107,
+      "exp_end": 515747,
+      "size": 6,
+      "raw_idx": 2777,
+      "text_preview": "internet, on a aussi l'achat de"
+    },
+    {
+      "raw_start": 948748,
+      "raw_end": 949868,
+      "exp_start": 515847,
+      "exp_end": 516837,
+      "size": 5,
+      "raw_idx": 2784,
+      "text_preview": "de domaine, etc. donc vraiment"
+    },
+    {
+      "raw_start": 949868,
+      "raw_end": 951188,
+      "exp_start": 516967,
+      "exp_end": 518287,
+      "size": 7,
+      "raw_idx": 2789,
+      "text_preview": "on peut faire un tas de choses."
+    },
+    {
+      "raw_start": 951808,
+      "raw_end": 955968,
+      "exp_start": 518907,
+      "exp_end": 523067,
+      "size": 18,
+      "raw_idx": 2797,
+      "text_preview": "nous ce qui nous intéresse, et je mettrai"
+    },
+    {
+      "raw_start": 956528,
+      "raw_end": 964348,
+      "exp_start": 523627,
+      "exp_end": 531440,
+      "size": 27,
+      "raw_idx": 2816,
+      "text_preview": "et ici je recommande d'utiliser le kvm 2."
+    },
+    {
+      "raw_start": 966230,
+      "raw_end": 977297,
+      "exp_start": 533140,
+      "exp_end": 544400,
+      "size": 47,
+      "raw_idx": 2849,
+      "text_preview": "quand même besoin de faire tourner un agent"
+    },
+    {
+      "raw_start": 977397,
+      "raw_end": 979817,
+      "exp_start": 544600,
+      "exp_end": 546940,
+      "size": 8,
+      "raw_idx": 2897,
+      "text_preview": "ici, 7 € par mois, c'est rien du"
+    },
+    {
+      "raw_start": 979977,
+      "raw_end": 990000,
+      "exp_start": 547080,
+      "exp_end": 557117,
+      "size": 24,
+      "raw_idx": 2906,
+      "text_preview": "surtout que si on clique sur déployer ici,"
+    },
+    {
+      "raw_start": 990300,
+      "raw_end": 993480,
+      "exp_start": 557397,
+      "exp_end": 560577,
+      "size": 11,
+      "raw_idx": 2931,
+      "text_preview": "je peux mettre jeremy10 pour avoir une petite"
+    },
+    {
+      "raw_start": 993940,
+      "raw_end": 996080,
+      "exp_start": 561497,
+      "exp_end": 563197,
+      "size": 7,
+      "raw_idx": 2943,
+      "text_preview": "donc ça sera encore moins cher. alors"
+    },
+    {
+      "raw_start": 997506,
+      "raw_end": 1002980,
+      "exp_start": 564557,
+      "exp_end": 570057,
+      "size": 18,
+      "raw_idx": 2954,
+      "text_preview": "petite précision, on a la sauvegarde automatique quotidienne."
+    },
+    {
+      "raw_start": 1003960,
+      "raw_end": 1007180,
+      "exp_start": 571357,
+      "exp_end": 574317,
+      "size": 15,
+      "raw_idx": 2975,
+      "text_preview": "ça peut toujours être une sécurité si jamais"
+    },
+    {
+      "raw_start": 1008076,
+      "raw_end": 1013396,
+      "exp_start": 575030,
+      "exp_end": 580430,
+      "size": 18,
+      "raw_idx": 2991,
+      "text_preview": "tu vas perdre toute ta configuration au niveau"
+    },
+    {
+      "raw_start": 1014016,
+      "raw_end": 1066059,
+      "exp_start": 581150,
+      "exp_end": 600481,
+      "size": 74,
+      "raw_idx": 3010,
+      "text_preview": "on va voir dans un instant qu'on peut"
+    },
+    {
+      "raw_start": 1066199,
+      "raw_end": 1081879,
+      "exp_start": 600601,
+      "exp_end": 616261,
+      "size": 58,
+      "raw_idx": 3085,
+      "text_preview": "informations par rapport au vps. et la prochaine"
+    },
+    {
+      "raw_start": 1082339,
+      "raw_end": 1087539,
+      "exp_start": 616741,
+      "exp_end": 621941,
+      "size": 21,
+      "raw_idx": 3145,
+      "text_preview": "je vais aller sur mon terminal et je"
+    },
+    {
+      "raw_start": 1087759,
+      "raw_end": 1088339,
+      "exp_start": 622181,
+      "exp_end": 622741,
+      "size": 4,
+      "raw_idx": 3167,
+      "text_preview": "le mot de passe,"
+    },
+    {
+      "raw_start": 1089543,
+      "raw_end": 1113263,
+      "exp_start": 623939,
+      "exp_end": 636259,
+      "size": 48,
+      "raw_idx": 3173,
+      "text_preview": "tu l'as déjà configuré pendant le setup de"
+    },
+    {
+      "raw_start": 1171642,
+      "raw_end": 1173822,
+      "exp_start": 636919,
+      "exp_end": 638279,
+      "size": 6,
+      "raw_idx": 3225,
+      "text_preview": "on arrive directement sur le setup"
+    },
+    {
+      "raw_start": 1372434,
+      "raw_end": 1377254,
+      "exp_start": 639879,
+      "exp_end": 644599,
+      "size": 13,
+      "raw_idx": 3383,
+      "text_preview": "c'est vraiment super simple, super pratique. donc ici,"
+    },
+    {
+      "raw_start": 1377454,
+      "raw_end": 1438270,
+      "exp_start": 644599,
+      "exp_end": 705710,
+      "size": 206,
+      "raw_idx": 3397,
+      "text_preview": "répondre. donc première, est-ce qu'on est conscient des"
+    },
+    {
+      "raw_start": 1438380,
+      "raw_end": 1466253,
+      "exp_start": 705710,
+      "exp_end": 732390,
+      "size": 89,
+      "raw_idx": 3604,
+      "text_preview": "plan. ensuite, minimax, c'est le, c'est le modèle"
+    },
+    {
+      "raw_start": 1488727,
+      "raw_end": 1520326,
+      "exp_start": 732770,
+      "exp_end": 747898,
+      "size": 56,
+      "raw_idx": 3728,
+      "text_preview": "je vais copier la commande et ensuite je"
+    },
+    {
+      "raw_start": 1522826,
+      "raw_end": 1524426,
+      "exp_start": 748618,
+      "exp_end": 750238,
+      "size": 6,
+      "raw_idx": 3788,
+      "text_preview": "je peux choisir le modèle. donc"
+    },
+    {
+      "raw_start": 1524806,
+      "raw_end": 1525866,
+      "exp_start": 750618,
+      "exp_end": 751678,
+      "size": 5,
+      "raw_idx": 3795,
+      "text_preview": "je vais choisir le modèle"
+    },
+    {
+      "raw_start": 1526206,
+      "raw_end": 1529346,
+      "exp_start": 751998,
+      "exp_end": 755138,
+      "size": 9,
+      "raw_idx": 3801,
+      "text_preview": "opus 4.5 parce que c'est vraiment le meilleur."
+    },
+    {
+      "raw_start": 1530146,
+      "raw_end": 1536946,
+      "exp_start": 755958,
+      "exp_end": 762738,
+      "size": 26,
+      "raw_idx": 3815,
+      "text_preview": "donc si tu utilises la clé api et"
+    },
+    {
+      "raw_start": 1540366,
+      "raw_end": 1541526,
+      "exp_start": 766158,
+      "exp_end": 767338,
+      "size": 6,
+      "raw_idx": 3849,
+      "text_preview": "c'est pas très bon pour le"
+    },
+    {
+      "raw_start": 1541706,
+      "raw_end": 1543286,
+      "exp_start": 767498,
+      "exp_end": 768998,
+      "size": 5,
+      "raw_idx": 3856,
+      "text_preview": "donc j'aurais plutôt tendance à"
+    },
+    {
+      "raw_start": 1543286,
+      "raw_end": 1545166,
+      "exp_start": 769078,
+      "exp_end": 770958,
+      "size": 6,
+      "raw_idx": 3861,
+      "text_preview": "dire prends un abonnement et utilise"
+    },
+    {
+      "raw_start": 1545606,
+      "raw_end": 1566692,
+      "exp_start": 771178,
+      "exp_end": 791073,
+      "size": 68,
+      "raw_idx": 3869,
+      "text_preview": "4.5. ensuite, on va pouvoir setup le channel,"
+    },
+    {
+      "raw_start": 1585117,
+      "raw_end": 1591217,
+      "exp_start": 791593,
+      "exp_end": 797833,
+      "size": 22,
+      "raw_idx": 3938,
+      "text_preview": "et on va devoir chercher l'utilisateur botfather. en"
+    },
+    {
+      "raw_start": 1591557,
+      "raw_end": 1597337,
+      "exp_start": 798153,
+      "exp_end": 803835,
+      "size": 25,
+      "raw_idx": 3961,
+      "text_preview": "j'ai juste à faire start et ensuite je"
+    },
+    {
+      "raw_start": 1603957,
+      "raw_end": 1607277,
+      "exp_start": 808649,
+      "exp_end": 811799,
+      "size": 15,
+      "raw_idx": 3989,
+      "text_preview": "je dois lui donner un nom qui finit"
+    },
+    {
+      "raw_start": 1612083,
+      "raw_end": 1616051,
+      "exp_start": 815069,
+      "exp_end": 820309,
+      "size": 16,
+      "raw_idx": 4005,
+      "text_preview": "ici, je peux récupérer maintenant le token et"
+    },
+    {
+      "raw_start": 1709273,
+      "raw_end": 1718193,
+      "exp_start": 820309,
+      "exp_end": 826616,
+      "size": 21,
+      "raw_idx": 4035,
+      "text_preview": "tu dois mettre ton propre identifiant telegram, c'est"
+    },
+    {
+      "raw_start": 1718593,
+      "raw_end": 1719473,
+      "exp_start": 827056,
+      "exp_end": 827916,
+      "size": 5,
+      "raw_idx": 4058,
+      "text_preview": "je vais mettre mon propre"
+    },
+    {
+      "raw_start": 1852062,
+      "raw_end": 1881643,
+      "exp_start": 828676,
+      "exp_end": 858183,
+      "size": 102,
+      "raw_idx": 4064,
+      "text_preview": "maintenant je peux configurer des skills. ici je"
+    },
+    {
+      "raw_start": 1888303,
+      "raw_end": 1895523,
+      "exp_start": 859003,
+      "exp_end": 864863,
+      "size": 21,
+      "raw_idx": 4169,
+      "text_preview": "et maintenant on a une liste de skills,"
+    },
+    {
+      "raw_start": 1895663,
+      "raw_end": 1917387,
+      "exp_start": 865083,
+      "exp_end": 887045,
+      "size": 73,
+      "raw_idx": 4191,
+      "text_preview": "c'est github, mais il est pas disponible quand"
+    },
+    {
+      "raw_start": 1917717,
+      "raw_end": 1945122,
+      "exp_start": 887045,
+      "exp_end": 912604,
+      "size": 87,
+      "raw_idx": 4265,
+      "text_preview": "en texte et nous répondre, donc pouvoir tout"
+    },
+    {
+      "raw_start": 1946342,
+      "raw_end": 1957052,
+      "exp_start": 913404,
+      "exp_end": 922224,
+      "size": 35,
+      "raw_idx": 4356,
+      "text_preview": "je vais aller, je vais juste en mettre"
+    },
+    {
+      "raw_start": 1958172,
+      "raw_end": 1964892,
+      "exp_start": 923324,
+      "exp_end": 930064,
+      "size": 24,
+      "raw_idx": 4393,
+      "text_preview": "etc. donc je mets non, non, non. ici"
+    },
+    {
+      "raw_start": 1965752,
+      "raw_end": 1968912,
+      "exp_start": 930924,
+      "exp_end": 934077,
+      "size": 13,
+      "raw_idx": 4418,
+      "text_preview": "et je vais mettre non ici aussi. maintenant"
+    },
+    {
+      "raw_start": 1969212,
+      "raw_end": 1975932,
+      "exp_start": 934377,
+      "exp_end": 941137,
+      "size": 22,
+      "raw_idx": 4432,
+      "text_preview": "et là en l'occurrence il faut absolument mettre"
+    },
+    {
+      "raw_start": 2000264,
+      "raw_end": 2001894,
+      "exp_start": 942637,
+      "exp_end": 944477,
+      "size": 8,
+      "raw_idx": 4463,
+      "text_preview": "ici je vais mettre yes pour avoir l'autocomplétion."
+    },
+    {
+      "raw_start": 2085798,
+      "raw_end": 2087238,
+      "exp_start": 944717,
+      "exp_end": 946097,
+      "size": 6,
+      "raw_idx": 4518,
+      "text_preview": "c'est tout bon, le setup est"
+    },
+    {
+      "raw_start": 2103658,
+      "raw_end": 2107518,
+      "exp_start": 946477,
+      "exp_end": 950337,
+      "size": 16,
+      "raw_idx": 4548,
+      "text_preview": "on va maintenant pouvoir parler avec lui pour"
+    },
+    {
+      "raw_start": 2108738,
+      "raw_end": 2111358,
+      "exp_start": 951537,
+      "exp_end": 954157,
+      "size": 6,
+      "raw_idx": 4568,
+      "text_preview": "tui pour l'interface dans le terminal."
+    },
+    {
+      "raw_start": 2181310,
+      "raw_end": 2186030,
+      "exp_start": 954337,
+      "exp_end": 957957,
+      "size": 16,
+      "raw_idx": 4581,
+      "text_preview": "c'est tout bon, on peut maintenant lui parler."
+    },
+    {
+      "raw_start": 2190450,
+      "raw_end": 2245570,
+      "exp_start": 958717,
+      "exp_end": 962717,
+      "size": 18,
+      "raw_idx": 4613,
+      "text_preview": "à paris. on va voir s'il nous répond."
+    },
+    {
+      "raw_start": 2257890,
+      "raw_end": 2258550,
+      "exp_start": 976782,
+      "exp_end": 977342,
+      "size": 5,
+      "raw_idx": 4670,
+      "text_preview": "ne peut pas y avoir"
+    },
+    {
+      "raw_start": 2267290,
+      "raw_end": 2268390,
+      "exp_start": 989042,
+      "exp_end": 990142,
+      "size": 5,
+      "raw_idx": 4702,
+      "text_preview": "de la machine du vps."
+    },
+    {
+      "raw_start": 2275572,
+      "raw_end": 2276952,
+      "exp_start": 991662,
+      "exp_end": 993302,
+      "size": 6,
+      "raw_idx": 4725,
+      "text_preview": "on va devoir créer un tunnel."
+    },
+    {
+      "raw_start": 2279952,
+      "raw_end": 2283552,
+      "exp_start": 994122,
+      "exp_end": 998389,
+      "size": 10,
+      "raw_idx": 4741,
+      "text_preview": "je vais ouvrir une nouvelle fenêtre dans mon"
+    },
+    {
+      "raw_start": 2339767,
+      "raw_end": 2343587,
+      "exp_start": 998389,
+      "exp_end": 1002229,
+      "size": 12,
+      "raw_idx": 4898,
+      "text_preview": "je vais bien ouvrir une fenêtre sur mon"
+    },
+    {
+      "raw_start": 2344167,
+      "raw_end": 2348967,
+      "exp_start": 1002789,
+      "exp_end": 1007609,
+      "size": 21,
+      "raw_idx": 4913,
+      "text_preview": "plus sur le vps et je vais taper"
+    },
+    {
+      "raw_start": 2349467,
+      "raw_end": 2351427,
+      "exp_start": 1008109,
+      "exp_end": 1010069,
+      "size": 6,
+      "raw_idx": 4935,
+      "text_preview": "parce qu'elle est assez longue. c'est"
+    },
+    {
+      "raw_start": 2351847,
+      "raw_end": 2359627,
+      "exp_start": 1010909,
+      "exp_end": 1018210,
+      "size": 21,
+      "raw_idx": 4942,
+      "text_preview": "donc ici on a ssh, donc ça va"
+    },
+    {
+      "raw_start": 2387135,
+      "raw_end": 2391975,
+      "exp_start": 1018350,
+      "exp_end": 1023090,
+      "size": 19,
+      "raw_idx": 5017,
+      "text_preview": "on va écouter le port 18789 de la"
+    },
+    {
+      "raw_start": 2392735,
+      "raw_end": 2408335,
+      "exp_start": 1023830,
+      "exp_end": 1039452,
+      "size": 46,
+      "raw_idx": 5037,
+      "text_preview": "et on va mapper ça au port 18789,"
+    },
+    {
+      "raw_start": 2409075,
+      "raw_end": 2413595,
+      "exp_start": 1040192,
+      "exp_end": 1044712,
+      "size": 15,
+      "raw_idx": 5084,
+      "text_preview": "ici. si tu es pas sûr, tu retournes"
+    },
+    {
+      "raw_start": 2414438,
+      "raw_end": 2415398,
+      "exp_start": 1045652,
+      "exp_end": 1046492,
+      "size": 5,
+      "raw_idx": 5100,
+      "text_preview": "c'est l'url que tu dois"
+    },
+    {
+      "raw_start": 2415958,
+      "raw_end": 2419078,
+      "exp_start": 1047392,
+      "exp_end": 1050012,
+      "size": 14,
+      "raw_idx": 5107,
+      "text_preview": "donc il faut bien remplacer parce que sinon"
+    },
+    {
+      "raw_start": 2435318,
+      "raw_end": 2438358,
+      "exp_start": 1050358,
+      "exp_end": 1053378,
+      "size": 13,
+      "raw_idx": 5134,
+      "text_preview": "je dois remettre le mot de passe puisque"
+    },
+    {
+      "raw_start": 2575041,
+      "raw_end": 2581621,
+      "exp_start": 1053378,
+      "exp_end": 1060658,
+      "size": 24,
+      "raw_idx": 5171,
+      "text_preview": "et une fois que tu es connecté, tu"
+    },
+    {
+      "raw_start": 2582021,
+      "raw_end": 2583401,
+      "exp_start": 1061058,
+      "exp_end": 1062438,
+      "size": 5,
+      "raw_idx": 5197,
+      "text_preview": "tu as accès à l'interface."
+    },
+    {
+      "raw_start": 2588643,
+      "raw_end": 2594843,
+      "exp_start": 1062878,
+      "exp_end": 1069078,
+      "size": 20,
+      "raw_idx": 5203,
+      "text_preview": "tu peux voir que j'ai accès au même"
+    },
+    {
+      "raw_start": 2595203,
+      "raw_end": 2614343,
+      "exp_start": 1069438,
+      "exp_end": 1087680,
+      "size": 65,
+      "raw_idx": 5225,
+      "text_preview": "j'ai bien exactement la même conversation sur les"
+    },
+    {
+      "raw_start": 2621421,
+      "raw_end": 2629181,
+      "exp_start": 1087680,
+      "exp_end": 1095680,
+      "size": 27,
+      "raw_idx": 5293,
+      "text_preview": "chose ici c'est l'overview. ici il se peut"
+    },
+    {
+      "raw_start": 2629401,
+      "raw_end": 2631751,
+      "exp_start": 1095680,
+      "exp_end": 1098140,
+      "size": 11,
+      "raw_idx": 5321,
+      "text_preview": "n'est pas bonne. je crois que c'est une"
+    },
+    {
+      "raw_start": 2630921,
+      "raw_end": 2650699,
+      "exp_start": 1098960,
+      "exp_end": 1116995,
+      "size": 58,
+      "raw_idx": 5333,
+      "text_preview": "erreur 8000 ou quelque chose comme ça, gateway,"
+    },
+    {
+      "raw_start": 2651599,
+      "raw_end": 2666100,
+      "exp_start": 1117875,
+      "exp_end": 1125675,
+      "size": 29,
+      "raw_idx": 5394,
+      "text_preview": "tu as juste à le mettre ici, cliquer"
+    },
+    {
+      "raw_start": 2666880,
+      "raw_end": 2667560,
+      "exp_start": 1126315,
+      "exp_end": 1127115,
+      "size": 7,
+      "raw_idx": 5424,
+      "text_preview": "et puis il y a plein d'autres"
+    },
+    {
+      "raw_start": 2670620,
+      "raw_end": 2688280,
+      "exp_start": 1130575,
+      "exp_end": 1147857,
+      "size": 73,
+      "raw_idx": 5441,
+      "text_preview": "les tâches qui sont récurrentes, qui vont se"
+    },
+    {
+      "raw_start": 2689840,
+      "raw_end": 2696196,
+      "exp_start": 1149397,
+      "exp_end": 1155417,
+      "size": 24,
+      "raw_idx": 5519,
+      "text_preview": "sera beaucoup plus simple pour toi de les"
+    },
+    {
+      "raw_start": 2696196,
+      "raw_end": 2703426,
+      "exp_start": 1156097,
+      "exp_end": 1162533,
+      "size": 16,
+      "raw_idx": 5544,
+      "text_preview": "eh bien, j'ai openclo qui lance plein de"
+    },
+    {
+      "raw_start": 2703426,
+      "raw_end": 2710126,
+      "exp_start": 1162643,
+      "exp_end": 1169213,
+      "size": 28,
+      "raw_idx": 5560,
+      "text_preview": "va créer de nouvelles fonctionnalités et de nouvelles"
+    },
+    {
+      "raw_start": 2712390,
+      "raw_end": 2717810,
+      "exp_start": 1169733,
+      "exp_end": 1175093,
+      "size": 26,
+      "raw_idx": 5589,
+      "text_preview": "on a les skills dont on a parlé,"
+    },
+    {
+      "raw_start": 2718190,
+      "raw_end": 2720490,
+      "exp_start": 1175633,
+      "exp_end": 1178013,
+      "size": 6,
+      "raw_idx": 5616,
+      "text_preview": "on a d'autres choses, notamment ici"
+    },
+    {
+      "raw_start": 2720730,
+      "raw_end": 2722710,
+      "exp_start": 1178013,
+      "exp_end": 1179993,
+      "size": 8,
+      "raw_idx": 5623,
+      "text_preview": "tout ce qui va être les debug, les"
+    },
+    {
+      "raw_start": 2724010,
+      "raw_end": 2724870,
+      "exp_start": 1181273,
+      "exp_end": 1182153,
+      "size": 5,
+      "raw_idx": 5635,
+      "text_preview": "quand tu as un problème,"
+    },
+    {
+      "raw_start": 2725090,
+      "raw_end": 2728270,
+      "exp_start": 1182353,
+      "exp_end": 1185533,
+      "size": 11,
+      "raw_idx": 5641,
+      "text_preview": "tu as juste à copier-coller les logs pour"
+    },
+    {
+      "raw_start": 2728690,
+      "raw_end": 2731250,
+      "exp_start": 1185953,
+      "exp_end": 1188773,
+      "size": 7,
+      "raw_idx": 5653,
+      "text_preview": "tu peux l'envoyer sur chatgpt ou sur"
+    },
+    {
+      "raw_start": 2802057,
+      "raw_end": 2823077,
+      "exp_start": 1189111,
+      "exp_end": 1210111,
+      "size": 77,
+      "raw_idx": 5672,
+      "text_preview": "donc pour installer de nouveaux skills que tu"
+    },
+    {
+      "raw_start": 2823287,
+      "raw_end": 2832906,
+      "exp_start": 1210111,
+      "exp_end": 1219183,
+      "size": 30,
+      "raw_idx": 5750,
+      "text_preview": "différentes. ici tu pourrais utiliser par exemple explore"
+    },
+    {
+      "raw_start": 2833226,
+      "raw_end": 2893325,
+      "exp_start": 1219463,
+      "exp_end": 1227260,
+      "size": 18,
+      "raw_idx": 5781,
+      "text_preview": "dont on a besoin, c'est-à-dire github. donc je"
+    },
+    {
+      "raw_start": 2893505,
+      "raw_end": 2900455,
+      "exp_start": 1227440,
+      "exp_end": 1234500,
+      "size": 29,
+      "raw_idx": 5800,
+      "text_preview": "tu vois qu'il est déjà installé parce que"
+    },
+    {
+      "raw_start": 2901025,
+      "raw_end": 3112167,
+      "exp_start": 1234920,
+      "exp_end": 1243459,
+      "size": 38,
+      "raw_idx": 5831,
+      "text_preview": "de, par exemple, juste lui dire est-ce que"
+    },
+    {
+      "raw_start": 3114215,
+      "raw_end": 3119327,
+      "exp_start": 1243679,
+      "exp_end": 1244519,
+      "size": 4,
+      "raw_idx": 5885,
+      "text_preview": "sur telegram puisque c'est"
+    },
+    {
+      "raw_start": 3210714,
+      "raw_end": 3215474,
+      "exp_start": 1245539,
+      "exp_end": 1250229,
+      "size": 17,
+      "raw_idx": 6128,
+      "text_preview": "tu peux accéder à ton bot directement en"
+    },
+    {
+      "raw_start": 3216794,
+      "raw_end": 3222774,
+      "exp_start": 1251619,
+      "exp_end": 1257699,
+      "size": 28,
+      "raw_idx": 6147,
+      "text_preview": "je vais réutiliser un bot que j'ai déjà"
+    },
+    {
+      "raw_start": 3222854,
+      "raw_end": 3247559,
+      "exp_start": 1257699,
+      "exp_end": 1279115,
+      "size": 82,
+      "raw_idx": 6176,
+      "text_preview": "lien avec un fichier qui répertorie tous les"
+    },
+    {
+      "raw_start": 3290189,
+      "raw_end": 3296869,
+      "exp_start": 1279215,
+      "exp_end": 1284425,
+      "size": 25,
+      "raw_idx": 6380,
+      "text_preview": "on va cliquer ici et là tu peux"
+    },
+    {
+      "raw_start": 3296869,
+      "raw_end": 3298649,
+      "exp_start": 1284495,
+      "exp_end": 1286255,
+      "size": 6,
+      "raw_idx": 6405,
+      "text_preview": "a par exemple le tts, donc"
+    },
+    {
+      "raw_start": 3299569,
+      "raw_end": 3301949,
+      "exp_start": 1287053,
+      "exp_end": 1289433,
+      "size": 5,
+      "raw_idx": 6412,
+      "text_preview": "pour contrôler et setup le"
+    },
+    {
+      "raw_start": 3302529,
+      "raw_end": 3305529,
+      "exp_start": 1290173,
+      "exp_end": 1293173,
+      "size": 10,
+      "raw_idx": 6418,
+      "text_preview": "pour recevoir des messages vocaux mais aussi pour"
+    },
+    {
+      "raw_start": 3307903,
+      "raw_end": 3309883,
+      "exp_start": 1295553,
+      "exp_end": 1297406,
+      "size": 10,
+      "raw_idx": 6436,
+      "text_preview": "je l'utilise pas pour le moment parce que"
+    },
+    {
+      "raw_start": 3310923,
+      "raw_end": 3323323,
+      "exp_start": 1298213,
+      "exp_end": 1310953,
+      "size": 49,
+      "raw_idx": 6448,
+      "text_preview": "ça coûte de l'argent quand tu veux recevoir"
+    },
+    {
+      "raw_start": 3323513,
+      "raw_end": 3341745,
+      "exp_start": 1311219,
+      "exp_end": 1329377,
+      "size": 55,
+      "raw_idx": 6498,
+      "text_preview": "d'avoir, de recevoir des messages vocaux. par contre,"
+    },
+    {
+      "raw_start": 3342825,
+      "raw_end": 3374084,
+      "exp_start": 1330477,
+      "exp_end": 1360696,
+      "size": 119,
+      "raw_idx": 6554,
+      "text_preview": "en texte quand je parle dans mon téléphone."
+    },
+    {
+      "raw_start": 3374224,
+      "raw_end": 3376424,
+      "exp_start": 1360696,
+      "exp_end": 1362896,
+      "size": 7,
+      "raw_idx": 6674,
+      "text_preview": "elle a besoin pour t'assister au mieux."
+    },
+    {
+      "raw_start": 3412518,
+      "raw_end": 3424578,
+      "exp_start": 1362996,
+      "exp_end": 1374813,
+      "size": 44,
+      "raw_idx": 6701,
+      "text_preview": "tu vas aussi avoir des prompts pour avoir"
+    },
+    {
+      "raw_start": 3424578,
+      "raw_end": 3431400,
+      "exp_start": 1375023,
+      "exp_end": 1381843,
+      "size": 27,
+      "raw_idx": 6745,
+      "text_preview": "important. et puis il y a aussi des"
+    },
+    {
+      "raw_start": 3431590,
+      "raw_end": 3440380,
+      "exp_start": 1381843,
+      "exp_end": 1390823,
+      "size": 32,
+      "raw_idx": 6773,
+      "text_preview": "des choses qui se passent pendant que tu"
+    },
+    {
+      "raw_start": 3440560,
+      "raw_end": 3536677,
+      "exp_start": 1391073,
+      "exp_end": 1434093,
+      "size": 149,
+      "raw_idx": 6805,
+      "text_preview": "sur toutes les nouvelles fonctionnalités, toutes les nouvelles,"
+    },
+    {
+      "raw_start": 3537797,
+      "raw_end": 3539577,
+      "exp_start": 1435452,
+      "exp_end": 1436972,
+      "size": 6,
+      "raw_idx": 6955,
+      "text_preview": "et on va travailler sur un"
+    },
+    {
+      "raw_start": 3539577,
+      "raw_end": 3568515,
+      "exp_start": 1437082,
+      "exp_end": 1462712,
+      "size": 81,
+      "raw_idx": 6961,
+      "text_preview": "nouvel écran. je vais d'abord commencer par créer"
+    },
+    {
+      "raw_start": 3619715,
+      "raw_end": 3641695,
+      "exp_start": 1464557,
+      "exp_end": 1486537,
+      "size": 73,
+      "raw_idx": 7176,
+      "text_preview": "je viens de lui faire le prompt, je"
+    },
+    {
+      "raw_start": 3752180,
+      "raw_end": 3759900,
+      "exp_start": 1487638,
+      "exp_end": 1495338,
+      "size": 32,
+      "raw_idx": 7257,
+      "text_preview": "il vient de setup tout ça, il vient"
+    },
+    {
+      "raw_start": 3760680,
+      "raw_end": 3761380,
+      "exp_start": 1496238,
+      "exp_end": 1496818,
+      "size": 4,
+      "raw_idx": 7290,
+      "text_preview": "donc je suis sur"
+    },
+    {
+      "raw_start": 3762340,
+      "raw_end": 3779547,
+      "exp_start": 1497778,
+      "exp_end": 1510738,
+      "size": 56,
+      "raw_idx": 7297,
+      "text_preview": "je vais pas rentrer trop dans les détails"
+    },
+    {
+      "raw_start": 3781807,
+      "raw_end": 3783287,
+      "exp_start": 1510738,
+      "exp_end": 1512238,
+      "size": 5,
+      "raw_idx": 7360,
+      "text_preview": "télécharger tous les fichiers de"
+    },
+    {
+      "raw_start": 3783867,
+      "raw_end": 3797796,
+      "exp_start": 1512758,
+      "exp_end": 1519165,
+      "size": 25,
+      "raw_idx": 7366,
+      "text_preview": "et on va bientôt pouvoir voir tout ça"
+    },
+    {
+      "raw_start": 3798116,
+      "raw_end": 3801656,
+      "exp_start": 1519485,
+      "exp_end": 1522705,
+      "size": 12,
+      "raw_idx": 7392,
+      "text_preview": "et donc si je clique sur cette histoire,"
+    },
+    {
+      "raw_start": 3801656,
+      "raw_end": 3805056,
+      "exp_start": 1523315,
+      "exp_end": 1526425,
+      "size": 12,
+      "raw_idx": 7404,
+      "text_preview": "vers l'histoire où je peux cliquer sur les"
+    },
+    {
+      "raw_start": 3805816,
+      "raw_end": 3809276,
+      "exp_start": 1527185,
+      "exp_end": 1530645,
+      "size": 16,
+      "raw_idx": 7419,
+      "text_preview": "comme on peut le voir sur la carte"
+    },
+    {
+      "raw_start": 3809696,
+      "raw_end": 3812822,
+      "exp_start": 1531065,
+      "exp_end": 1534385,
+      "size": 15,
+      "raw_idx": 7436,
+      "text_preview": "je suis en train de travailler sur une"
+    },
+    {
+      "raw_start": 3815796,
+      "raw_end": 3824020,
+      "exp_start": 1537185,
+      "exp_end": 1545386,
+      "size": 37,
+      "raw_idx": 7457,
+      "text_preview": "en bas à droite de la carte, il"
+    },
+    {
+      "raw_start": 3824220,
+      "raw_end": 3825560,
+      "exp_start": 1545496,
+      "exp_end": 1546926,
+      "size": 6,
+      "raw_idx": 7495,
+      "text_preview": "il est sur toutes les cartes."
+    },
+    {
+      "raw_start": 3825900,
+      "raw_end": 3827460,
+      "exp_start": 1547266,
+      "exp_end": 1548846,
+      "size": 6,
+      "raw_idx": 7503,
+      "text_preview": "fait pas très joli, surtout qu'il"
+    },
+    {
+      "raw_start": 3827560,
+      "raw_end": 3842340,
+      "exp_start": 1548926,
+      "exp_end": 1563706,
+      "size": 62,
+      "raw_idx": 7510,
+      "text_preview": "pas bien positionné. en fait, je comptais le"
+    },
+    {
+      "raw_start": 3871267,
+      "raw_end": 3871987,
+      "exp_start": 1564952,
+      "exp_end": 1565652,
+      "size": 5,
+      "raw_idx": 7624,
+      "text_preview": "on va créer un nouvel"
+    },
+    {
+      "raw_start": 3872427,
+      "raw_end": 3873647,
+      "exp_start": 1566112,
+      "exp_end": 1567312,
+      "size": 7,
+      "raw_idx": 7630,
+      "text_preview": "on va mettre tous les détails de"
+    },
+    {
+      "raw_start": 3875242,
+      "raw_end": 3893355,
+      "exp_start": 1568912,
+      "exp_end": 1586947,
+      "size": 55,
+      "raw_idx": 7639,
+      "text_preview": "dans cet écran, on va avoir tout en"
+    },
+    {
+      "raw_start": 3893355,
+      "raw_end": 3896252,
+      "exp_start": 1587222,
+      "exp_end": 1590672,
+      "size": 10,
+      "raw_idx": 7695,
+      "text_preview": "le titre de l'histoire qui est en bas"
+    },
+    {
+      "raw_start": 3962959,
+      "raw_end": 3963607,
+      "exp_start": 1591092,
+      "exp_end": 1591952,
+      "size": 7,
+      "raw_idx": 7899,
+      "text_preview": "voilà, là je lui ai fait mon"
+    },
+    {
+      "raw_start": 3965847,
+      "raw_end": 3966767,
+      "exp_start": 1592292,
+      "exp_end": 1593212,
+      "size": 7,
+      "raw_idx": 7907,
+      "text_preview": "donc c'est un prompt qui est très"
+    },
+    {
+      "raw_start": 3967167,
+      "raw_end": 3973967,
+      "exp_start": 1593592,
+      "exp_end": 1600412,
+      "size": 40,
+      "raw_idx": 7915,
+      "text_preview": "je lui explique exactement ce que je veux,"
+    },
+    {
+      "raw_start": 4240853,
+      "raw_end": 4259693,
+      "exp_start": 1600574,
+      "exp_end": 1618934,
+      "size": 89,
+      "raw_idx": 8058,
+      "text_preview": "voilà, donc là il a commencé à travailler."
+    },
+    {
+      "raw_start": 4467375,
+      "raw_end": 4481085,
+      "exp_start": 1619187,
+      "exp_end": 1631507,
+      "size": 52,
+      "raw_idx": 8241,
+      "text_preview": "ok, donc là il a fini de travailler."
+    },
+    {
+      "raw_start": 5555893,
+      "raw_end": 5569773,
+      "exp_start": 1631507,
+      "exp_end": 1640347,
+      "size": 38,
+      "raw_idx": 8920,
+      "text_preview": "ça y est, c'est bon, j'ai accès à"
+    },
+    {
+      "raw_start": 5571093,
+      "raw_end": 5572673,
+      "exp_start": 1641687,
+      "exp_end": 1643047,
+      "size": 5,
+      "raw_idx": 8961,
+      "text_preview": "donc c'est-à-dire sur react native"
+    },
+    {
+      "raw_start": 5573202,
+      "raw_end": 5580922,
+      "exp_start": 1643639,
+      "exp_end": 1651499,
+      "size": 25,
+      "raw_idx": 8966,
+      "text_preview": "on a le contenu qui va derrière le"
+    },
+    {
+      "raw_start": 5581662,
+      "raw_end": 5582502,
+      "exp_start": 1652239,
+      "exp_end": 1653099,
+      "size": 4,
+      "raw_idx": 8995,
+      "text_preview": "en compte pour le"
+    },
+    {
+      "raw_start": 5584102,
+      "raw_end": 5588442,
+      "exp_start": 1654079,
+      "exp_end": 1658299,
+      "size": 17,
+      "raw_idx": 9001,
+      "text_preview": "et on a l'image qui a pas les"
+    },
+    {
+      "raw_start": 5589142,
+      "raw_end": 5593382,
+      "exp_start": 1658939,
+      "exp_end": 1663219,
+      "size": 17,
+      "raw_idx": 9019,
+      "text_preview": "donc on la voit pas complètement. donc je"
+    },
+    {
+      "raw_start": 5593482,
+      "raw_end": 5605439,
+      "exp_start": 1663319,
+      "exp_end": 1667659,
+      "size": 20,
+      "raw_idx": 9037,
+      "text_preview": "et on va voir l'ia travailler en direct"
+    },
+    {
+      "raw_start": 5606079,
+      "raw_end": 5609599,
+      "exp_start": 1668279,
+      "exp_end": 1671668,
+      "size": 9,
+      "raw_idx": 9058,
+      "text_preview": "la safe area ne marche pas correctement, donc"
+    },
+    {
+      "raw_start": 5609599,
+      "raw_end": 5618319,
+      "exp_start": 1671838,
+      "exp_end": 1680518,
+      "size": 26,
+      "raw_idx": 9067,
+      "text_preview": "haut, le contenu va derrière le contenu du"
+    },
+    {
+      "raw_start": 5639281,
+      "raw_end": 5657013,
+      "exp_start": 1681018,
+      "exp_end": 1692908,
+      "size": 38,
+      "raw_idx": 9149,
+      "text_preview": "je lui envoie ce qu'il faut corriger et"
+    },
+    {
+      "raw_start": 5658253,
+      "raw_end": 5677485,
+      "exp_start": 1694238,
+      "exp_end": 1708654,
+      "size": 54,
+      "raw_idx": 9190,
+      "text_preview": "on va attendre qu'il y ait un autre"
+    },
+    {
+      "raw_start": 5677845,
+      "raw_end": 5686935,
+      "exp_start": 1709014,
+      "exp_end": 1718214,
+      "size": 48,
+      "raw_idx": 9245,
+      "text_preview": "donc là je pense que ça devrait pas"
+    },
+    {
+      "raw_start": 5687158,
+      "raw_end": 5690415,
+      "exp_start": 1718214,
+      "exp_end": 1721674,
+      "size": 11,
+      "raw_idx": 9296,
+      "text_preview": "le bouton de téléchargement ici qui est à"
+    },
+    {
+      "raw_start": 5690505,
+      "raw_end": 5693124,
+      "exp_start": 1721674,
+      "exp_end": 1724290,
+      "size": 9,
+      "raw_idx": 9308,
+      "text_preview": "sais pas s'il marche si je clique dessus,"
+    },
+    {
+      "raw_start": 5693224,
+      "raw_end": 5694524,
+      "exp_start": 1724410,
+      "exp_end": 1725690,
+      "size": 5,
+      "raw_idx": 9318,
+      "text_preview": "pas l'air de marcher. là"
+    },
+    {
+      "raw_start": 5694804,
+      "raw_end": 5695944,
+      "exp_start": 1725990,
+      "exp_end": 1727110,
+      "size": 8,
+      "raw_idx": 9324,
+      "text_preview": "pour les crédits, il m'a bien mis le"
+    },
+    {
+      "raw_start": 5697924,
+      "raw_end": 5701124,
+      "exp_start": 1729090,
+      "exp_end": 1732310,
+      "size": 17,
+      "raw_idx": 9341,
+      "text_preview": "a pas d'autre écran qui se met, donc"
+    },
+    {
+      "raw_start": 5701184,
+      "raw_end": 5706844,
+      "exp_start": 1732370,
+      "exp_end": 1738010,
+      "size": 21,
+      "raw_idx": 9359,
+      "text_preview": "lui ai pas dit. on a bien les"
+    },
+    {
+      "raw_start": 5706944,
+      "raw_end": 5707644,
+      "exp_start": 1738110,
+      "exp_end": 1738830,
+      "size": 5,
+      "raw_idx": 9381,
+      "text_preview": "faut voir si le bouton"
+    },
+    {
+      "raw_start": 5707924,
+      "raw_end": 5716736,
+      "exp_start": 1739110,
+      "exp_end": 1747907,
+      "size": 32,
+      "raw_idx": 9387,
+      "text_preview": "le bouton a l'air de marcher, donc là"
+    },
+    {
+      "raw_start": 5717201,
+      "raw_end": 5722111,
+      "exp_start": 1748372,
+      "exp_end": 1753282,
+      "size": 14,
+      "raw_idx": 9420,
+      "text_preview": "le bouton de téléchargement sur la storycard. donc"
+    },
+    {
+      "raw_start": 5723351,
+      "raw_end": 5724151,
+      "exp_start": 1754522,
+      "exp_end": 1755322,
+      "size": 4,
+      "raw_idx": 9436,
+      "text_preview": "je suis assez satisfait"
+    },
+    {
+      "raw_start": 5724151,
+      "raw_end": 5726731,
+      "exp_start": 1755392,
+      "exp_end": 1757902,
+      "size": 11,
+      "raw_idx": 9440,
+      "text_preview": "de l'écran. il y a bien le gradient"
+    },
+    {
+      "raw_start": 5727551,
+      "raw_end": 5732791,
+      "exp_start": 1758822,
+      "exp_end": 1763962,
+      "size": 22,
+      "raw_idx": 9452,
+      "text_preview": "donc ça, franchement, il a très bien respecté"
+    },
+    {
+      "raw_start": 5828183,
+      "raw_end": 5832363,
+      "exp_start": 1764110,
+      "exp_end": 1768250,
+      "size": 20,
+      "raw_idx": 9687,
+      "text_preview": "et voilà, j'ai mon écran qui est prêt."
+    },
+    {
+      "raw_start": 5832783,
+      "raw_end": 5866848,
+      "exp_start": 1768670,
+      "exp_end": 1780367,
+      "size": 52,
+      "raw_idx": 9708,
+      "text_preview": "et je pourrais regarder tous les changements de"
+    },
+    {
+      "raw_start": 5914705,
+      "raw_end": 5918625,
+      "exp_start": 1780367,
+      "exp_end": 1783807,
+      "size": 17,
+      "raw_idx": 9880,
+      "text_preview": "si toi aussi tu veux avoir un agent"
+    },
+    {
+      "raw_start": 5949045,
+      "raw_end": 5959405,
+      "exp_start": 1784447,
+      "exp_end": 1794807,
+      "size": 40,
+      "raw_idx": 9980,
+      "text_preview": "a pas besoin d'avoir un mac mini, tu"
+    },
+    {
+      "raw_start": 5959845,
+      "raw_end": 5970205,
+      "exp_start": 1795247,
+      "exp_end": 1797947,
+      "size": 12,
+      "raw_idx": 10021,
+      "text_preview": "de réduction. si cette vidéo t'a plu, n'oublie"
+    },
+    {
+      "raw_start": 5970345,
+      "raw_end": 5971865,
+      "exp_start": 1798507,
+      "exp_end": 1800007,
+      "size": 8,
+      "raw_idx": 10033,
+      "text_preview": "dis-moi en commentaire comment est-ce que tu utilises"
+    },
+    {
+      "raw_start": 6022983,
+      "raw_end": 6028523,
+      "exp_start": 1800487,
+      "exp_end": 1806027,
+      "size": 23,
+      "raw_idx": 10201,
+      "text_preview": "ça m'intéresse. abonne-toi si tu veux plus de"
+    }
+  ],
+  "matching_blocks": [
+    {
+      "a": 0,
+      "b": 0,
+      "size": 38
+    },
+    {
+      "a": 39,
+      "b": 39,
+      "size": 120
+    },
+    {
+      "a": 160,
+      "b": 160,
+      "size": 4
+    },
+    {
+      "a": 166,
+      "b": 165,
+      "size": 33
+    },
+    {
+      "a": 200,
+      "b": 199,
+      "size": 35
+    },
+    {
+      "a": 236,
+      "b": 235,
+      "size": 4
+    },
+    {
+      "a": 242,
+      "b": 240,
+      "size": 7
+    },
+    {
+      "a": 250,
+      "b": 248,
+      "size": 24
+    },
+    {
+      "a": 275,
+      "b": 273,
+      "size": 48
+    },
+    {
+      "a": 324,
+      "b": 322,
+      "size": 1
+    },
+    {
+      "a": 327,
+      "b": 325,
+      "size": 6
+    },
+    {
+      "a": 341,
+      "b": 331,
+      "size": 1
+    },
+    {
+      "a": 364,
+      "b": 335,
+      "size": 4
+    },
+    {
+      "a": 369,
+      "b": 340,
+      "size": 7
+    },
+    {
+      "a": 377,
+      "b": 348,
+      "size": 2
+    },
+    {
+      "a": 380,
+      "b": 351,
+      "size": 13
+    },
+    {
+      "a": 393,
+      "b": 365,
+      "size": 5
+    },
+    {
+      "a": 399,
+      "b": 371,
+      "size": 16
+    },
+    {
+      "a": 416,
+      "b": 387,
+      "size": 4
+    },
+    {
+      "a": 421,
+      "b": 392,
+      "size": 3
+    },
+    {
+      "a": 425,
+      "b": 397,
+      "size": 4
+    },
+    {
+      "a": 430,
+      "b": 402,
+      "size": 12
+    },
+    {
+      "a": 442,
+      "b": 415,
+      "size": 5
+    },
+    {
+      "a": 448,
+      "b": 421,
+      "size": 12
+    },
+    {
+      "a": 461,
+      "b": 435,
+      "size": 9
+    },
+    {
+      "a": 473,
+      "b": 447,
+      "size": 5
+    },
+    {
+      "a": 479,
+      "b": 453,
+      "size": 15
+    },
+    {
+      "a": 495,
+      "b": 469,
+      "size": 7
+    },
+    {
+      "a": 504,
+      "b": 478,
+      "size": 8
+    },
+    {
+      "a": 513,
+      "b": 487,
+      "size": 3
+    },
+    {
+      "a": 517,
+      "b": 491,
+      "size": 6
+    },
+    {
+      "a": 524,
+      "b": 499,
+      "size": 10
+    },
+    {
+      "a": 535,
+      "b": 510,
+      "size": 25
+    },
+    {
+      "a": 561,
+      "b": 536,
+      "size": 1
+    },
+    {
+      "a": 563,
+      "b": 538,
+      "size": 3
+    },
+    {
+      "a": 567,
+      "b": 542,
+      "size": 3
+    },
+    {
+      "a": 571,
+      "b": 546,
+      "size": 11
+    },
+    {
+      "a": 583,
+      "b": 558,
+      "size": 4
+    },
+    {
+      "a": 588,
+      "b": 563,
+      "size": 5
+    },
+    {
+      "a": 594,
+      "b": 569,
+      "size": 6
+    },
+    {
+      "a": 601,
+      "b": 576,
+      "size": 33
+    },
+    {
+      "a": 635,
+      "b": 610,
+      "size": 25
+    },
+    {
+      "a": 661,
+      "b": 636,
+      "size": 7
+    },
+    {
+      "a": 669,
+      "b": 644,
+      "size": 22
+    },
+    {
+      "a": 692,
+      "b": 667,
+      "size": 15
+    },
+    {
+      "a": 708,
+      "b": 683,
+      "size": 2
+    },
+    {
+      "a": 710,
+      "b": 686,
+      "size": 13
+    },
+    {
+      "a": 724,
+      "b": 700,
+      "size": 20
+    },
+    {
+      "a": 745,
+      "b": 720,
+      "size": 1
+    },
+    {
+      "a": 762,
+      "b": 723,
+      "size": 2
+    },
+    {
+      "a": 1028,
+      "b": 725,
+      "size": 4
+    },
+    {
+      "a": 1033,
+      "b": 730,
+      "size": 3
+    },
+    {
+      "a": 1037,
+      "b": 734,
+      "size": 4
+    },
+    {
+      "a": 1042,
+      "b": 739,
+      "size": 8
+    },
+    {
+      "a": 1051,
+      "b": 748,
+      "size": 13
+    },
+    {
+      "a": 1067,
+      "b": 762,
+      "size": 5
+    },
+    {
+      "a": 1073,
+      "b": 768,
+      "size": 4
+    },
+    {
+      "a": 1078,
+      "b": 773,
+      "size": 5
+    },
+    {
+      "a": 1083,
+      "b": 779,
+      "size": 18
+    },
+    {
+      "a": 1102,
+      "b": 798,
+      "size": 20
+    },
+    {
+      "a": 1124,
+      "b": 820,
+      "size": 20
+    },
+    {
+      "a": 1145,
+      "b": 841,
+      "size": 1
+    },
+    {
+      "a": 1147,
+      "b": 843,
+      "size": 14
+    },
+    {
+      "a": 1162,
+      "b": 858,
+      "size": 7
+    },
+    {
+      "a": 1189,
+      "b": 868,
+      "size": 7
+    },
+    {
+      "a": 1282,
+      "b": 875,
+      "size": 1
+    },
+    {
+      "a": 1341,
+      "b": 876,
+      "size": 47
+    },
+    {
+      "a": 1388,
+      "b": 924,
+      "size": 11
+    },
+    {
+      "a": 1399,
+      "b": 936,
+      "size": 4
+    },
+    {
+      "a": 1404,
+      "b": 943,
+      "size": 27
+    },
+    {
+      "a": 1432,
+      "b": 971,
+      "size": 2
+    },
+    {
+      "a": 1435,
+      "b": 975,
+      "size": 1
+    },
+    {
+      "a": 1437,
+      "b": 977,
+      "size": 1
+    },
+    {
+      "a": 1439,
+      "b": 979,
+      "size": 3
+    },
+    {
+      "a": 1443,
+      "b": 983,
+      "size": 4
+    },
+    {
+      "a": 1451,
+      "b": 992,
+      "size": 3
+    },
+    {
+      "a": 1455,
+      "b": 996,
+      "size": 17
+    },
+    {
+      "a": 1473,
+      "b": 1014,
+      "size": 14
+    },
+    {
+      "a": 1488,
+      "b": 1029,
+      "size": 10
+    },
+    {
+      "a": 1499,
+      "b": 1040,
+      "size": 18
+    },
+    {
+      "a": 1518,
+      "b": 1059,
+      "size": 13
+    },
+    {
+      "a": 1532,
+      "b": 1073,
+      "size": 19
+    },
+    {
+      "a": 1552,
+      "b": 1093,
+      "size": 14
+    },
+    {
+      "a": 1567,
+      "b": 1108,
+      "size": 29
+    },
+    {
+      "a": 1598,
+      "b": 1138,
+      "size": 93
+    },
+    {
+      "a": 1692,
+      "b": 1233,
+      "size": 55
+    },
+    {
+      "a": 1762,
+      "b": 1288,
+      "size": 7
+    },
+    {
+      "a": 1783,
+      "b": 1296,
+      "size": 9
+    },
+    {
+      "a": 1793,
+      "b": 1306,
+      "size": 8
+    },
+    {
+      "a": 1803,
+      "b": 1314,
+      "size": 77
+    },
+    {
+      "a": 1882,
+      "b": 1393,
+      "size": 12
+    },
+    {
+      "a": 1896,
+      "b": 1407,
+      "size": 26
+    },
+    {
+      "a": 1923,
+      "b": 1434,
+      "size": 20
+    },
+    {
+      "a": 1945,
+      "b": 1454,
+      "size": 35
+    },
+    {
+      "a": 1981,
+      "b": 1490,
+      "size": 45
+    },
+    {
+      "a": 2027,
+      "b": 1536,
+      "size": 10
+    },
+    {
+      "a": 2038,
+      "b": 1547,
+      "size": 7
+    },
+    {
+      "a": 2046,
+      "b": 1555,
+      "size": 17
+    },
+    {
+      "a": 2064,
+      "b": 1573,
+      "size": 2
+    },
+    {
+      "a": 2068,
+      "b": 1575,
+      "size": 81
+    },
+    {
+      "a": 2150,
+      "b": 1657,
+      "size": 11
+    },
+    {
+      "a": 2161,
+      "b": 1670,
+      "size": 1
+    },
+    {
+      "a": 2574,
+      "b": 1671,
+      "size": 30
+    },
+    {
+      "a": 2605,
+      "b": 1702,
+      "size": 114
+    },
+    {
+      "a": 2720,
+      "b": 1817,
+      "size": 11
+    },
+    {
+      "a": 2733,
+      "b": 1829,
+      "size": 20
+    },
+    {
+      "a": 2754,
+      "b": 1850,
+      "size": 18
+    },
+    {
+      "a": 2773,
+      "b": 1869,
+      "size": 3
+    },
+    {
+      "a": 2777,
+      "b": 1873,
+      "size": 6
+    },
+    {
+      "a": 2784,
+      "b": 1880,
+      "size": 5
+    },
+    {
+      "a": 2789,
+      "b": 1886,
+      "size": 7
+    },
+    {
+      "a": 2797,
+      "b": 1894,
+      "size": 18
+    },
+    {
+      "a": 2816,
+      "b": 1913,
+      "size": 27
+    },
+    {
+      "a": 2849,
+      "b": 1944,
+      "size": 47
+    },
+    {
+      "a": 2897,
+      "b": 1992,
+      "size": 8
+    },
+    {
+      "a": 2906,
+      "b": 2001,
+      "size": 24
+    },
+    {
+      "a": 2931,
+      "b": 2026,
+      "size": 11
+    },
+    {
+      "a": 2943,
+      "b": 2038,
+      "size": 7
+    },
+    {
+      "a": 2951,
+      "b": 2046,
+      "size": 2
+    },
+    {
+      "a": 2954,
+      "b": 2048,
+      "size": 18
+    },
+    {
+      "a": 2973,
+      "b": 2067,
+      "size": 1
+    },
+    {
+      "a": 2975,
+      "b": 2069,
+      "size": 15
+    },
+    {
+      "a": 2991,
+      "b": 2085,
+      "size": 18
+    },
+    {
+      "a": 3010,
+      "b": 2105,
+      "size": 74
+    },
+    {
+      "a": 3085,
+      "b": 2180,
+      "size": 58
+    },
+    {
+      "a": 3145,
+      "b": 2240,
+      "size": 21
+    },
+    {
+      "a": 3167,
+      "b": 2262,
+      "size": 4
+    },
+    {
+      "a": 3173,
+      "b": 2268,
+      "size": 48
+    },
+    {
+      "a": 3225,
+      "b": 2318,
+      "size": 6
+    },
+    {
+      "a": 3298,
+      "b": 2329,
+      "size": 1
+    },
+    {
+      "a": 3383,
+      "b": 2330,
+      "size": 13
+    },
+    {
+      "a": 3397,
+      "b": 2343,
+      "size": 206
+    },
+    {
+      "a": 3604,
+      "b": 2549,
+      "size": 89
+    },
+    {
+      "a": 3728,
+      "b": 2638,
+      "size": 56
+    },
+    {
+      "a": 3788,
+      "b": 2697,
+      "size": 6
+    },
+    {
+      "a": 3795,
+      "b": 2704,
+      "size": 5
+    },
+    {
+      "a": 3801,
+      "b": 2710,
+      "size": 9
+    },
+    {
+      "a": 3811,
+      "b": 2720,
+      "size": 3
+    },
+    {
+      "a": 3815,
+      "b": 2724,
+      "size": 26
+    },
+    {
+      "a": 3842,
+      "b": 2751,
+      "size": 3
+    },
+    {
+      "a": 3846,
+      "b": 2755,
+      "size": 1
+    },
+    {
+      "a": 3849,
+      "b": 2758,
+      "size": 6
+    },
+    {
+      "a": 3856,
+      "b": 2765,
+      "size": 5
+    },
+    {
+      "a": 3861,
+      "b": 2771,
+      "size": 6
+    },
+    {
+      "a": 3869,
+      "b": 2778,
+      "size": 68
+    },
+    {
+      "a": 3938,
+      "b": 2847,
+      "size": 22
+    },
+    {
+      "a": 3961,
+      "b": 2870,
+      "size": 25
+    },
+    {
+      "a": 3989,
+      "b": 2899,
+      "size": 15
+    },
+    {
+      "a": 4005,
+      "b": 2918,
+      "size": 16
+    },
+    {
+      "a": 4035,
+      "b": 2934,
+      "size": 21
+    },
+    {
+      "a": 4058,
+      "b": 2957,
+      "size": 5
+    },
+    {
+      "a": 4064,
+      "b": 2963,
+      "size": 102
+    },
+    {
+      "a": 4169,
+      "b": 3066,
+      "size": 21
+    },
+    {
+      "a": 4191,
+      "b": 3088,
+      "size": 73
+    },
+    {
+      "a": 4265,
+      "b": 3161,
+      "size": 87
+    },
+    {
+      "a": 4356,
+      "b": 3252,
+      "size": 35
+    },
+    {
+      "a": 4393,
+      "b": 3291,
+      "size": 24
+    },
+    {
+      "a": 4418,
+      "b": 3316,
+      "size": 13
+    },
+    {
+      "a": 4432,
+      "b": 3330,
+      "size": 22
+    },
+    {
+      "a": 4463,
+      "b": 3353,
+      "size": 8
+    },
+    {
+      "a": 4518,
+      "b": 3361,
+      "size": 6
+    },
+    {
+      "a": 4548,
+      "b": 3368,
+      "size": 16
+    },
+    {
+      "a": 4565,
+      "b": 3385,
+      "size": 2
+    },
+    {
+      "a": 4568,
+      "b": 3387,
+      "size": 6
+    },
+    {
+      "a": 4581,
+      "b": 3393,
+      "size": 16
+    },
+    {
+      "a": 4613,
+      "b": 3409,
+      "size": 18
+    },
+    {
+      "a": 4633,
+      "b": 3432,
+      "size": 2
+    },
+    {
+      "a": 4642,
+      "b": 3437,
+      "size": 1
+    },
+    {
+      "a": 4643,
+      "b": 3456,
+      "size": 2
+    },
+    {
+      "a": 4645,
+      "b": 3461,
+      "size": 2
+    },
+    {
+      "a": 4656,
+      "b": 3478,
+      "size": 1
+    },
+    {
+      "a": 4658,
+      "b": 3482,
+      "size": 3
+    },
+    {
+      "a": 4670,
+      "b": 3491,
+      "size": 5
+    },
+    {
+      "a": 4676,
+      "b": 3518,
+      "size": 1
+    },
+    {
+      "a": 4678,
+      "b": 3519,
+      "size": 3
+    },
+    {
+      "a": 4684,
+      "b": 3530,
+      "size": 2
+    },
+    {
+      "a": 4702,
+      "b": 3534,
+      "size": 5
+    },
+    {
+      "a": 4708,
+      "b": 3540,
+      "size": 3
+    },
+    {
+      "a": 4725,
+      "b": 3544,
+      "size": 6
+    },
+    {
+      "a": 4732,
+      "b": 3550,
+      "size": 2
+    },
+    {
+      "a": 4741,
+      "b": 3552,
+      "size": 10
+    },
+    {
+      "a": 4898,
+      "b": 3562,
+      "size": 12
+    },
+    {
+      "a": 4913,
+      "b": 3577,
+      "size": 21
+    },
+    {
+      "a": 4935,
+      "b": 3599,
+      "size": 6
+    },
+    {
+      "a": 4942,
+      "b": 3606,
+      "size": 21
+    },
+    {
+      "a": 5017,
+      "b": 3627,
+      "size": 19
+    },
+    {
+      "a": 5037,
+      "b": 3647,
+      "size": 46
+    },
+    {
+      "a": 5084,
+      "b": 3694,
+      "size": 15
+    },
+    {
+      "a": 5100,
+      "b": 3710,
+      "size": 5
+    },
+    {
+      "a": 5107,
+      "b": 3716,
+      "size": 14
+    },
+    {
+      "a": 5134,
+      "b": 3731,
+      "size": 13
+    },
+    {
+      "a": 5171,
+      "b": 3744,
+      "size": 24
+    },
+    {
+      "a": 5197,
+      "b": 3770,
+      "size": 5
+    },
+    {
+      "a": 5203,
+      "b": 3776,
+      "size": 20
+    },
+    {
+      "a": 5225,
+      "b": 3798,
+      "size": 65
+    },
+    {
+      "a": 5293,
+      "b": 3863,
+      "size": 27
+    },
+    {
+      "a": 5321,
+      "b": 3890,
+      "size": 11
+    },
+    {
+      "a": 5333,
+      "b": 3902,
+      "size": 58
+    },
+    {
+      "a": 5394,
+      "b": 3963,
+      "size": 29
+    },
+    {
+      "a": 5424,
+      "b": 3993,
+      "size": 7
+    },
+    {
+      "a": 5435,
+      "b": 4003,
+      "size": 1
+    },
+    {
+      "a": 5440,
+      "b": 4009,
+      "size": 1
+    },
+    {
+      "a": 5441,
+      "b": 4011,
+      "size": 73
+    },
+    {
+      "a": 5515,
+      "b": 4085,
+      "size": 3
+    },
+    {
+      "a": 5519,
+      "b": 4090,
+      "size": 24
+    },
+    {
+      "a": 5544,
+      "b": 4115,
+      "size": 16
+    },
+    {
+      "a": 5560,
+      "b": 4132,
+      "size": 28
+    },
+    {
+      "a": 5589,
+      "b": 4161,
+      "size": 26
+    },
+    {
+      "a": 5616,
+      "b": 4188,
+      "size": 6
+    },
+    {
+      "a": 5623,
+      "b": 4194,
+      "size": 8
+    },
+    {
+      "a": 5632,
+      "b": 4203,
+      "size": 2
+    },
+    {
+      "a": 5635,
+      "b": 4206,
+      "size": 5
+    },
+    {
+      "a": 5641,
+      "b": 4212,
+      "size": 11
+    },
+    {
+      "a": 5653,
+      "b": 4224,
+      "size": 7
+    },
+    {
+      "a": 5672,
+      "b": 4232,
+      "size": 77
+    },
+    {
+      "a": 5750,
+      "b": 4309,
+      "size": 30
+    },
+    {
+      "a": 5781,
+      "b": 4340,
+      "size": 18
+    },
+    {
+      "a": 5800,
+      "b": 4359,
+      "size": 29
+    },
+    {
+      "a": 5831,
+      "b": 4389,
+      "size": 38
+    },
+    {
+      "a": 5885,
+      "b": 4428,
+      "size": 4
+    },
+    {
+      "a": 5902,
+      "b": 4434,
+      "size": 3
+    },
+    {
+      "a": 6128,
+      "b": 4437,
+      "size": 17
+    },
+    {
+      "a": 6147,
+      "b": 4457,
+      "size": 28
+    },
+    {
+      "a": 6176,
+      "b": 4485,
+      "size": 82
+    },
+    {
+      "a": 6380,
+      "b": 4567,
+      "size": 25
+    },
+    {
+      "a": 6405,
+      "b": 4593,
+      "size": 6
+    },
+    {
+      "a": 6412,
+      "b": 4602,
+      "size": 5
+    },
+    {
+      "a": 6418,
+      "b": 4610,
+      "size": 10
+    },
+    {
+      "a": 6432,
+      "b": 4626,
+      "size": 3
+    },
+    {
+      "a": 6436,
+      "b": 4630,
+      "size": 10
+    },
+    {
+      "a": 6448,
+      "b": 4643,
+      "size": 49
+    },
+    {
+      "a": 6498,
+      "b": 4694,
+      "size": 55
+    },
+    {
+      "a": 6554,
+      "b": 4750,
+      "size": 119
+    },
+    {
+      "a": 6674,
+      "b": 4869,
+      "size": 7
+    },
+    {
+      "a": 6701,
+      "b": 4876,
+      "size": 44
+    },
+    {
+      "a": 6745,
+      "b": 4921,
+      "size": 27
+    },
+    {
+      "a": 6773,
+      "b": 4948,
+      "size": 32
+    },
+    {
+      "a": 6805,
+      "b": 4981,
+      "size": 149
+    },
+    {
+      "a": 6955,
+      "b": 5131,
+      "size": 6
+    },
+    {
+      "a": 6961,
+      "b": 5138,
+      "size": 81
+    },
+    {
+      "a": 7173,
+      "b": 5221,
+      "size": 2
+    },
+    {
+      "a": 7176,
+      "b": 5224,
+      "size": 73
+    },
+    {
+      "a": 7251,
+      "b": 5298,
+      "size": 3
+    },
+    {
+      "a": 7257,
+      "b": 5301,
+      "size": 32
+    },
+    {
+      "a": 7290,
+      "b": 5335,
+      "size": 4
+    },
+    {
+      "a": 7295,
+      "b": 5340,
+      "size": 1
+    },
+    {
+      "a": 7297,
+      "b": 5342,
+      "size": 56
+    },
+    {
+      "a": 7360,
+      "b": 5398,
+      "size": 5
+    },
+    {
+      "a": 7366,
+      "b": 5404,
+      "size": 25
+    },
+    {
+      "a": 7392,
+      "b": 5430,
+      "size": 12
+    },
+    {
+      "a": 7404,
+      "b": 5444,
+      "size": 12
+    },
+    {
+      "a": 7419,
+      "b": 5459,
+      "size": 16
+    },
+    {
+      "a": 7436,
+      "b": 5476,
+      "size": 15
+    },
+    {
+      "a": 7453,
+      "b": 5491,
+      "size": 3
+    },
+    {
+      "a": 7457,
+      "b": 5495,
+      "size": 37
+    },
+    {
+      "a": 7495,
+      "b": 5533,
+      "size": 6
+    },
+    {
+      "a": 7502,
+      "b": 5540,
+      "size": 1
+    },
+    {
+      "a": 7503,
+      "b": 5542,
+      "size": 6
+    },
+    {
+      "a": 7510,
+      "b": 5549,
+      "size": 62
+    },
+    {
+      "a": 7621,
+      "b": 5611,
+      "size": 2
+    },
+    {
+      "a": 7624,
+      "b": 5614,
+      "size": 5
+    },
+    {
+      "a": 7630,
+      "b": 5621,
+      "size": 7
+    },
+    {
+      "a": 7639,
+      "b": 5630,
+      "size": 55
+    },
+    {
+      "a": 7695,
+      "b": 5686,
+      "size": 10
+    },
+    {
+      "a": 7899,
+      "b": 5696,
+      "size": 7
+    },
+    {
+      "a": 7907,
+      "b": 5704,
+      "size": 7
+    },
+    {
+      "a": 7915,
+      "b": 5712,
+      "size": 40
+    },
+    {
+      "a": 8058,
+      "b": 5752,
+      "size": 89
+    },
+    {
+      "a": 8241,
+      "b": 5841,
+      "size": 52
+    },
+    {
+      "a": 8920,
+      "b": 5893,
+      "size": 38
+    },
+    {
+      "a": 8961,
+      "b": 5932,
+      "size": 5
+    },
+    {
+      "a": 8966,
+      "b": 5938,
+      "size": 25
+    },
+    {
+      "a": 8992,
+      "b": 5964,
+      "size": 2
+    },
+    {
+      "a": 8995,
+      "b": 5967,
+      "size": 4
+    },
+    {
+      "a": 9001,
+      "b": 5973,
+      "size": 17
+    },
+    {
+      "a": 9019,
+      "b": 5991,
+      "size": 17
+    },
+    {
+      "a": 9037,
+      "b": 6009,
+      "size": 20
+    },
+    {
+      "a": 9058,
+      "b": 6030,
+      "size": 9
+    },
+    {
+      "a": 9067,
+      "b": 6040,
+      "size": 26
+    },
+    {
+      "a": 9149,
+      "b": 6068,
+      "size": 38
+    },
+    {
+      "a": 9190,
+      "b": 6110,
+      "size": 54
+    },
+    {
+      "a": 9245,
+      "b": 6165,
+      "size": 48
+    },
+    {
+      "a": 9296,
+      "b": 6213,
+      "size": 11
+    },
+    {
+      "a": 9308,
+      "b": 6224,
+      "size": 9
+    },
+    {
+      "a": 9318,
+      "b": 6234,
+      "size": 5
+    },
+    {
+      "a": 9324,
+      "b": 6240,
+      "size": 8
+    },
+    {
+      "a": 9333,
+      "b": 6249,
+      "size": 1
+    },
+    {
+      "a": 9335,
+      "b": 6251,
+      "size": 3
+    },
+    {
+      "a": 9341,
+      "b": 6257,
+      "size": 17
+    },
+    {
+      "a": 9359,
+      "b": 6274,
+      "size": 21
+    },
+    {
+      "a": 9381,
+      "b": 6295,
+      "size": 5
+    },
+    {
+      "a": 9387,
+      "b": 6301,
+      "size": 32
+    },
+    {
+      "a": 9420,
+      "b": 6334,
+      "size": 14
+    },
+    {
+      "a": 9436,
+      "b": 6350,
+      "size": 4
+    },
+    {
+      "a": 9440,
+      "b": 6355,
+      "size": 11
+    },
+    {
+      "a": 9452,
+      "b": 6367,
+      "size": 22
+    },
+    {
+      "a": 9687,
+      "b": 6389,
+      "size": 20
+    },
+    {
+      "a": 9708,
+      "b": 6410,
+      "size": 52
+    },
+    {
+      "a": 9880,
+      "b": 6462,
+      "size": 17
+    },
+    {
+      "a": 9980,
+      "b": 6482,
+      "size": 40
+    },
+    {
+      "a": 10021,
+      "b": 6523,
+      "size": 12
+    },
+    {
+      "a": 10033,
+      "b": 6536,
+      "size": 8
+    },
+    {
+      "a": 10201,
+      "b": 6545,
+      "size": 23
+    },
+    {
+      "a": 10224,
+      "b": 6568,
+      "size": 0
+    }
+  ],
+  "text_similarity": 0.7334444973797046
+}

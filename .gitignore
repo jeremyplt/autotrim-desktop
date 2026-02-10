@@ -54,3 +54,8 @@ test_*.mp4
 test_*.mov
 test_*.mkv
 *_trimmed.*
+test_data/raw.mov
+test_data/expected.mp4
+test_data/*.mp3
+test_data/output.mp4
+test_data/tmp_segments/
