@@ -27,4 +27,5 @@ regex = "1"
 thiserror = "1"
 anyhow = "1"
 dirs = "5"
+strsim = "0.11"
 

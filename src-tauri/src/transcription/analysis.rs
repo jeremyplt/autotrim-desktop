@@ -553,6 +553,170 @@ fn normalize_word(s: &str) -> String {
     s.to_lowercase().chars().filter(|c| c.is_alphanumeric()).collect()
 }
 
+// === IMPROVED RETAKE DETECTION (ported from Python) ===
+
+/// Normalize text for similarity comparison: lowercase, remove punctuation, normalize whitespace.
+fn normalize_text_for_similarity(text: &str) -> String {
+    let lower = text.to_lowercase();
+    let no_punct: String = lower.chars()
+        .filter(|c| c.is_alphanumeric() || c.is_whitespace())
+        .collect();
+    no_punct.split_whitespace().collect::<Vec<_>>().join(" ")
+}
+
+/// Extract n-grams (word windows) from text.
+fn get_text_ngrams(text: &str, n: usize) -> Vec<Vec<String>> {
+    let words: Vec<String> = text.split_whitespace().map(|s| s.to_string()).collect();
+    if words.len() < n {
+        return Vec::new();
+    }
+    words.windows(n).map(|w| w.to_vec()).collect()
+}
+
+/// Calculate n-gram Jaccard similarity between two texts.
+/// Returns a value between 0.0 (no similarity) and 1.0 (identical).
+fn ngram_similarity(text1: &str, text2: &str, n: usize) -> f64 {
+    use std::collections::HashSet;
+    
+    let norm1 = normalize_text_for_similarity(text1);
+    let norm2 = normalize_text_for_similarity(text2);
+    
+    let ngrams1: HashSet<Vec<String>> = get_text_ngrams(&norm1, n).into_iter().collect();
+    let ngrams2: HashSet<Vec<String>> = get_text_ngrams(&norm2, n).into_iter().collect();
+    
+    if ngrams1.is_empty() || ngrams2.is_empty() {
+        return 0.0;
+    }
+    
+    let intersection = ngrams1.intersection(&ngrams2).count();
+    let union = ngrams1.union(&ngrams2).count();
+    
+    if union == 0 {
+        0.0
+    } else {
+        intersection as f64 / union as f64
+    }
+}
+
+/// Calculate sequence similarity using normalized Levenshtein distance.
+/// Similar to Python's difflib.SequenceMatcher.ratio().
+/// Returns a value between 0.0 (completely different) and 1.0 (identical).
+fn sequence_matcher_similarity(text1: &str, text2: &str) -> f64 {
+    let norm1 = normalize_text_for_similarity(text1);
+    let norm2 = normalize_text_for_similarity(text2);
+    strsim::normalized_damerau_levenshtein(&norm1, &norm2)
+}
+
+/// Detect groups of chunks that are retakes using content similarity.
+/// Returns a list of retake groups where each group contains chunk IDs.
+/// The LAST chunk in each group should be kept.
+fn detect_retake_groups_advanced(
+    chunks: &[SpeechChunk],
+    time_window: f64,
+    min_similarity: f64,
+) -> Vec<Vec<usize>> {
+    use std::collections::HashSet;
+    
+    let mut retake_groups: Vec<Vec<usize>> = Vec::new();
+    let mut processed: HashSet<usize> = HashSet::new();
+    
+    for i in 0..chunks.len() {
+        let chunk_i = &chunks[i];
+        
+        if processed.contains(&chunk_i.id) {
+            continue;
+        }
+        
+        // Look for similar chunks that come AFTER this one within the time window
+        let mut group = vec![chunk_i.id];
+        
+        for j in (i + 1)..chunks.len() {
+            let chunk_j = &chunks[j];
+            
+            if processed.contains(&chunk_j.id) {
+                continue;
+            }
+            
+            // Check if within time window
+            if chunk_j.start - chunk_i.end > time_window {
+                break;
+            }
+            
+            // Calculate similarity using both methods
+            let ngram_sim = ngram_similarity(&chunk_i.text, &chunk_j.text, 3);
+            let seq_sim = sequence_matcher_similarity(&chunk_i.text, &chunk_j.text);
+            
+            // Use max of the two similarities
+            let similarity = ngram_sim.max(seq_sim);
+            
+            if similarity >= min_similarity {
+                group.push(chunk_j.id);
+                processed.insert(chunk_j.id);
+            }
+        }
+        
+        if group.len() > 1 {
+            retake_groups.push(group.clone());
+            processed.insert(chunk_i.id);
+        }
+    }
+    
+    retake_groups
+}
+
+/// Build advanced retake hints using improved detection algorithm.
+/// Generates explicit hints in the format expected by the improved prompt.
+fn build_advanced_hints(chunks: &[SpeechChunk]) -> String {
+    let time_window = 180.0; // 3 minutes
+    let min_similarity = 0.35; // Optimal threshold from Python testing
+    
+    let retake_groups = detect_retake_groups_advanced(chunks, time_window, min_similarity);
+    
+    if retake_groups.is_empty() {
+        return String::new();
+    }
+    
+    let mut hints = Vec::new();
+    hints.push("## REPRISES PRÉ-DÉTECTÉES (DÉTECTION AVANCÉE)\n".to_string());
+    hints.push("Ces groupes ont été détectés algorithmiquement comme des REPRISES (même contenu répété).\n".to_string());
+    hints.push("Pour chaque groupe, garde UNIQUEMENT le DERNIER chunk indiqué.\n\n".to_string());
+    
+    for (group_id, group) in retake_groups.iter().enumerate() {
+        if group.is_empty() {
+            continue;
+        }
+        
+        // Get chunk texts for preview
+        let mut chunk_texts = Vec::new();
+        for &cid in group {
+            if let Some(chunk) = chunks.get(cid) {
+                let preview: String = chunk.text.chars().take(60).collect();
+                let ellipsis = if chunk.text.len() > 60 { "..." } else { "" };
+                chunk_texts.push(format!("  [{}] {}{}", cid, preview, ellipsis));
+            }
+        }
+        
+        let last_chunk_id = *group.last().unwrap();
+        let remove_ids: Vec<usize> = group.iter().copied().filter(|&id| id != last_chunk_id).collect();
+        
+        hints.push(format!("⚠️ GROUPE DE REPRISES #{}:", group_id + 1));
+        hints.push(format!("   Chunks: {:?}", group));
+        hints.push(format!("   → GARDER SEULEMENT: [{}]", last_chunk_id));
+        hints.push(format!("   → SUPPRIMER: {:?}", remove_ids));
+        hints.push("".to_string());
+        
+        for text in chunk_texts {
+            hints.push(text);
+        }
+        hints.push("".to_string());
+    }
+    
+    eprintln!("Advanced retake detection: {} groups detected (similarity threshold: {})",
+        retake_groups.len(), min_similarity);
+    
+    hints.join("\n") + "\n"
+}
+
 /// Extract content words from a text (non-stop-words, normalized).
 fn extract_content_words(text: &str) -> Vec<String> {
     text.split_whitespace()
@@ -1059,7 +1223,7 @@ pub async fn determine_keep_ranges(
         return Ok(Vec::new());
     }
 
-    let retake_hints = build_retake_hints(chunks);
+    let retake_hints = build_advanced_hints(chunks);
 
     let mut transcript = String::new();
     for (i, chunk) in chunks.iter().enumerate() {
@@ -1093,123 +1257,59 @@ pub async fn determine_keep_ranges(
 La transcription est découpée en segments de parole numérotés. Chaque segment est un bloc continu de parole. Les silences entre segments sont automatiquement supprimés.
 
 ## TON TRAVAIL
-Utilise ton raisonnement interne (thinking) pour analyser SYSTÉMATIQUEMENT la transcription, puis retourne la liste des IDs de segments à GARDER via l'outil report_keep_segments.
+Utilise ton raisonnement interne (thinking) pour analyser la transcription, puis retourne la liste des IDs de segments à GARDER via l'outil report_keep_segments.
 
-### MÉTHODE D'ANALYSE (dans ton thinking) :
-1. Parcours la transcription de haut en bas
-2. Pour chaque zone, identifie si le locuteur fait des REPRISES (même sujet répété)
-3. Pour chaque groupe de reprises, identifie la DERNIÈRE VERSION COMPLÈTE
-4. Vérifie que tu ne gardes qu'UNE SEULE VERSION par passage
-5. VÉRIFICATION FINALE : relis ta liste et pour tout segment gardé, demande-toi "est-ce que ce contenu est déjà dit ailleurs dans un segment que je garde aussi ?" Si oui, supprime le doublon.
+## RÈGLE N°1 (PRIORITÉ ABSOLUE) — REPRISES PRÉ-DÉTECTÉES
 
-## RÈGLE N°1 — REPRISES (la plus importante !)
-Le locuteur fait souvent PLUSIEURS TENTATIVES pour dire la même chose. Il peut y avoir 2, 5, 10, voire 20 tentatives d'un même passage !
+Les groupes ci-dessous ont été détectés algorithmiquement avec haute confiance.
+**SUIS CES INDICATIONS STRICTEMENT** : pour chaque groupe, garde UNIQUEMENT le dernier chunk indiqué, supprime TOUS les autres du groupe.
 
-COMMENT DÉTECTER UNE REPRISE :
-- Plusieurs segments commencent par les mêmes mots ou abordent le même sujet
-- Le locuteur s'arrête, puis recommence avec une formulation similaire ou différente
-- Les tentatives sont proches dans le temps (quelques secondes à quelques minutes d'écart)
-- ⚠️ IMPORTANT : les reprises ne sont PAS toujours mot-pour-mot identiques ! Le locuteur peut REFORMULER complètement entre deux tentatives.
+- Si un groupe dit : "garde SEULEMENT [42]" → tu gardes [42], tu supprimes tous les autres chunks du groupe
+- **AUCUNE exception** : même si un chunk intermédiaire te semble bon, supprime-le si les hints disent de le supprimer
 
-### TYPES DE REPRISES À DÉTECTER :
+## RÈGLE N°2 — RECHERCHE ACTIVE DE REPRISES NON-DÉTECTÉES
 
-1. REPRISE IDENTIQUE : mêmes mots au début
-   [10] "Alors du coup on va utiliser... euh..."
-   [11] "Alors du coup on va utiliser Cloud Code pour résoudre ce problème."
-   → [10] = tentative ratée, garder SEULEMENT [11]
+Au-delà des reprises pré-détectées, cherche d'autres reprises que l'algorithme aurait manquées :
 
-2. REPRISE REFORMULÉE : même sujet, mots différents
-   [20] "Alors pour régler ce problème, on a eu— alors bien évidemment je crache pas sur..."
-   [21] "Alors bien évidemment Cloud Code ça reste un outil incroyable surtout quand..."
-   → [20] = tentative abandonnée, [21] = version finale. Garder SEULEMENT [21].
+**Critères pour identifier une reprise** :
+1. Deux segments **parlent du même sujet spécifique** dans une fenêtre de <3 minutes
+   - Exemple : "Et puis ralfloop..." répété 4 fois avec des mots légèrement différents
+   - Si détecté : garde SEULEMENT la version la plus complète/la dernière
+2. Deux segments **commencent par des expressions très similaires** (pas juste des transitions courantes)
+   - "Et là on arrive directement sur le setup..." (répété 3 fois) → garde le dernier
+   - MAIS "voilà" ou "donc" seuls NE SONT PAS des reprises (trop courants)
+3. Segment très court (<6 mots) suivi d'un segment similaire → faux départ → supprime le court
+4. Segment se terminant par "—" ou semblant incomplet → tentative abandonnée → supprime
 
-3. REPRISE MULTI-SEGMENTS : la tentative ratée s'étend sur plusieurs segments consécutifs
-   [30] "Alors pour ce point-là je voulais dire que—"
-   [31] "enfin c'est pas exactement ça mais on va dire que Cloud Code..."
-   [32] "Alors Cloud Code ça reste un outil incroyable."
-   → [30]+[31] = tentative ratée (bloc consécutif), [32] = version finale. Garder SEULEMENT [32].
+**IMPORTANT** : Une phrase courante répétée à différents moments avec des sujets différents N'EST PAS une reprise.
+- "Voilà ce dont je parlais" peut apparaître 5 fois dans la vidéo avec des contextes différents → garder tous
+- Mais "Et puis ralfloop en fait..." répété 4 fois en 2 minutes → C'EST une reprise → garder seulement le dernier
 
-4. ⚠️ REPRISES PROLONGÉES (PIÈGE FRÉQUENT) : après ce qui semble être la version finale, le locuteur fait ENCORE des tentatives !
-   [40] "Et puis surtout ralfloop c'est rien de bien compliqué. Si on regarde ici..."  (tentative 1)
-   [41] "Et puis surtout ralfloop c'est rien de bien sorcier. En fait le code..." (tentative 2)
-   [42] "et puis surtout ralfloop c'est rien de bien compliqué. Au final c'est" (tentative 3)
-   [43] "Et puis surtout ralfloop en fait il n'y a pas vraiment de valeur ajoutée. Si on regarde ici le code..." (tentative 4 — LONGUE, semble finale)
-   --- mais ensuite ---
-   [44] "Ou alors quand—" (fragment, ENCORE une tentative !)
-   [45] "et puis surtout Ralph Loup en fait," (fragment)
-   [46] "Et puis surtout ralfloop en fait c'est rien du tout" (tentative 5)
-   [47] "et puis surtout ralfloop en fait il n'y a vraiment aucune valeur ajoutée, le cod..." (tentative 6 — version VRAIMENT finale)
-   → Garder SEULEMENT [47]. Supprimer [40]-[46] y compris [43] qui semblait final mais ne l'est pas.
-   ⚠️ La VRAIE dernière version est celle APRÈS laquelle le locuteur passe à un NOUVEAU sujet.
+## RÈGLE N°3 — SEGMENTS ⟵ SUITE (INDIVISIBLES)
 
-5. REPRISES DE PHRASES DE CONCLUSION : en fin de vidéo, le locuteur refait souvent sa conclusion/outro
-   [100] "Et voilà, c'est tout bon, j'ai mon écran qui est prêt."
-   [101] "j'aurais pu le faire dans une salle d'attente,"
-   [102] "Et voilà, j'ai mon écran qui est prêt. Maintenant j'ai plus qu'à..." (version plus complète)
-   [103] "j'aurais pu le faire au bord de la plage."
-   → Garder la DERNIÈRE séquence complète. Si [102]+[103] est la dernière tentative, garder [102]+[103] et supprimer [100]+[101].
+Segments marqués "⟵ SUITE" = continuation grammaticale du segment précédent.
+**BLOC INDIVISIBLE** : Garder ou supprimer [N] ET [N+1] ensemble. Jamais l'un sans l'autre.
 
-### SIGNAUX D'UNE TENTATIVE RATÉE :
-- Se termine par "—", "...", ou mid-phrase (phrase inachevée)
-- Contient des hésitations ("euh", "enfin", "c'est-à-dire")
-- Est suivie d'une pause puis d'un redémarrage sur le même sujet
-- Le segment suivant reprend la même idée de façon plus fluide/complète
-- Est PLUS COURTE que la tentative suivante sur le même sujet
+## RÈGLE N°4 — EN CAS DE DOUTE
 
-QUE FAIRE :
-- Garder UNIQUEMENT la DERNIÈRE tentative complète
-- Supprimer TOUTES les tentatives précédentes ET les tentatives intermédiaires
-- La DERNIÈRE tentative = celle après laquelle le locuteur change VRAIMENT de sujet
-- ⚠️ VÉRIFICATION : si tu gardes un segment et que 2-3 segments plus loin il y a un segment qui dit la même chose, c'est que tu as gardé une tentative intermédiaire. Supprime-la !
+- Doute si chunk fait partie d'un groupe de reprises ? → Vérifie les hints d'abord. Si les hints ne mentionnent pas ce chunk, alors garde-le.
+- Doute si deux chunks sont des reprises l'un de l'autre ? → Compare le contenu précis : même sujet spécifique + proche dans le temps (< 2 min) = probable reprise → garde le dernier
+- Doute si chunk est utile ? → Si unique et pas dans un groupe de reprises → GARDE-LE
 
-ANTI-FRANKENSTEIN :
-- Chaque tentative = un BLOC de segments consécutifs
-- Garder UN SEUL BLOC entier, supprimer les autres ENTIÈREMENT
-- INTERDIT de garder le début d'une tentative + la fin d'une autre
+## PROCESSUS RECOMMANDÉ
 
-## RÈGLE N°2 — Faux départs et fragments
-- Segments très courts (<7 mots) entre deux reprises → quasi-certainement des faux départs → supprimer
-- Phrases commencées mais jamais finies → supprimer
-- Segments qui se terminent par "—" → supprimer (tentative abandonnée)
+1. **Première passe** : Suis TOUS les groupes de reprises pré-détectés sans exception
+2. **Deuxième passe** : Cherche des reprises que l'algorithme aurait manquées
+3. **Vérification finale** : Relis ta liste - y a-t-il 2 chunks qui disent la MÊME chose spécifique ? Si oui, garde seulement le dernier
 
-## RÈGLE N°2.5 — Segments qui se continuent (⟵ SUITE)
-Certains segments forment une PHRASE UNIQUE coupée par le découpage automatique.
-Signal : le segment est marqué "⟵ SUITE" et commence par un mot en MINUSCULE.
-→ Ces segments forment un BLOC INDIVISIBLE avec le segment précédent.
-→ Tu ne peux JAMAIS supprimer [N] et garder [N+1] si [N+1] est marqué SUITE.
-→ Garder ou supprimer le BLOC ENTIER (les deux ensemble).
+## MODE : AGRESSIF (mais équilibré)
 
-ERREUR COURANTE : confondre le DÉBUT d'une phrase (chunk N) avec un faux départ parce qu'il ressemble à un chunk précédent. Si chunk N+1 est marqué SUITE, alors chunk N n'est PAS un faux départ, c'est le DÉBUT d'une phrase qui continue dans N+1.
+Tu dois supprimer les reprises de façon agressive, MAIS garde tout le contenu unique.
+- Préfère supprimer une reprise douteuse que de la garder
+- Mais ne supprime JAMAIS du contenu unique qui n'est dit qu'une seule fois
+- Cible : supprimer ~40-50% des chunks (retakes + pauses)
 
-## RÈGLE N°3 — Ce qu'il faut GARDER
-- Tout contenu UNIQUE (dit une seule fois) → GARDER
-- La DERNIÈRE version complète de chaque passage repris → GARDER
-- Les segments LONGS (>10 mots) qui apportent du contenu narratif → GARDER sauf si c'est clairement une reprise
-- En cas de doute sur un segment UNIQUE (pas dans un groupe de reprises) → GARDER
-
-⚠️ MAIS pour les segments dans un groupe de reprises pré-détecté : ne garde que la DERNIÈRE VERSION, même si les autres sont longs. C'est la règle la plus importante.
-
-## PIÈGE À ÉVITER : phrases similaires ≠ reprises !
-Le locuteur utilise souvent les MÊMES EXPRESSIONS DE TRANSITION à différents moments de la vidéo :
-- "Voilà ce dont je parlais..." peut apparaître à 5 endroits différents de la vidéo → PAS une reprise si les sujets sont différents
-- "C'est tout bon", "Le problème c'est que", "Ici je vais" → expressions COURANTES en français
-→ Une reprise = MÊME SUJET + MÊME CONTEXTE + proches dans le temps (<2 min d'écart typiquement)
-→ Même expression + sujets différents + éloignés dans le temps = PAS une reprise, GARDER LES DEUX
-
-## REPRISES PRÉ-DÉTECTÉES
-Les reprises pré-détectées au début de la transcription ont été identifiées par analyse algorithmique.
-- ⚠️ REPRISES DÉTECTÉES (même ouverture + contenu similaire) = FIABLE. Suis-les : garde SEULEMENT le dernier segment indiqué.
-- ⚠️ REPRISE PAR CHEVAUCHEMENT = PROBABLE. Évalue avec ton jugement mais penche vers la suppression.
-- 🔄 REPRISE PROBABLE = SUGGESTION. Vérifie si le contenu est vraiment similaire avant de supprimer.
-- ↳ = segment intermédiaire partie d'une tentative ratée → supprimer avec le reste du bloc.
-
-## AUTO-VÉRIFICATION (CRITIQUE)
-Avant de retourner ta réponse, vérifie :
-1. Pour chaque groupe de reprises pré-détecté : as-tu gardé UN SEUL segment (le dernier) ? Si tu en gardes 2+, c'est une erreur.
-2. Y a-t-il des segments consécutifs ou proches que tu gardes ET qui disent la même chose ? Si oui, ne garde que le dernier.
-3. Les segments très courts (<5 mots) que tu gardes — sont-ils des faux départs ? Si suivis par un segment similaire plus long, supprime-les.
-
-{}"#,
+## {}"#,
         get_mode_instruction(mode)
     );
 
